@@ -98,7 +98,7 @@ async function ruleDelete() {
     window.close();
 }
 
-messenger.runtime.onMessage.addListener(async (broadcastMessage) => {
+messenger.runtime.onMessage.addListener((broadcastMessage) => {
     if (broadcastMessage && broadcastMessage.hasOwnProperty("command")) {
 
         console.info("Broadcast Message received: " + broadcastMessage.command);

@@ -52,16 +52,35 @@
 
     // onMessage listener. fired when an internal message is sent via the internal message bus.
     // not an actual email-message ;-)
-    messenger.runtime.onMessage.addListener(async (message) => {
-        try {
-            await quickarchiver.handleBroadcastMessage(message);
-        } catch (error) {
+    const handledRuntimeCommands = new Set([
+        "requestRule",
+        "updateOpenRulePopupOnNewRule",
+        "requestRuleUpdate",
+        "requestRuleDelete",
+        "requestRefreshList",
+        "requestAllRules",
+        "requestToolsImportRules",
+        "requestOpenRulePopup",
+        "requestOpenFolderPicker",
+        "requestFolderList",
+        "selectFolderForRule",
+        "requestOpenToolsTab",
+        "requestOpenAllRulesTab",
+        "requestOpenAboutTab",
+    ]);
+
+    messenger.runtime.onMessage.addListener((message) => {
+
+        if (!handledRuntimeCommands.has(message?.command)) {
+            return undefined;
+        }
+
+        return quickarchiver.handleBroadcastMessage(message).catch((error) => {
             console.error("QuickArchiver message handling failed", {
                 message,
                 error,
             });
-        }
-        return true;
+        });
     });
 
     // MV3 event pages require menu items with fixed IDs and a central click handler.

@@ -75,7 +75,7 @@ function renderFolders() {
         : "";
 }
 
-messenger.runtime.onMessage.addListener(async (broadcastMessage) => {
+messenger.runtime.onMessage.addListener((broadcastMessage) => {
     if (broadcastMessage?.command === "transmitFolderList") {
         folders = broadcastMessage.folders ?? [];
         let accountFilter = document.getElementById("folder-account-filter");

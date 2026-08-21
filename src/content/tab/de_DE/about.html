@@ -31,7 +31,8 @@
                 <div class="panel">
                     <img width="300" src="../images/toolbar_no_rule@2x.png" alt="Toolbar-Button ohne vorhandene Regel"/>
                     <p>QuickArchiver verwendet Regeln, um sich den Zielordner für eine E-Mail zu merken. Regeln können
-                        derzeit den Absender, die Empfänger oder den Betreff berücksichtigen.</p>
+                        derzeit den Absender, die Empfänger oder den Betreff berücksichtigen. Eine Regel kann optional
+                        auf E-Mails aus einem ausgewählten Quellkonto beschränkt werden.</p>
                 </div>
                 <div class="panel">
                     <img width="300" src="../images/toolbar_editrule@2x.png" alt="Toolbar-Button zum Bearbeiten einer Regel"/>
@@ -77,6 +78,8 @@
                 <div class="panel">
                     <h3>Regeln bearbeiten</h3>
                     <p>Wähle im Kontextmenü <q>Alle Regeln anzeigen</q>, um alle Regeln aufzulisten und zu bearbeiten.</p>
+                    <p>Im Regeleditor kannst du eine Regel auf ein Quellkonto beschränken und den Zielordner über eine
+                        durchsuchbare Ordnerauswahl festlegen. Die Ordnerliste lässt sich außerdem nach Konto filtern.</p>
                     <img width="100%" src="../images/screenshot_editor@2x.png" alt="Screenshot des Regeleditors"/>
                     <p></p>
                     <div style="clear: both"></div>
@@ -132,6 +135,31 @@
         <div class="col changelog">
             <h2>Release Notes</h2>
 
+            <h3>Version 2.6.1</h3>
+            <ul>
+                <li>Runtime-Nachrichtenverarbeitung für einen zuverlässigen Betrieb mit Manifest V3 verbessert</li>
+                <li>Add-on-Symbol zum Manifest hinzugefügt</li>
+            </ul>
+
+            <h3>Version 2.6</h3>
+            <ul>
+                <li>Ordnerauswahl mit Suche und Kontofilter zum Regeleditor hinzugefügt</li>
+                <li>Kontoinformationen zur Regelliste hinzugefügt</li>
+                <li>Regeleditor, Ordnerauswahl, Regelliste und Import-/Export-Werkzeuge überarbeitet</li>
+            </ul>
+
+            <h3>Version 2.5</h3>
+            <ul>
+                <li>Regeln können optional auf E-Mails aus einem ausgewählten Quellkonto beschränkt werden</li>
+                <li>Regelabgleich und Verarbeitung verschobener E-Mails verbessert</li>
+            </ul>
+
+            <h3>Version 2.4</h3>
+            <ul>
+                <li>Optionalen Regeldialog zur Prüfung neu erstellter Regeln hinzugefügt</li>
+                <li>Bereinigung gespeicherter Regeln verbessert</li>
+            </ul>
+
             <h3>Version 2.3</h3>
             <p>Verbesserte Kompatibilität mit neueren Thunderbird-Versionen.</p>
             <ul>
@@ -145,7 +173,7 @@
             <ul>
                 <li>Eine Einstellungsseite hinzugefügt (unter Erweiterungen → QuickArchiver)</li>
                 <li>Regeln unterstützen jetzt Platzhalter ('*'). Der Ausdruck '@*example.com' findet E-Mails von
-                    info@newsletter.example.com und @support@example.com.
+                    info@newsletter.example.com und support@example.com.
                 </li>
             </ul>
 

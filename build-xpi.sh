@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=2.6.0
+VERSION=2.6.1
 
 rm -f builds/quickarchiver-${VERSION}.xpi
 cd src 

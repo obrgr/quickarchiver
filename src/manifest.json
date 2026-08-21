@@ -10,8 +10,15 @@
   "name": "QuickArchiver",
   "author": "Otto Berger <otto@bergerdata.de>",
   "description": "Getting things done in your inbox.",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "default_locale": "en_US",
+  "icons": {
+    "16": "content/icons/light/qa_move.svg",
+    "32": "content/icons/light/qa_move.svg",
+    "48": "content/icons/light/qa_move.svg",
+    "64": "content/icons/light/qa_move.svg",
+    "96": "content/icons/light/qa_move.svg"
+  },
   "background": {
     "scripts": [
       "content/shared/rule-matching.js",

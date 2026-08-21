@@ -104,7 +104,7 @@ let saveAsFile = (function () {
     };
 }());
 
-messenger.runtime.onMessage.addListener(async (broadcastMessage) => {
+messenger.runtime.onMessage.addListener((broadcastMessage) => {
 
     if (broadcastMessage && broadcastMessage.hasOwnProperty("command")) {
 
@@ -112,7 +112,7 @@ messenger.runtime.onMessage.addListener(async (broadcastMessage) => {
 
         if (broadcastMessage.command === "transmitAllRules" && broadcastMessage.rules) {
             rules = broadcastMessage.rules
-            await renderExport();
+            renderExport();
         }
         if (broadcastMessage.command === "transmitToolsImportResponse" && broadcastMessage.message) {
             alert(broadcastMessage.message);

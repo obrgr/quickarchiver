@@ -19,6 +19,22 @@ then dragging and dropping the email, all it takes now is a single click (or key
 
 ## Release Notes
 
+### Version 2.6.1
+
+- Improved runtime message handling for reliable operation with Manifest V3
+- Added an add-on icon to the manifest
+
+### Version 2.6
+
+- Added a folder picker with search and account filtering to the rule editor
+- Added account information to the rules list
+- Improved the rule editor, folder picker, rules list, and import/export tools
+
+### Version 2.5
+
+- Rules can optionally be restricted to messages from a selected source account
+- Improved rule matching and handling of moved messages
+
 ### Version 2.4
 
 #### New features:
@@ -88,7 +104,8 @@ The good news: there is a new version :-)
 ![toolbar button: no rule](https://github.com/otto802/quickarchiver/raw/master/src/content/tab/images/toolbar_no_rule@2x.png)
 
 QuickArchiver uses its own rules to remember the appropriate folder for an email. Currently the rules can consist of
-sender, recipient or subject.
+sender, recipient, or subject criteria. A rule can optionally be restricted to messages from a selected source
+account.
 
 ### Create (default) rule
 
@@ -122,7 +139,8 @@ Right-click on the QuickArchiver button to open the context menu.
 
 ![Screenshot rules edit](https://github.com/otto802/quickarchiver/raw/master/src/content/tab/images/screenshot_editor@2x.png)
 
-Using the menu item "Show all rules" all rules can be listed and also edited.
+Using the menu item "Show all rules" all rules can be listed and also edited. In the rule editor, the destination
+folder can be selected from a searchable folder picker and filtered by account.
 
 ## FAQ
 
