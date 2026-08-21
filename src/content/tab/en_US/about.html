@@ -19,97 +19,86 @@
         <div class="col main">
 
             <div class="section">
-                <h2>What is QuickArchiver?</h2>
-
-                <p>QuickArchiver helps you keep your inbox clean. Instead of searching for the right folder and
-                    dragging each message there, you can archive it with a single click or keyboard shortcut.</p>
+                <h2>QuickArchiver</h2>
+                <p>QuickArchiver helps you keep your inbox clean. It learns where messages belong and lets you archive
+                    matching messages later with a single click or keyboard shortcut.</p>
             </div>
 
             <div class="section">
-                <h2>How does QuickArchiver work?</h2>
-
-                <div class="panel">
-                    <img width="300" src="../images/toolbar_no_rule@2x.png" alt="Toolbar button when no rule exists"/>
-                    <p>QuickArchiver uses rules to remember the destination folder for a message. Rules can currently
-                        match the sender, recipients, or subject. A rule can optionally be restricted to messages from
-                        a selected source account.</p>
-                </div>
+                <h2>Quick Start</h2>
                 <div class="panel">
                     <img width="300" src="../images/toolbar_editrule@2x.png" alt="Toolbar button for editing a rule"/>
-                    <h3>Create a default rule</h3>
-                    <p>When you move a message without a matching rule to a folder for the first time, QuickArchiver
-                        automatically creates a rule based on the sender.</p>
-                </div>
-                <div class="panel">
-                    <h3>Open the rule popup for new rules</h3>
-                    <p>If you want to review or adjust new rules immediately, right-click the QuickArchiver button
-                        and enable <q>Open rule popup for new rules</q> under <q>Options</q>. The existing rule popup
-                        will then open after the first move of a message without a matching rule.</p>
-                    <p>Disable the option to return to automatic rule creation without opening the popup. The setting
-                        is saved permanently.</p>
-                    <p>When the option is enabled, special destination folders such as the Trash are also allowed.
-                        When it is disabled, these folders remain excluded from automatic rule creation.</p>
+                    <h3>1. Create a rule by moving a message</h3>
+                    <p>Move a message to its destination folder as usual. If no matching rule exists, QuickArchiver
+                        automatically creates one from the sender address and remembers the destination folder.</p>
                 </div>
                 <div class="panel">
                     <img width="300" src="../images/toolbar_move@2x.png" alt="Toolbar button for moving a message"/>
-                    <h3>Archive messages</h3>
-                    <p>When another message matches the same sender, QuickArchiver lets you move it to the appropriate
-                        folder with a single click.</p>
+                    <h3>2. Archive matching messages</h3>
+                    <p>When a message matches a rule, click the QuickArchiver button or press <strong>Alt+A</strong>.
+                        QuickArchiver moves it directly to the saved destination folder. With multiple messages selected,
+                        Alt+A moves each message for which a rule exists.</p>
                 </div>
-
                 <div class="panel">
-                    <img width="300" src="../images/toolbar_menu@2x.png"
-                         alt="Toolbar button with context menu"/>
-                    <h3>Context menu</h3>
-                    <p>Right-click the QuickArchiver button to open its context menu.</p>
+                    <h3>Tip: Show the destination folder in the message list</h3>
+                    <p>Enable the <q>QuickArchiver Folder</q> column in Thunderbird's table view to see the matching
+                        destination before moving a message. Details are provided below.</p>
                 </div>
+            </div>
 
+            <div class="section">
+                <h2>Details</h2>
+                <div class="panel">
+                    <img width="300" src="../images/toolbar_no_rule@2x.png" alt="Toolbar button when no rule exists"/>
+                    <h3>Rule popup and rule settings</h3>
+                    <p>The rule popup lets you choose which conditions are active. A rule can match the sender,
+                        recipients, subject, and optionally the source account. All enabled conditions must match.</p>
+                    <p>You can also select the destination with a searchable folder picker and filter that list by
+                        account.</p>
+                    <p>Text conditions are case-insensitive and support <strong>*</strong> as a wildcard. For example,
+                        <code>@*example.com</code> matches both <code>info@newsletter.example.com</code> and
+                        <code>support@example.com</code>. A value without an explicit wildcard also matches when it is
+                        contained anywhere in the corresponding field.</p>
+                    <p>Enable <q>Open rule popup for new rules</q> to review every automatically created rule immediately.
+                        With this option enabled, special destinations such as Trash are also allowed; otherwise Inbox
+                        and Trash are excluded from automatic rule creation.</p>
+                </div>
+                <div class="panel">
+                    <img width="300" src="../images/toolbar_menu@2x.png" alt="Toolbar button with context menu"/>
+                    <h3>Context menu</h3>
+                    <p>Right-click the QuickArchiver button to edit the current rule, show all rules, change whether the
+                        rule popup opens for new rules, or open this About page. In the message list, the menu also
+                        provides the move action when a matching rule exists.</p>
+                </div>
                 <div class="panel">
                     <h3>Show the QuickArchiver folder column</h3>
-                    <p>The QuickArchiver folder column is available in Thunderbird's table view. To show it, right-click
-                        any column heading in the message list and select <q>QuickArchiver Folder</q> from the column
-                        picker. You can then move the column to your preferred position.</p>
-                    <p>The column displays the destination folder for matching rules. If the message is already in that
-                        folder, it displays <q>✓ Current Folder</q>.</p>
+                    <p>In Thunderbird's table view, right-click any column heading and select
+                        <q>QuickArchiver Folder</q>. The column displays the destination folder for matching rules. If a
+                        message is already there, it displays <q>✓ Current Folder</q>. The column is not available in
+                        card view.</p>
                 </div>
+            </div>
 
+            <div class="section">
+                <h2>Settings and rule management</h2>
                 <div class="panel">
-                    <h3>Edit rules</h3>
-                    <p>Select <q>Show all rules</q> from the context menu to view and edit all rules.</p>
-                    <p>In the rule editor, you can restrict a rule to a source account and select its destination from
-                        a searchable folder picker. The folder list can also be filtered by account.</p>
+                    <h3>All rules</h3>
+                    <p>Select <q>Show all rules</q> from the context menu or the QuickArchiver settings page to review,
+                        edit, or delete stored rules.</p>
                     <img width="100%" src="../images/screenshot_editor@2x.png" alt="Screenshot of the rule editor"/>
-                    <p></p>
                     <div style="clear: both"></div>
                 </div>
-
                 <div class="panel">
-                    <h3>Export and import rules</h3>
-                    <p>Below the list of rules, you will find a button that opens the import and export tools.</p>
-                    <p>Rules are exported and imported in JSON format.</p>
+                    <h3>Import and export</h3>
+                    <p>Open the tools below the rules list to export all rules as a JSON backup or import a previous
+                        backup. Importing replaces all existing rules, so export a backup first if they are still needed.</p>
                     <img width="100%" src="../images/screenshot_tools@2x.png" alt="Screenshot of the import and export tools"/>
-                    <p></p>
                     <div style="clear: both"></div>
                 </div>
-
             </div>
+
             <div class="section">
-                <h2>FAQ</h2>
-
-                <h3>How can I archive all emails of a certain domain into one folder?</h3>
-
-                <p>The default rule matches the complete sender address. To archive all messages from a domain, such as
-                    @amazon.com, edit the rule and remove the characters before the @ sign.</p>
-
-                <p>Rules also support wildcards ('*'). For example, '@*example.com' matches messages from
-                    info@newsletter.example.com and support@example.com.</p>
-
-                <h3>Can I archive multiple emails at the same time?</h3>
-
-                <p>Yes. With the Alt+A shortcut, QuickArchiver moves all selected messages to their respective folders.</p>
-            </div>
-            <div class="section">
-                <h2>Development</h2>
+                <h2>About</h2>
 
                 <p>QuickArchiver is an open-source project by Otto Berger (<a
                         href="mailto:quickarchiver@bergercity.de">quickarchiver@bergercity.de</a>). Supported by <a

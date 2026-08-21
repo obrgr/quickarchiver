@@ -19,99 +19,90 @@
         <div class="col main">
 
             <div class="section">
-                <h2>Was ist QuickArchiver?</h2>
-
-                <p>QuickArchiver hilft dir, deinen Posteingang sauber zu halten. Anstatt den richtigen Ordner zu suchen
-                    und jede E-Mail per Drag-and-drop dorthin zu verschieben, genügt ein Klick oder ein Tastenkürzel.</p>
+                <h2>QuickArchiver</h2>
+                <p>QuickArchiver hilft dir, deinen Posteingang sauber zu halten. Die Erweiterung merkt sich, wohin
+                    E-Mails gehören, und archiviert passende E-Mails später mit einem Klick oder Tastenkürzel.</p>
             </div>
 
             <div class="section">
-                <h2>Wie funktioniert QuickArchiver?</h2>
-
-                <div class="panel">
-                    <img width="300" src="../images/toolbar_no_rule@2x.png" alt="Toolbar-Button ohne vorhandene Regel"/>
-                    <p>QuickArchiver verwendet Regeln, um sich den Zielordner für eine E-Mail zu merken. Regeln können
-                        derzeit den Absender, die Empfänger oder den Betreff berücksichtigen. Eine Regel kann optional
-                        auf E-Mails aus einem ausgewählten Quellkonto beschränkt werden.</p>
-                </div>
+                <h2>Schnellstart</h2>
                 <div class="panel">
                     <img width="300" src="../images/toolbar_editrule@2x.png" alt="Toolbar-Button zum Bearbeiten einer Regel"/>
-                    <h3>Standardregel erstellen</h3>
-                    <p>Wenn du eine E-Mail ohne passende Regel zum ersten Mal in einen Ordner verschiebst, legt
-                        QuickArchiver automatisch eine Regel auf Basis des Absenders an.</p>
-                </div>
-                <div class="panel">
-                    <h3>Regel-Popup bei neuen Regeln</h3>
-                    <p>Wenn du neue Regeln direkt prüfen oder anpassen möchtest, öffne mit einem Rechtsklick auf den
-                        QuickArchiver-Button das Kontextmenü und aktiviere unter <q>Optionen</q> die Einstellung
-                        <q>Regel-Popup bei neuer Regel öffnen</q>. Nach dem ersten Verschieben einer E-Mail ohne
-                        passende Regel wird dann das bestehende Regel-Popup geöffnet.</p>
-                    <p>Deaktiviere die Einstellung, um wieder automatisch Regeln anzulegen, ohne das Popup zu öffnen.
-                        Die Einstellung wird dauerhaft gespeichert.</p>
-                    <p>Bei aktivierter Einstellung sind auch Sonderordner wie der Papierkorb als Zielordner möglich.
-                        Ist sie deaktiviert, bleiben diese Ordner von der automatischen Regelerstellung ausgeschlossen.</p>
+                    <h3>1. Regel durch Verschieben erstellen</h3>
+                    <p>Verschiebe eine E-Mail wie gewohnt in ihren Zielordner. Wenn noch keine passende Regel existiert,
+                        erstellt QuickArchiver automatisch eine Regel aus der Absenderadresse und merkt sich den
+                        Zielordner.</p>
                 </div>
                 <div class="panel">
                     <img width="300" src="../images/toolbar_move@2x.png" alt="Toolbar-Button zum Verschieben einer E-Mail"/>
-                    <h3>E-Mails archivieren</h3>
-                    <p>Wenn eine weitere E-Mail zum gleichen Absender passt, kannst du sie mit einem Klick in den
-                        passenden Ordner verschieben.</p>
+                    <h3>2. Passende E-Mails archivieren</h3>
+                    <p>Passt eine E-Mail zu einer Regel, klicke auf den QuickArchiver-Button oder drücke
+                        <strong>Alt+A</strong>. QuickArchiver verschiebt sie direkt in den gespeicherten Zielordner. Bei
+                        mehreren ausgewählten E-Mails verschiebt Alt+A jede E-Mail, für die eine Regel existiert.</p>
                 </div>
-
                 <div class="panel">
-                    <img width="300" src="../images/toolbar_menu@2x.png"
-                         alt="Toolbar-Button mit geöffnetem Kontextmenü"/>
-                    <h3>Kontextmenü</h3>
-                    <p>Ein Rechtsklick auf den QuickArchiver-Button öffnet das Kontextmenü.</p>
+                    <h3>Tipp: Zielordner in der Nachrichtenliste anzeigen</h3>
+                    <p>Blende in Thunderbirds Tabellenansicht die Spalte <q>QuickArchiver-Ordner</q> ein. So siehst du
+                        bereits vor dem Verschieben den passenden Zielordner. Weitere Details findest du unten.</p>
                 </div>
+            </div>
 
+            <div class="section">
+                <h2>Details</h2>
+                <div class="panel">
+                    <img width="300" src="../images/toolbar_no_rule@2x.png" alt="Toolbar-Button ohne vorhandene Regel"/>
+                    <h3>Regel-Popup und Regeleinstellungen</h3>
+                    <p>Im Regel-Popup legst du fest, welche Bedingungen aktiv sind. Eine Regel kann Absender,
+                        Empfänger, Betreff und optional das Quellkonto berücksichtigen. Alle aktivierten Bedingungen
+                        müssen passen.</p>
+                    <p>Den Zielordner wählst du über eine durchsuchbare Ordnerauswahl aus. Die Liste lässt sich nach
+                        Konto filtern.</p>
+                    <p>Textbedingungen unterscheiden nicht zwischen Groß- und Kleinschreibung und unterstützen
+                        <strong>*</strong> als Platzhalter. Zum Beispiel findet <code>@*example.com</code> sowohl
+                        <code>info@newsletter.example.com</code> als auch <code>support@example.com</code>. Ein Wert ohne
+                        ausdrücklichen Platzhalter passt ebenfalls, wenn er irgendwo im jeweiligen Feld vorkommt.</p>
+                    <p>Aktiviere <q>Regel-Popup bei neuer Regel öffnen</q>, um jede automatisch erstellte Regel sofort zu
+                        prüfen. Bei aktivierter Option sind auch Sonderordner wie der Papierkorb als Ziel erlaubt;
+                        andernfalls sind Posteingang und Papierkorb von der automatischen Regelerstellung ausgeschlossen.</p>
+                </div>
+                <div class="panel">
+                    <img width="300" src="../images/toolbar_menu@2x.png" alt="Toolbar-Button mit geöffnetem Kontextmenü"/>
+                    <h3>Kontextmenü</h3>
+                    <p>Ein Rechtsklick auf den QuickArchiver-Button öffnet das Kontextmenü. Dort kannst du die aktuelle
+                        Regel bearbeiten, alle Regeln anzeigen, das automatische Öffnen des Regel-Popups einstellen
+                        oder diese About-Seite öffnen. In der Nachrichtenliste steht bei einer passenden Regel außerdem
+                        die Verschiebeaktion zur Verfügung.</p>
+                </div>
                 <div class="panel">
                     <h3>QuickArchiver-Ordnerspalte einblenden</h3>
-                    <p>Die QuickArchiver-Ordnerspalte ist in der Tabellenansicht von Thunderbird verfügbar. Um sie
-                        einzublenden, klicke mit der rechten Maustaste auf eine beliebige Spaltenüberschrift in der
-                        Nachrichtenliste und wähle im Spaltenmenü <q>QuickArchiver-Ordner</q> aus. Anschließend kannst du
-                        die Spalte an die gewünschte Position verschieben.</p>
-                    <p>Die Spalte zeigt den Zielordner für passende Regeln an. Befindet sich die E-Mail bereits in diesem
-                        Ordner, wird <q>✓ Aktueller Ordner</q> angezeigt.</p>
+                    <p>Klicke in Thunderbirds Tabellenansicht mit der rechten Maustaste auf eine Spaltenüberschrift und
+                        wähle <q>QuickArchiver-Ordner</q>. Die Spalte zeigt den Zielordner passender Regeln. Befindet sich
+                        eine E-Mail bereits dort, erscheint <q>✓ Aktueller Ordner</q>. In der Kartenansicht ist die Spalte
+                        nicht verfügbar.</p>
                 </div>
+            </div>
 
+            <div class="section">
+                <h2>Einstellungen und Regelverwaltung</h2>
                 <div class="panel">
-                    <h3>Regeln bearbeiten</h3>
-                    <p>Wähle im Kontextmenü <q>Alle Regeln anzeigen</q>, um alle Regeln aufzulisten und zu bearbeiten.</p>
-                    <p>Im Regeleditor kannst du eine Regel auf ein Quellkonto beschränken und den Zielordner über eine
-                        durchsuchbare Ordnerauswahl festlegen. Die Ordnerliste lässt sich außerdem nach Konto filtern.</p>
+                    <h3>Alle Regeln</h3>
+                    <p>Wähle im Kontextmenü oder auf der QuickArchiver-Einstellungsseite <q>Alle Regeln anzeigen</q>, um
+                        gespeicherte Regeln zu prüfen, zu bearbeiten oder zu löschen.</p>
                     <img width="100%" src="../images/screenshot_editor@2x.png" alt="Screenshot des Regeleditors"/>
-                    <p></p>
                     <div style="clear: both"></div>
                 </div>
-
                 <div class="panel">
-                    <h3>Regeln exportieren und importieren</h3>
-                    <p>Unterhalb der Regelliste findest du einen Button, der die Import-/Export-Werkzeuge öffnet.</p>
-                    <p>Regeln werden im JSON-Format exportiert und importiert.</p>
+                    <h3>Import und Export</h3>
+                    <p>Öffne unterhalb der Regelliste die Werkzeuge, um alle Regeln als JSON-Sicherung zu exportieren
+                        oder eine frühere Sicherung zu importieren. Ein Import ersetzt alle vorhandenen Regeln. Exportiere
+                        sie deshalb vorher, wenn du sie noch benötigst.</p>
                     <img width="100%" src="../images/screenshot_tools@2x.png" alt="Screenshot der Import-/Export-Werkzeuge"/>
-                    <p></p>
                     <div style="clear: both"></div>
                 </div>
             </div>
+
             <div class="section">
-                <h2>FAQ</h2>
-
-                <h3>Wie kann ich alle E-Mails einer bestimmten Domain in einen Ordner archivieren?</h3>
-
-                <p>Die Standardregel berücksichtigt die vollständige Absenderadresse. Um alle E-Mails einer bestimmten
-                    Domain, zum Beispiel @amazon.com, in einem Ordner zu sammeln, bearbeite die Regel und entferne die
-                    Zeichen vor dem @-Zeichen.</p>
-                <p>Regeln unterstützen auch Platzhalter ('*'). Der Ausdruck '@*example.com' findet zum Beispiel E-Mails
-                    von info@newsletter.example.com und support@example.com.</p>
-
-                <h3>Kann ich auch mehrere E-Mails gleichzeitig archivieren?</h3>
-
-                <p>Ja. Mit dem Tastenkürzel Alt+A verschiebt QuickArchiver alle ausgewählten E-Mails in die jeweiligen
-                    Ordner.</p>
-            </div>
-            <div class="section">
-                <h2>Entwicklung</h2>
+                <h2>About</h2>
 
                 <p>QuickArchiver ist ein Open-Source-Projekt von Otto Berger (<a
                         href="mailto:quickarchiver@bergercity.de">quickarchiver@bergercity.de</a>). Unterstützt durch <a
