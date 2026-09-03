@@ -1,7 +1,19 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-VERSION=2.6.1
+set -euo pipefail
 
-rm -f builds/quickarchiver-${VERSION}.xpi
-cd src 
-zip -x*/.DS_Store -r ../builds/quickarchiver-${VERSION}.xpi *
+project_dir=$(cd "$(dirname "$0")" && pwd)
+manifest_path="$project_dir/src/manifest.json"
+version=$(jq -er '.version' "$manifest_path")
+artifact_path="$project_dir/builds/quickarchiver-$version.xpi"
+
+mkdir -p "$project_dir/builds"
+rm -f "$artifact_path"
+
+(
+    cd "$project_dir/src"
+    zip -X -r "$artifact_path" . -x '.DS_Store' '*/.DS_Store'
+)
+
+unzip -t "$artifact_path"
+printf 'Built %s\n' "$artifact_path"

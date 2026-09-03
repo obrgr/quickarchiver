@@ -17,9 +17,9 @@ var { ExtensionCommon } = ChromeUtils.importESModule(
 var { MailServices } = ChromeUtils.importESModule(
   "resource:///modules/MailServices.sys.mjs"
 );
-// Experiment implementations already run in Thunderbird's privileged
-// parent global, where Services is exposed directly. Services.jsm and
-// ChromeUtils.import() are no longer available in current Thunderbird.
+// Thunderbird exposes Services directly in privileged Experiment globals.
+// Services.jsm was removed in Thunderbird 128 and Services.sys.mjs is not a
+// public importable module in Thunderbird 155.
 var Services = globalThis.Services;
 
 var ThreadPaneColumns;
@@ -156,11 +156,11 @@ function decodeFolderText(value) {
       let bitCount = 0;
       let bytes = [];
       for (let character of base64) {
-        let value = alphabet.indexOf(character);
-        if (value < 0) {
+        let alphabetIndex = alphabet.indexOf(character);
+        if (alphabetIndex < 0) {
           throw new Error("Invalid modified UTF-7 sequence");
         }
-        bits = (bits << 6) | value;
+        bits = (bits << 6) | alphabetIndex;
         bitCount += 6;
         while (bitCount >= 8) {
           bitCount -= 8;
@@ -330,9 +330,17 @@ function folderDisplayValue(rule, message, currentFolderText) {
 var customColumns = class extends ExtensionCommon.ExtensionAPI {
   getAPI(context) {
     if (!ruleMatching.QuickArchiverRuleMatching) {
-      Services.scriptloader.loadSubScript(
+      // Keep rule evaluation in one shared implementation. Thunderbird 155
+      // blocks moz-extension:// scripts in the privileged subscript loader
+      // unless allowUnsafeURL is explicitly enabled. The URL is safe here
+      // because it is resolved from this extension's own base URI and points
+      // to a fixed packaged file, not to caller-controlled input.
+      Services.scriptloader.loadSubScriptWithOptions(
         context.extension.baseURI.resolve("content/shared/rule-matching.js"),
-        ruleMatching
+        {
+          target: ruleMatching,
+          allowUnsafeURL: true,
+        }
       );
     }
 

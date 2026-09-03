@@ -1,0 +1,26 @@
+{
+  "name": "quickarchiver",
+  "private": true,
+  "type": "module",
+  "description": "Local development tools for the QuickArchiver Thunderbird add-on",
+  "scripts": {
+    "build": "./build-xpi.sh",
+    "check": "npm run check:manifest && npm run lint && npm test",
+    "check:manifest": "node scripts/check-manifest.mjs",
+    "lint": "npm run lint:js && npm run lint:html && npm run lint:shell && npm run lint:format",
+    "lint:js": "eslint src test scripts",
+    "lint:html": "html-validate 'src/**/*.html'",
+    "lint:shell": "shellcheck build-xpi.sh scripts/*.sh",
+    "lint:format": "prettier --check README.md package.json eslint.config.js .htmlvalidate.json",
+    "format": "prettier --write README.md package.json eslint.config.js .htmlvalidate.json",
+    "test": "node --test",
+    "review": "npm run build && ./scripts/review-xpi.sh",
+    "review:llm": "npm run build && ./scripts/review-xpi.sh --llm-review"
+  },
+  "devDependencies": {
+    "eslint": "10.8.1",
+    "html-validate": "11.9.0",
+    "prettier": "3.9.6",
+    "webext-linter": "https://github.com/thunderbird/webext-linter/archive/fb6bc3f387d99d693a9c15dd618b29de3dd2289d.tar.gz"
+  }
+}

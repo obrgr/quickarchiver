@@ -1,1 +1,7 @@
 .idea
+node_modules/
+.schema-cache/
+.lib-mozilla-hash-db-cache/
+.lib-cdn-lookup-cache/
+.experiments-cache/
+.llm-model-cache/

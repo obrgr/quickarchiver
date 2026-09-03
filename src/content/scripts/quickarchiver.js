@@ -160,14 +160,14 @@ let quickarchiver = {
             let rule = await this.findRule(originalMessage);
 
             if (!rule) {
-                let index = await this.createDefaultRule(message, {
+                let ruleIndex = await this.createDefaultRule(message, {
                     allowSpecialFolder: this.openRulePopupOnNewRule,
                     sourceMessage: originalMessage,
                 });
 
-                if (this.openRulePopupOnNewRule && index !== false && !popupOpened) {
+                if (this.openRulePopupOnNewRule && ruleIndex !== false && !popupOpened) {
                     this.currentMessage = message;
-                    this.currentRule = await this.getRule(index);
+                    this.currentRule = await this.getRule(ruleIndex);
                     popupOpened = true;
                     await this.openRulePopup(this.currentRule);
                 }
