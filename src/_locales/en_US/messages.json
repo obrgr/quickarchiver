@@ -18,7 +18,7 @@
     "message": "QuickArchiver: Move"
   },
   "toolbar.title.rule_present": {
-    "message": "Move \"$message$\" to \"$folder$\" (Alt+A)",
+    "message": "Move \"$message$\"\n$folder$$shortcut$",
     "placeholders": {
       "message": {
         "content": "$1",
@@ -26,7 +26,11 @@
       },
       "folder": {
         "content": "$2",
-        "example": "/INBOX/Blah"
+        "example": "→ Blah (Archive)"
+      },
+      "shortcut": {
+        "content": " ⌨$3",
+        "example": " ⌨Alt+A"
       }
     }
   },

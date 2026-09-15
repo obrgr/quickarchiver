@@ -533,6 +533,17 @@ let quickarchiver = {
         return "light";
     },
 
+    getMoveShortcutHint: async function () {
+        try {
+            const commands = await messenger.commands.getAll();
+            const shortcut = commands.find(command => command.name === "quickarchiver_move")?.shortcut;
+            return shortcut ? ` ${shortcut}` : "";
+        } catch (error) {
+            console.warn("Could not read QuickArchiver keyboard shortcut", error);
+            return "";
+        }
+    },
+
     /*
         Creates and update the toolbar button
      */
@@ -555,6 +566,11 @@ let quickarchiver = {
             if (rule && rule.folder) {
 
                 this.currentRule = rule;
+                const folderDisplay = await messenger.customColumns.formatFolder(
+                    rule.folder,
+                    message.id,
+                    browser.i18n.getMessage("column.currentFolder")
+                );
 
                 messenger.messageDisplayAction.enable();
 
@@ -562,7 +578,7 @@ let quickarchiver = {
                     messenger.messageDisplayAction.setIcon({path: "content/icons/" + color_scheme + "/qa_edit.svg"});
                     // messenger.messageDisplayAction.setThemeIcons
                     messenger.messageDisplayAction.setTitle({
-                        title: browser.i18n.getMessage("toolbar.title.rule_edit")
+                        title: folderDisplay + "\n" + browser.i18n.getMessage("toolbar.title.rule_edit")
                     });
                     messenger.messageDisplayAction.setLabel({label: browser.i18n.getMessage("toolbar.label.rule_edit")});
                 } else {
@@ -570,7 +586,8 @@ let quickarchiver = {
                     messenger.messageDisplayAction.setTitle({
                         title: browser.i18n.getMessage("toolbar.title.rule_present", [
                             message.subject,
-                            rule.folder.path
+                            folderDisplay,
+                            await this.getMoveShortcutHint()
                         ])
                     });
                     messenger.messageDisplayAction.setLabel({label: browser.i18n.getMessage("toolbar.label.rule_present")});

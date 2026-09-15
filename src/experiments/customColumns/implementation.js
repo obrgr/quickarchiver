@@ -196,9 +196,7 @@ function folderDisplayValue(rule, message, currentFolderText) {
     return "";
   }
 
-  const mailWindow = Services?.wm?.getMostRecentWindow("mail:3pane");
-  const displayedFolder = mailWindow?.gFolderDisplay?.displayedFolder;
-  const currentFolder = displayedFolder ?? message?.folder ?? {};
+  const currentFolder = message?.folder ?? {};
   let targetAccount = null;
   let currentAccount = null;
   try {
@@ -297,15 +295,26 @@ function folderDisplayValue(rule, message, currentFolderText) {
   // Do not repeat the folder currently shown in the message list. For example,
   // show "Invoices (Archive)" instead of "Invoices (Inbox/Archive)" when the
   // current folder is Inbox and the rule points to Inbox/Archive/Invoices.
-  const currentPath = message?.folder?.path;
-  if (typeof currentPath === "string") {
-    const currentFolders = currentPath.split("/").filter(Boolean);
+  const currentPath = message?.folder?.path
+    ?? (nativeUriPathParts.length > 0 ? "/" + nativeUriPathParts.join("/") : undefined);
+  if (!accountsDiffer && typeof currentPath === "string") {
+    const currentFolders = currentPath.split("/").filter(Boolean).map(decodeFolderText);
     const isCurrentFolderParent = currentFolders.every(
       (name, index) => parentFolders[index] === name
     );
     if (isCurrentFolderParent) {
       parentFolders = parentFolders.slice(currentFolders.length);
     }
+  }
+
+  // Hide only the IMAP root in the displayed ancestry. If the current-folder
+  // prefix was already removed above, a remaining INBOX is a real subfolder.
+  if (
+    targetAccount?.incomingServer?.type === "imap"
+    && parentFolders.length === targetFolders.length - 1
+    && /^INBOX$/i.test(parentFolders[0] ?? "")
+  ) {
+    parentFolders.shift();
   }
 
   if (accountsDiffer) {
@@ -346,6 +355,14 @@ var customColumns = class extends ExtensionCommon.ExtensionAPI {
 
     return {
       customColumns: {
+        async formatFolder(folder, messageId, currentFolderText) {
+          const message = context.extension.messageManager.get(messageId);
+          if (!message) {
+            throw new Error(`Message ${messageId} is unavailable`);
+          }
+          return folderDisplayValue({folder}, message, currentFolderText);
+        },
+
         async add(id, name, rules, currentFolderText) {
           // MV3 background contexts are event pages and may be unloaded while
           // Thunderbird remains open. Keep the column registration in the

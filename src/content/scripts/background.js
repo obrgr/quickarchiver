@@ -27,6 +27,12 @@
         await quickarchiver.moveMailOrOpenRulePopupIfSameFolder(message);
     });
 
+    messenger.commands.onChanged.addListener(async (changeInfo) => {
+        if (changeInfo.name === "quickarchiver_move" && quickarchiver.currentMessage) {
+            await quickarchiver.updateToolbarEntry(quickarchiver.currentMessage);
+        }
+    });
+
     // onCommand listener. Fires when the command key is pressed.
     messenger.commands.onCommand.addListener(async (command, tab) => {
 

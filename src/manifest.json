@@ -10,7 +10,7 @@
   "name": "QuickArchiver",
   "author": "Otto Berger <otto@bergerdata.de>",
   "description": "Getting things done in your inbox.",
-  "version": "2.6.1",
+  "version": "2.7.0",
   "default_locale": "en_US",
   "icons": {
     "16": "content/icons/light/qa_move.svg",

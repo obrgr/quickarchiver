@@ -18,7 +18,7 @@
     "message": "QuickArchiver: Verschieben"
   },
   "toolbar.title.rule_present": {
-    "message": "Verschiebe \"$message$\" nach \"$folder$\" (Alt+A)",
+    "message": "Verschiebe \"$message$\"\n$folder$$shortcut$",
     "placeholders": {
       "message": {
         "content": "$1",
@@ -26,7 +26,11 @@
       },
       "folder": {
         "content": "$2",
-        "example": "/INBOX/Blah"
+        "example": "→ Blah (Archive)"
+      },
+      "shortcut": {
+        "content": " ⌨$3",
+        "example": " ⌨Alt+A"
       }
     }
   },

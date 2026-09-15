@@ -7,7 +7,7 @@ move messages and later archives matching messages with one click or a keyboard 
 
 ## Project status
 
-- Current version: **2.6.1**
+- Current version: **2.7.0**
 - Manifest: **V3**
 - Supported Thunderbird versions: **128 through 155**
 - Languages: **English and German**
@@ -82,7 +82,10 @@ the About page. In the message list, the menu also provides the move action when
 
 To enable the folder column, switch Thunderbird's message list to table view, right-click any column heading, and
 select **QuickArchiver Folder**. The column displays the destination folder for a matching rule. If the message is
-already there, it displays **✓ Current Folder**. Thunderbird's card view does not support the custom column.
+already there, it displays **✓ Current Folder**. The toolbar tooltip uses the same folder display as the column:
+**→ Destination (Parent/Folder)**, with the account name included for destinations in another account. The leading
+IMAP `INBOX` level is hidden from the displayed parent path; saved destination paths remain unchanged.
+Thunderbird's card view does not support the custom column.
 
 ## Settings and rule management
 
@@ -205,6 +208,14 @@ Issues and pull requests are welcome in the
 files and both localized About pages where applicable.
 
 ## Release notes
+
+### 2.7.0
+
+- Show the configured keyboard shortcut in the toolbar tooltip instead of a fixed Alt+A; update it when the binding
+  changes and hide the hint when no shortcut is assigned
+- Unified destination-folder formatting in the toolbar tooltip and folder column
+- Hide the leading IMAP INBOX level from displayed parent paths without changing saved destinations
+- Show consistent parent-folder context, account names, and current-folder indicators
 
 ### 2.6.1
 
