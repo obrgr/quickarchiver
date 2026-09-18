@@ -10,9 +10,9 @@ test("shortcut hint follows the active binding and disappears when unassigned", 
   const context = vm.createContext({ messenger: { commands: { getAll: async () => commands } } });
   vm.runInContext(source, context);
   const hint = () => vm.runInContext("quickarchiver.getMoveShortcutHint()", context);
-  assert.equal(await hint(), " (Alt+A)");
+  assert.equal(await hint(), " Alt+A");
   commands = [{ name: "other", shortcut: "Alt+A" }, { name: "quickarchiver_move", shortcut: "Ctrl+Shift+Y" }];
-  assert.equal(await hint(), " (Ctrl+Shift+Y)");
+  assert.equal(await hint(), " Ctrl+Shift+Y");
   commands = [{ name: "quickarchiver_move", shortcut: "" }];
   assert.equal(await hint(), "");
   commands = [];

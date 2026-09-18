@@ -7,9 +7,9 @@ move messages and later archives matching messages with one click or a keyboard 
 
 ## Project status
 
-- Current version: **2.7.0**
+- Current version: **2.7.1**
 - Manifest: **V3**
-- Supported Thunderbird versions: **128 through 155**
+- Supported Thunderbird versions: **128 through 156**
 - Languages: **English and German**
 - License: **GNU Lesser General Public License, version 3 or later**
 
@@ -179,6 +179,20 @@ npm run build
 The resulting package is written to `builds/quickarchiver-<version>.xpi` and is automatically checked with `unzip -t`.
 macOS metadata such as `.DS_Store` is excluded from the archive.
 
+### Automatic GitHub releases
+
+Increase `version` in `src/manifest.json` (for example, `2.7.0` → `2.7.1`) and push or merge the change into the
+repository's default branch. The release workflow runs `npm run check`, builds the XPI, and publishes a GitHub
+release with a `v<version>` tag, generated release notes, and `quickarchiver-<version>.xpi` attached.
+
+The workflow compares versions before and after the push. Unchanged or decreased versions and pushes to other
+branches do not publish releases. Existing releases are skipped on reruns; an existing tag pointing to a different
+commit causes a failure. To retry a failed release, rerun its workflow in GitHub Actions.
+
+GitHub Actions must be enabled and repository policies must allow the workflow's `contents: write` permission.
+It uses the built-in `GITHUB_TOKEN`; no additional secret is needed. Publication to Thunderbird Add-ons remains a
+separate step. Translation files such as `_locales/de_DE/messages.json` do not control the release version.
+
 ### Thunderbird automated review
 
 Build the XPI and run Thunderbird's deterministic review, including its ESLint checks:
@@ -208,6 +222,10 @@ Issues and pull requests are welcome in the
 files and both localized About pages where applicable.
 
 ## Release notes
+
+### 2.7.1
+
+- Extended declared Thunderbird compatibility through version 156
 
 ### 2.7.0
 

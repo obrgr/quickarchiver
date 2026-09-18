@@ -4,13 +4,13 @@
     "gecko": {
       "id": "quickarchiver@bergerdata.de",
       "strict_min_version": "128.0",
-      "strict_max_version": "155.*"
+      "strict_max_version": "156.*"
     }
   },
   "name": "QuickArchiver",
   "author": "Otto Berger <otto@bergerdata.de>",
   "description": "Getting things done in your inbox.",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "default_locale": "en_US",
   "icons": {
     "16": "content/icons/light/qa_move.svg",

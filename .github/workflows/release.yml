@@ -1,0 +1,94 @@
+name: Release
+
+on:
+  push:
+    paths:
+      - src/manifest.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Detect version bump
+        id: version
+        env:
+          BEFORE: ${{ github.event.before }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(jq -er '.version' src/manifest.json)
+          [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          if [[ "$BEFORE" =~ ^0+$ ]]; then
+            echo 'Initial branch push: skipping release.'
+            exit 0
+          fi
+          previous=$(git show "$BEFORE:src/manifest.json" | jq -er '.version')
+          if [[ "$version" == "$previous" ]]; then
+            echo 'Version unchanged: skipping release.'
+            exit 0
+          fi
+          if [[ "$(printf '%s\n' "$previous" "$version" | sort -V | tail -n 1)" != "$version" ]]; then
+            echo 'Version decreased: skipping release.'
+            exit 0
+          fi
+          echo "number=$version" >> "$GITHUB_OUTPUT"
+          echo 'changed=true' >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v4
+        if: steps.version.outputs.changed == 'true'
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install dependencies
+        if: steps.version.outputs.changed == 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq zip unzip shellcheck
+          npm ci
+
+      - name: Check and build
+        if: steps.version.outputs.changed == 'true'
+        run: |
+          npm run check
+          npm run build
+
+      - name: Publish GitHub release
+        if: steps.version.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ steps.version.outputs.number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="v$VERSION"
+          if git rev-parse --verify "refs/tags/$tag" >/dev/null 2>&1; then
+            if [[ "$(git rev-list -n 1 "$tag")" != "$GITHUB_SHA" ]]; then
+              echo "Tag $tag already points to another commit."
+              exit 1
+            fi
+          fi
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "Release $tag already exists: skipping publication."
+            exit 0
+          fi
+          gh release create "$tag" "builds/quickarchiver-$VERSION.xpi" \
+            --target "$GITHUB_SHA" \
+            --title "QuickArchiver $VERSION" \
+            --generate-notes
