@@ -5,12 +5,15 @@
 QuickArchiver is a Thunderbird MailExtension for keeping your inbox clean. It learns destination folders when you
 move messages and later archives matching messages with one click or a keyboard shortcut.
 
+QuickArchiver supports an email workflow based on the **Getting Things Done (GTD)** method: once you have decided
+what to do with a message, quick filing helps you keep your inbox clear.
+
 ## Project status
 
-- Current version: **2.7.1**
+- Current version: **2.7.2**
 - Manifest: **V3**
 - Supported Thunderbird versions: **128 through 156**
-- Languages: **English and German**
+- Languages: **English, German, and French**
 - License: **GNU Lesser General Public License, version 3 or later**
 
 The current release uses Thunderbird's supported MailExtension APIs and a small custom column experiment for the
@@ -106,7 +109,7 @@ The tools below the rules list can export all rules as a JSON backup or import a
 ```text
 src/
 ├── manifest.json                    MailExtension manifest
-├── _locales/                        English and German translations
+├── _locales/                        English, German, and French translations
 ├── content/
 │   ├── scripts/                     Background entry point and core extension logic
 │   ├── shared/                      Rule-matching helpers shared with the experiment
@@ -218,10 +221,24 @@ should additionally be tested in the supported Thunderbird release families.
 ### Contributing
 
 Issues and pull requests are welcome in the
-[GitHub repository](https://github.com/obrgr/quickarchiver/). When changing user-facing text, update both locale
-files and both localized About pages where applicable.
+[GitHub repository](https://github.com/obrgr/quickarchiver/). When changing user-facing text, update all locale
+files and all localized About pages where applicable.
+
+Localized listing templates for addons.thunderbird.net are maintained in
+[`docs/addons.thunderbird.net/`](docs/addons.thunderbird.net/): [English](docs/addons.thunderbird.net/en/listing.md),
+[German](docs/addons.thunderbird.net/de/listing.md), and [French](docs/addons.thunderbird.net/fr/listing.md).
+Each language folder contains only the short description in `listing.md` and a detailed user-facing description
+in `description.html`, using only the basic HTML tags accepted by addons.thunderbird.net. Keep these templates
+in sync when preparing a release; copy their contents into the corresponding listing fields manually.
+The content and formatting constraints are documented in
+[`docs/addons.thunderbird.net/AGENTS.md`](docs/addons.thunderbird.net/AGENTS.md).
 
 ## Release notes
+
+### 2.7.2
+
+- Added French translations for the interface and built-in documentation
+- Localized the add-on description and keyboard command description
 
 ### 2.7.1
 

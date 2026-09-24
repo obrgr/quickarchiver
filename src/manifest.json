@@ -9,8 +9,8 @@
   },
   "name": "QuickArchiver",
   "author": "Otto Berger <otto@bergerdata.de>",
-  "description": "Getting things done in your inbox.",
-  "version": "2.7.1",
+  "description": "__MSG_extension_description__",
+  "version": "2.7.2",
   "default_locale": "en_US",
   "icons": {
     "16": "content/icons/light/qa_move.svg",
@@ -58,7 +58,7 @@
       "suggested_key": {
         "default": "Alt+A"
       },
-      "description": "Move mail to QuickArchiver folder (if rule is present)"
+      "description": "__MSG_command_quickarchiver_move_description__"
     }
   },
   "message_display_action": {

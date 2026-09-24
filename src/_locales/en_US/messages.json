@@ -222,5 +222,11 @@
   },
   "options.intro": {
     "message": "QuickArchiver is mainly used through the toolbar button when viewing an email. Click 'About QuickArchiver' for more information and help."
+  },
+  "extension_description": {
+    "message": "Getting things done in your inbox."
+  },
+  "command_quickarchiver_move_description": {
+    "message": "Move mail to QuickArchiver folder (if rule is present)"
   }
 }

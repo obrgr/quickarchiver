@@ -1,0 +1,1 @@
+Support your Getting Things Done (GTD) workflow: QuickArchiver remembers destination folders as you move emails. File matching messages with one click or a keyboard shortcut – for a tidy inbox and less time spent sorting mail.

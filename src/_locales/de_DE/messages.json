@@ -222,5 +222,11 @@
   },
   "options.intro": {
     "message": "QuickArchiver wird hauptsächlich über den Toolbar-Button beim Anzeigen einer E-Mail verwendet. Klicke auf „Über QuickArchiver“, um weitere Informationen und Hilfe zu erhalten."
+  },
+  "extension_description": {
+    "message": "Ordnung im Posteingang schaffen."
+  },
+  "command_quickarchiver_move_description": {
+    "message": "E-Mail in den QuickArchiver-Ordner verschieben (wenn eine Regel vorhanden ist)"
   }
 }

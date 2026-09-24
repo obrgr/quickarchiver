@@ -1,0 +1,1 @@
+Für deinen Getting-Things-Done-Workflow (GTD): QuickArchiver merkt sich beim Verschieben von E-Mails die Zielordner. Passende Nachrichten legst du danach per Klick oder Tastenkürzel ab – für einen aufgeräumten Posteingang und weniger Sortierarbeit.

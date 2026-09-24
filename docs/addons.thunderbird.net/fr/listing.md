@@ -1,0 +1,1 @@
+Pour votre méthode Getting Things Done (GTD) : QuickArchiver mémorise les dossiers quand vous déplacez vos e-mails. Classez ensuite les messages correspondants par clic ou raccourci clavier, pour une boîte de réception ordonnée et moins de tri.

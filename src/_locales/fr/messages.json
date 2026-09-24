@@ -1,0 +1,232 @@
+{
+  "locale.aboutUrl": {
+    "message": "fr/about.html"
+  },
+  "main.title": {
+    "message": "QuickArchiver"
+  },
+  "column.quickarchiverFolder": {
+    "message": "Dossier QuickArchiver"
+  },
+  "column.currentFolder": {
+    "message": "✓ Dossier actuel"
+  },
+  "toolbar.label": {
+    "message": "QuickArchiver"
+  },
+  "toolbar.label.rule_present": {
+    "message": "QuickArchiver: Déplacer"
+  },
+  "toolbar.title.rule_present": {
+    "message": "Déplacer « $message$ »\n$folder$$shortcut$",
+    "placeholders": {
+      "message": {
+        "content": "$1",
+        "example": "Objet d’un message"
+      },
+      "folder": {
+        "content": "$2",
+        "example": "→ Clients (Archives)"
+      },
+      "shortcut": {
+        "content": " ⌨$3",
+        "example": " ⌨Alt+A"
+      }
+    }
+  },
+  "toolbar.label.rule_edit": {
+    "message": "QuickArchiver: Modifier la règle"
+  },
+  "toolbar.title.rule_edit": {
+    "message": "Ce message se trouve déjà dans le dossier de destination. Cliquez pour modifier la règle."
+  },
+  "toolbar.title.rule_notfound": {
+    "message": "Aucune règle trouvée. Déplacez un message vers un dossier pour en créer une."
+  },
+  "toolbar.menu.title.edit_rule": {
+    "message": "QuickArchiver: Modifier la règle"
+  },
+  "toolbar.menu.title.list_rules": {
+    "message": "Afficher toutes les règles"
+  },
+  "toolbar.menu.title.about": {
+    "message": "À propos de QuickArchiver"
+  },
+  "toolbar.menu.title.options": {
+    "message": "Options"
+  },
+  "toolbar.menu.title.popup_on_new_rule": {
+    "message": "Ouvrir l’éditeur pour les nouvelles règles"
+  },
+  "popup.rule.title": {
+    "message": "QuickArchiver: Modifier la règle"
+  },
+  "popup.rule.headline": {
+    "message": "Modifier la règle"
+  },
+  "popup.rule.intro": {
+    "message": "Vous pouvez utiliser des caractères génériques (« * »). Par exemple, « @*example.com » correspond aux messages de info@newsletter.example.com et de support@example.com."
+  },
+  "popup.rule.criteria": {
+    "message": "Critères du message"
+  },
+  "popup.rule.from": {
+    "message": "De"
+  },
+  "popup.rule.from.checkbox.hint": {
+    "message": "Activer"
+  },
+  "popup.rule.from.help": {
+    "message": "L’adresse de l’expéditeur contient la valeur indiquée."
+  },
+  "popup.rule.to": {
+    "message": "À"
+  },
+  "popup.rule.to.checkbox.hint": {
+    "message": "Activer"
+  },
+  "popup.rule.to.help": {
+    "message": "L’adresse d’un destinataire contient la valeur indiquée."
+  },
+  "popup.rule.subject": {
+    "message": "Objet"
+  },
+  "popup.rule.subject.checkbox.hint": {
+    "message": "Activer"
+  },
+  "popup.rule.subject.help": {
+    "message": "L’objet contient la valeur indiquée."
+  },
+  "popup.rule.account": {
+    "message": "Compte de messagerie source"
+  },
+  "popup.rule.account.checkbox.hint": {
+    "message": "Restreindre"
+  },
+  "popup.rule.account.help": {
+    "message": "La règle s’applique uniquement aux messages du compte sélectionné."
+  },
+  "popup.rule.folder": {
+    "message": "Dossier de destination"
+  },
+  "popup.rule.folder.button.select": {
+    "message": "Modifier..."
+  },
+  "popup.folder.title": {
+    "message": "QuickArchiver: Sélectionner un dossier"
+  },
+  "popup.folder.headline": {
+    "message": "Sélectionner le dossier de destination"
+  },
+  "popup.folder.intro": {
+    "message": "Choisissez le dossier vers lequel déplacer les messages correspondants."
+  },
+  "popup.folder.account.filter": {
+    "message": "Compte"
+  },
+  "popup.folder.search": {
+    "message": "Rechercher des dossiers"
+  },
+  "popup.folder.button.select": {
+    "message": "Sélectionner"
+  },
+  "popup.folder.button.cancel": {
+    "message": "Annuler"
+  },
+  "popup.folder.status.empty": {
+    "message": "Aucun dossier correspondant trouvé."
+  },
+  "popup.rule.button.save": {
+    "message": "Enregistrer la règle"
+  },
+  "popup.rule.button.delete": {
+    "message": "Supprimer la règle"
+  },
+  "popup.rule.button.cancel": {
+    "message": "Annuler"
+  },
+  "tab.list.title": {
+    "message": "QuickArchiver: Toutes les règles"
+  },
+  "tab.list.headline": {
+    "message": "Toutes les règles"
+  },
+  "tab.list.table.action.edit": {
+    "message": "Modifier"
+  },
+  "tab.list.table.account": {
+    "message": "Compte"
+  },
+  "tab.list.table.account.unrestricted": {
+    "message": "Tous les comptes"
+  },
+  "tab.list.table.action.delete": {
+    "message": "Supprimer"
+  },
+  "tab.list.table.action.delete.message.confirm": {
+    "message": "Voulez-vous vraiment supprimer cette règle ?"
+  },
+  "tab.list.button.tools": {
+    "message": "Outils d’importation et d’exportation"
+  },
+  "tab.list.button.cancel": {
+    "message": "Fermer"
+  },
+  "tab.about.title": {
+    "message": "À propos de QuickArchiver"
+  },
+  "tab.tools.title": {
+    "message": "QuickArchiver : Outils"
+  },
+  "tab.tools.backup.headline": {
+    "message": "Importer/Exporter"
+  },
+  "tab.tools.backup.warning": {
+    "message": "Attention! Ces outils sont destinés aux utilisateurs expérimentés. Un fichier d’importation invalide peut rendre vos règles inutilisables. L’importation remplace toutes les règles existantes."
+  },
+  "tab.tools.backup.export.headline": {
+    "message": "Exporter"
+  },
+  "tab.tools.backup.export.hint": {
+    "message": "Enregistrez vos règles dans un fichier pour pouvoir les restaurer ultérieurement. Si aucune boîte de dialogue d’enregistrement ne s’affiche, Thunderbird enregistre le fichier directement dans votre dossier de téléchargements sans afficher de notification."
+  },
+  "tab.tools.backup.import.headline": {
+    "message": "Importer"
+  },
+  "tab.tools.backup.import.hint": {
+    "message": "Choisissez un fichier contenant des règles précédemment enregistrées."
+  },
+  "tab.tools.backup.button.export": {
+    "message": "Exporter vers un fichier"
+  },
+  "tab.tools.backup.button.import": {
+    "message": "Importer depuis un fichier..."
+  },
+  "tab.tools.button.cancel": {
+    "message": "Fermer"
+  },
+  "tab.tools.backup.import.message.success": {
+    "message": "Les règles ont été importées avec succès."
+  },
+  "tab.tools.backup.import.message.failed": {
+    "message": "Échec de l’importation. La structure des règles est invalide."
+  },
+  "tab.tools.backup.import.message.parse_error": {
+    "message": "Échec de l’importation. La structure JSON est invalide."
+  },
+  "tab.tools.backup.import.message.confirm": {
+    "message": "Voulez-vous vraiment remplacer toutes les règles existantes ?"
+  },
+  "options.headline": {
+    "message": "Paramètres de QuickArchiver"
+  },
+  "options.intro": {
+    "message": "QuickArchiver s’utilise principalement via le bouton de la barre d’outils lors de la consultation d’un message. Cliquez sur « À propos de QuickArchiver » pour obtenir des informations et de l’aide."
+  },
+  "extension_description": {
+    "message": "Gardez votre boîte de réception bien rangée."
+  },
+  "command_quickarchiver_move_description": {
+    "message": "Déplacer le message vers le dossier QuickArchiver (si une règle existe)"
+  }
+}

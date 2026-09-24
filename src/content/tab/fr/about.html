@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"/>
+    <title data-i18n="tab.about.title"></title>
+    <script type="module" src="../../scripts/translation.mjs.js"></script>
+    <link rel='stylesheet' type='text/css' href="chrome://global/skin/in-content/common.css">
+    <link rel='stylesheet' type='text/css' href="../tab.css">
+</head>
+<body>
+
+<nav class="nav-main"><img src="../../icons/dark/qa_move.svg" alt=""/>
+    <h1 data-i18n="main.title"></h1></nav>
+
+<section class="section-main">
+    <main class="about">
+        <div class="col main">
+            <div class="section">
+                <h2>QuickArchiver</h2>
+                <p>QuickArchiver vous aide à garder votre boîte de réception bien rangée. Il apprend où classer vos
+                    messages et vous permet ensuite d’archiver les messages correspondants d’un clic ou à l’aide d’un
+                    raccourci clavier.</p>
+                <p>QuickArchiver accompagne votre gestion des e-mails selon la méthode Getting Things Done (GTD). Vous
+                    pouvez utiliser votre boîte de réception comme point de collecte des nouvelles
+                    informations et décider, en consultant chaque message, de la suite à lui donner
+                    : répondre immédiatement, noter une tâche, attendre une réponse ou conserver le
+                    message comme référence. Une fois l’action nécessaire effectuée ou consignée
+                    dans un endroit fiable, QuickArchiver vous aide à classer le message. Par
+                    exemple, déplacez la première facture d’un expéditeur vers votre dossier de
+                    factures ; les messages correspondants suivants pourront y être rangés d’un clic
+                    ou à l’aide d’un raccourci clavier. Vous repérez ainsi plus facilement les
+                    messages qui demandent encore votre attention. Vous décidez quand un message est
+                    prêt à être classé et continuez à gérer vos tâches et vos rappels dans votre
+                    système habituel.</p>
+            </div>
+
+            <div class="section">
+                <h2>Premiers pas</h2>
+                <div class="panel">
+                    <img width="300" src="../images/toolbar_editrule@2x.png" alt="Bouton permettant de modifier une règle"/>
+                    <h3>1. Créer une règle en déplaçant un message</h3>
+                    <p>Déplacez un message vers son dossier de destination comme d’habitude. Si aucune règle ne
+                        correspond, QuickArchiver en crée automatiquement une à partir de l’adresse de l’expéditeur
+                        et mémorise le dossier de destination.</p>
+                </div>
+                <div class="panel">
+                    <img width="300" src="../images/toolbar_move@2x.png" alt="Bouton permettant de déplacer un message"/>
+                    <h3>2. Archiver les messages correspondants</h3>
+                    <p>Lorsqu’un message correspond à une règle, cliquez sur le bouton QuickArchiver ou appuyez sur
+                        <strong>Alt+A</strong>. QuickArchiver le déplace directement vers le dossier mémorisé. Si vous
+                        sélectionnez plusieurs messages, Alt+A déplace chacun de ceux pour lesquels une règle existe.</p>
+                </div>
+                <div class="panel">
+                    <h3>Astuce : afficher le dossier de destination dans la liste des messages</h3>
+                    <p>Activez la colonne <q>Dossier QuickArchiver</q> dans la vue en tableau de Thunderbird pour voir
+                        la destination avant de déplacer un message. Vous trouverez les détails ci-dessous.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>En détail</h2>
+                <div class="panel">
+                    <img width="300" src="../images/toolbar_no_rule@2x.png" alt="Bouton lorsqu’aucune règle n’existe"/>
+                    <h3>Éditeur et paramètres des règles</h3>
+                    <p>L’éditeur vous permet de choisir les conditions actives. Une règle peut porter sur l’expéditeur,
+                        le destinataire, l’objet et, éventuellement, le compte source. Toutes les conditions activées
+                        doivent être satisfaites.</p>
+                    <p>Vous pouvez également choisir la destination à l’aide d’un sélecteur de dossiers avec recherche
+                        et filtrer la liste par compte.</p>
+                    <p>Les conditions textuelles ne distinguent pas les majuscules des minuscules et acceptent
+                        <strong>*</strong> comme caractère générique. Par exemple, <code>@*example.com</code> correspond
+                        à <code>info@newsletter.example.com</code> ainsi qu’à <code>support@example.com</code>.
+                        Sans caractère générique explicite, une valeur correspond aussi lorsqu’elle figure n’importe
+                        où dans le champ concerné.</p>
+                    <p>Activez <q>Ouvrir l’éditeur pour les nouvelles règles</q> pour vérifier immédiatement chaque
+                        règle créée automatiquement. Cette option autorise aussi les destinations spéciales comme la
+                        corbeille. Sinon, la boîte de réception et la corbeille sont exclues de la création automatique
+                        de règles.</p>
+                </div>
+                <div class="panel">
+                    <img width="300" src="../images/toolbar_menu@2x.png" alt="Bouton avec son menu contextuel"/>
+                    <h3>Menu contextuel</h3>
+                    <p>Faites un clic droit sur le bouton QuickArchiver pour modifier la règle actuelle, afficher toutes
+                        les règles, choisir d’ouvrir l’éditeur pour les nouvelles règles ou consulter cette page d’aide.
+                        Dans la liste des messages, le menu propose aussi de déplacer le message lorsqu’une règle
+                        correspondante existe.</p>
+                </div>
+                <div class="panel">
+                    <h3>Afficher la colonne Dossier QuickArchiver</h3>
+                    <p>Dans la vue en tableau de Thunderbird, faites un clic droit sur un en-tête de colonne et
+                        sélectionnez <q>Dossier QuickArchiver</q>. La colonne affiche le dossier de destination des
+                        règles correspondantes. Si un message s’y trouve déjà, elle affiche <q>✓ Dossier actuel</q>.
+                        Cette colonne n’est pas disponible dans la vue en fiches.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Paramètres et gestion des règles</h2>
+                <div class="panel">
+                    <h3>Toutes les règles</h3>
+                    <p>Sélectionnez <q>Afficher toutes les règles</q> dans le menu contextuel ou dans les paramètres de
+                        QuickArchiver pour consulter, modifier ou supprimer les règles enregistrées.</p>
+                    <img width="100%" src="../images/screenshot_editor@2x.png" alt="Capture d’écran de l’éditeur de règles"/>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="panel">
+                    <h3>Importation et exportation</h3>
+                    <p>Ouvrez les outils sous la liste des règles pour exporter toutes les règles sous forme de
+                        sauvegarde JSON ou importer une sauvegarde précédente. L’importation remplace toutes les règles
+                        existantes : exportez-les d’abord si vous souhaitez les conserver.</p>
+                    <img width="100%" src="../images/screenshot_tools@2x.png" alt="Capture d’écran des outils d’importation et d’exportation"/>
+                    <div style="clear: both"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>À propos</h2>
+                <p>QuickArchiver est un projet open source d’Otto Berger (<a
+                        href="mailto:quickarchiver@bergercity.de">quickarchiver@bergercity.de</a>), soutenu par <a
+                        href="https://www.bergerdata.com">www.bergerdata.com</a>.</p>
+                <p>Projet GitHub : <a href="https://github.com/obrgr/quickarchiver">https://github.com/obrgr/quickarchiver</a></p>
+                <p>Un grand merci à</p>
+                <ul>
+                    <li><a href="https://developer.thunderbird.net">developer.thunderbird.net</a></li>
+                    <li><a href="https://thunderbird.topicbox.com/groups/addons">thunderbird.topicbox.com/groups/addons</a></li>
+                    <li><a href="https://github.com/jobisoft">John Bieling, pour son travail sur les exemples</a></li>
+                    <li>Philippe Lieser, pour la logique de traduction</li>
+                    <li>Toutes les autres personnes qui contribuent à l’API WebExtension</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col changelog">
+            <h2>Notes de version</h2>
+
+            <h3>Version 2.7.2</h3>
+            <ul>
+                <li>Ajout de la traduction française de l’interface et de la documentation intégrée</li>
+                <li>Traduction de la description de l’extension et de la commande clavier</li>
+            </ul>
+
+            <h3>Version 2.7.1</h3>
+            <ul>
+                <li>Compatibilité déclarée avec Thunderbird étendue jusqu’à la version 156</li>
+            </ul>
+
+            <h3>Version 2.7.0</h3>
+            <ul>
+                <li>Affichage du raccourci clavier configuré dans l’infobulle au lieu d’Alt+A fixe ; mise à jour lors
+                    d’un changement et masquage de l’indication si aucun raccourci n’est défini</li>
+                <li>Présentation des dossiers de destination harmonisée dans l’infobulle et la colonne</li>
+                <li>Masquage du premier niveau IMAP INBOX dans les chemins parents affichés, sans modifier les destinations enregistrées</li>
+                <li>Affichage cohérent des dossiers parents, des noms de comptes et des indicateurs de dossier actuel</li>
+            </ul>
+
+            <h3>Version 2.6.1</h3>
+            <ul>
+                <li>Gestion des messages internes améliorée pour un fonctionnement fiable avec Manifest V3</li>
+                <li>Ajout d’une icône de l’extension au manifeste</li>
+            </ul>
+
+            <h3>Version 2.6</h3>
+            <ul>
+                <li>Ajout d’un sélecteur de dossiers avec recherche et filtrage par compte dans l’éditeur de règles</li>
+                <li>Ajout des informations de compte dans la liste des règles</li>
+                <li>Amélioration de l’éditeur, du sélecteur de dossiers, de la liste des règles et des outils d’importation et d’exportation</li>
+            </ul>
+
+            <h3>Version 2.5</h3>
+            <ul>
+                <li>Possibilité de restreindre une règle aux messages d’un compte source sélectionné</li>
+                <li>Amélioration de la correspondance des règles et du traitement des messages déplacés</li>
+            </ul>
+
+            <h3>Version 2.4</h3>
+            <ul>
+                <li>Ajout d’une fenêtre facultative pour vérifier les nouvelles règles</li>
+                <li>Amélioration du nettoyage des règles enregistrées</li>
+            </ul>
+
+            <h3>Version 2.3</h3>
+            <p>Améliorations de compatibilité avec les versions récentes de Thunderbird.</p>
+            <ul>
+                <li>Ajout de la colonne Dossier QuickArchiver dans la vue en tableau de la liste des messages</li>
+                <li>Amélioration de la compatibilité avec les API WebExtension actuelles</li>
+                <li>Ajout d’une option pour ouvrir l’éditeur lors de la création de règles</li>
+            </ul>
+
+            <h3>Version 2.2</h3>
+            <p>Nouveautés :</p>
+            <ul>
+                <li>Ajout d’une page de paramètres QuickArchiver (voir le gestionnaire de modules complémentaires → QuickArchiver)</li>
+                <li>Prise en charge des caractères génériques (« * »). Par exemple, « @*example.com » correspond aux
+                    messages de info@newsletter.example.com et de support@example.com.</li>
+            </ul>
+
+            <h3>Version 2.1</h3>
+            <p>Attention : avec les paramètres par défaut de Thunderbird, les règles QuickArchiver sont perdues lors
+                de la désinstallation de l’extension. Les outils d’importation et d’exportation permettent de les
+                sauvegarder au préalable. En théorie, vous pouvez transférer les règles vers une autre installation
+                de Thunderbird si la structure des comptes et des dossiers est identique (non testé).</p>
+            <p>Nouveautés :</p>
+            <ul>
+                <li>Importation et exportation de toutes les règles au format JSON</li>
+                <li>Amélioration de l’apparence et de l’ergonomie de la liste des règles</li>
+                <li>Correction de l’initialisation au premier démarrage</li>
+            </ul>
+
+            <h3>Version 2.0</h3>
+            <p>Thunderbird 115 (Supernova) a nécessité des modifications importantes de QuickArchiver. L’ancienne
+                branche QuickArchiver 0.2 ne fonctionne plus et ne sera plus développée. Les mises à jour précédentes
+                de Thunderbird avaient déjà montré que son maintien demanderait un effort considérable et des
+                compromis indésirables.</p>
+            <p>Bonne nouvelle : une nouvelle version existe, et vous venez de l’installer !</p>
+            <p>Nouveautés :</p>
+            <ul>
+                <li>Réécriture complète à partir de l’API WebExtension actuelle de Mozilla pour faciliter les futures mises à jour</li>
+                <li>Enregistrement des règles dans le stockage WebExtension</li>
+                <li>Possibilité d’une disponibilité des règles sur plusieurs appareils à l’avenir</li>
+                <li>Nouvelle interface avec bouton de barre d’outils, menu et raccourcis clavier</li>
+                <li>Amélioration de l’éditeur et de la liste de toutes les règles</li>
+                <li>Création toujours automatique des règles lors du déplacement des messages</li>
+            </ul>
+            <p>Quelques limitations subsistent :</p>
+            <ul>
+                <li>Toutes les règles doivent être recréées. La migration de l’ancienne base de règles vers la nouvelle
+                    structure demanderait beaucoup de temps.</li>
+                <li>La colonne Dossier QuickArchiver n’est pas disponible dans la vue en fiches de Thunderbird. Dans la
+                    vue en tableau, vous pouvez l’activer depuis le sélecteur de colonnes. Les messages peuvent aussi
+                    être déplacés avec le bouton de la barre d’outils et les raccourcis clavier.</li>
+            </ul>
+        </div>
+    </main>
+</section>
+</body>
+</html>
