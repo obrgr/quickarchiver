@@ -17,7 +17,8 @@ what to do with a message, quick filing helps you keep your inbox clear.
 - License: **GNU Lesser General Public License, version 3 or later**
 
 The current release uses Thunderbird's supported MailExtension APIs and a small custom column experiment for the
-QuickArchiver folder column. Rules are stored locally in WebExtension storage and can be backed up as JSON.
+QuickArchiver folder column and opening Thunderbird's tag settings. Rules are stored locally in WebExtension storage
+and can be backed up as JSON.
 
 Install the published release from [Thunderbird Add-ons](https://addons.thunderbird.net/thunderbird/addon/quickarchiver/).
 
@@ -30,6 +31,9 @@ Install the published release from [Thunderbird Add-ons](https://addons.thunderb
 - Optionally restricts a rule to a source account
 - Provides a searchable destination-folder picker with account filtering
 - Shows matching destinations in the optional QuickArchiver folder column
+- Automatically tags matching messages using existing Thunderbird tags
+- Adds tags inherited from destination folders and their parent folders
+- Shows direct and inherited tags in the rule dialog and rules overview
 - Lists, edits, and deletes stored rules
 - Imports and exports all rules as JSON
 - Optionally opens the rule editor whenever a new rule is created
@@ -63,18 +67,135 @@ The rule editor supports these conditions:
 - **Recipient:** matches the first recipient address exposed by Thunderbird
 - **Subject:** matches the message subject
 - **Source account:** optionally limits the rule to messages from one account
-- **Destination folder:** selects where matching messages are moved
 
 Only enabled conditions are evaluated, and all enabled conditions must match. At least one condition must be active.
-The destination folder can be selected from a searchable picker and its folder list can be filtered by account.
+Under **Actions**, the destination folder selects where matching messages are moved. It can be selected from a
+searchable picker and its folder list can be filtered by account.
 
 Text matching is case-insensitive. Values match when they occur anywhere in the corresponding field, and `*` can be
 used as an explicit wildcard. For example, `@*example.com` matches both `info@newsletter.example.com` and
 `support@example.com`.
 
+The rule dialog separates **Conditions** from **Actions**. Actions include the destination folder, tags assigned
+directly to the rule, and tags inherited from parent folders. See [Automatic tagging](#automatic-tagging) for setup,
+examples, and details about when tags are applied.
+
 To review every automatically created rule immediately, right-click the QuickArchiver button and enable
 **Options → Open rule popup for new rules**. With this option enabled, special destinations such as Trash are also
 allowed. Otherwise, Inbox and Trash are excluded from automatic rule creation.
+
+## Automatic tagging
+
+QuickArchiver can tag messages as soon as they match a rule, before you archive them. Use tags to keep categories
+such as **Customers**, **Invoices**, or **Project A** visible while messages are still in your inbox. Tagging uses
+the same conditions as filing: sender, recipient, subject, and an optional source-account restriction.
+
+Tagging is optional. Existing rules without selected or inherited tags continue to work as before. You still
+choose when to archive a message using the QuickArchiver button, context menu, or shortcut.
+
+### Assign tags to a rule
+
+1. Open a rule through the QuickArchiver menu or **Show all rules → Edit**.
+2. Under **Conditions**, choose which messages the rule should match.
+3. Under **Actions → Destination folder**, select where those messages should be archived.
+4. Under **Actions → Tags**, select one or more existing Thunderbird tags. Their names appear in their tag colors.
+5. Click **Save rule** to apply your changes.
+
+For example, a rule matching a supplier's address can point to `Invoices/Supplier A` and add the tag **Invoices**.
+The next matching incoming message receives the tag while it is still in your inbox. Archiving it later moves it
+to `Invoices/Supplier A`.
+
+If several rules match a message, QuickArchiver uses the first matching rule in the stored list. It combines that
+rule's own tags with the applicable folder tags described below; it does not combine tags from every matching rule.
+
+### Inherit tags from the destination's parent folders
+
+Use **Actions → Parent folder tags** in the rule dialog to assign tags to a folder and its entire subtree. This is
+useful when many rules point to different customers or projects under one common parent.
+
+1. Open a rule whose destination is in the relevant folder tree.
+2. Under **Parent folder tags**, click **Add folder mapping**.
+3. Select the destination folder itself or one of its parent folders.
+4. Select the tags to add for that folder tree.
+5. Save the rule to save both its settings and the folder mappings. **Cancel** discards the draft changes.
+
+Each mapping applies to the selected folder **and all its subfolders in the same account**. The dialog shows only
+mappings relevant to the current destination. Changing the destination updates that view; mappings for other
+folder trees remain saved.
+
+Folder mappings are shared by all rules. Editing the tags for `Customers` affects every rule whose destination is
+`Customers` or a folder below it, including rules created later. The inheritance preview shows the applicable tags
+and their source folders before you save.
+
+Consider this folder structure:
+
+```text
+Work account
+└── Customers                         folder tag: Customers
+    └── Example Ltd                   folder tag: Example Ltd
+        └── Project A                 destination of a rule with the tag: Invoices
+```
+
+A message matching that rule receives **Customers**, **Example Ltd**, and **Invoices**. Tags from all applicable
+levels are added together. A tag selected at several levels is applied only once.
+
+Inheritance follows the **rule's destination**, not the message's current folder. The message can therefore receive
+**Customers** while it is still in the inbox. A folder with the same name in another account, or a sibling named
+`Customers-old`, does not inherit the mapping for `Customers`. Messages still need a matching rule; creating a
+folder mapping alone does not create a rule for every message in that folder.
+
+### When tags are applied
+
+QuickArchiver checks and adds the configured tags:
+
+- When new messages arrive, without requiring you to open or archive them.
+- When you open a folder, for matching messages already in that folder.
+- For folders already open when QuickArchiver initializes.
+- After saving rule or folder-tag changes, for matching messages in open folders.
+- When displaying an individual message or archiving it through QuickArchiver.
+
+Existing messages in other folders are checked when you open those folders. Saving a mapping does not immediately
+scan every folder in every account. In large folders, messages are processed in sequence, so tags may appear
+progressively.
+
+Existing message tags are preserved. QuickArchiver adds missing tags and avoids writing an update if all required
+tags are already present. It loads Thunderbird's available tag list only when needed, once per processing run,
+including runs spanning multiple result pages or open folders.
+
+### Create, rename, and recolor Thunderbird tags
+
+Click **Manage tags in Thunderbird…** beneath the rule's tag selection to open Thunderbird's tag settings. Create,
+rename, recolor, or delete tags there. When you return to the rule dialog, its available tags, names, and colors are
+refreshed while your unsaved rule and folder-tag selections are retained.
+
+QuickArchiver stores references to Thunderbird tags, not independent copies of their names and colors. Renaming
+or recoloring an existing tag therefore keeps the assignment. Deleted tag references may remain visible by their
+internal key when editing a rule, but QuickArchiver skips them when tagging messages.
+
+### Review and remove assignments
+
+**Show all rules** displays each rule in two lines: its conditions, followed by its destination, direct tags, and
+inherited tags. Tag names use their Thunderbird colors. Hover over an inherited tag to see its source folders.
+
+Below the rules, **Parent folder actions** lists all folder mappings, including mappings outside the current rule's
+folder tree. Its **Delete** buttons remove individual mappings after confirmation. To edit a mapping's tags, open
+a rule with a destination in that folder tree and use **Actions → Parent folder tags**.
+
+Removing a selected tag or deleting a folder mapping stops that assignment from adding tags in future checks.
+**It does not remove tags already applied to messages.** Another rule or folder mapping can still require the same
+tag. If you remove a tag manually from a message while a matching assignment remains active, QuickArchiver can add
+it again on the next check.
+
+### Back up tagging settings
+
+The import/export tools include rule tags and folder mappings in the JSON backup. Backups containing folder
+mappings store both `rules` and `folderActions`. Importing such a backup replaces the existing rules and folder
+mappings; export your current settings first if you want to keep them. Older backups containing only a rule array
+remain supported and leave existing folder mappings unchanged.
+
+The backup contains tag references, not Thunderbird's tag definitions. It does not create missing Thunderbird tags
+or restore their names and colors. When transferring settings to another profile, the referenced tags, accounts,
+and destination folders must also be available there. Unavailable tags are skipped when applying assignments.
 
 ## Context menu and folder column
 
@@ -95,8 +216,14 @@ Thunderbird's card view does not support the custom column.
 ![QuickArchiver rules](https://github.com/obrgr/quickarchiver/raw/master/src/content/tab/images/screenshot_editor@2x.png)
 
 Select **Show all rules** from the QuickArchiver context menu or settings page to review, edit, or delete stored rules.
+Each rule uses two lines: conditions first, then its destination and direct and inherited tags with inline labels.
+Long values wrap to fit the window. Tags use their Thunderbird colors; hover over an inherited tag to see its source
+folders. A separate section below lists all parent folder mappings with their accounts, folder paths, and tags.
+You can delete a folder mapping there after confirming; existing message tags and regular rules are kept.
 
-The tools below the rules list can export all rules as a JSON backup or import a previous backup.
+The tools below the rules list can export all rules and parent folder actions as a JSON backup or import a previous
+backup. Backups with folder actions contain an object with `rules` and `folderActions`; legacy rule-array backups
+remain supported and leave existing folder mappings unchanged.
 
 > **Warning:** Importing a backup replaces all existing rules. Export the current rules first if they are still needed.
 
@@ -112,7 +239,7 @@ src/
 ├── _locales/                        English, German, and French translations
 ├── content/
 │   ├── scripts/                     Background entry point and core extension logic
-│   ├── shared/                      Rule-matching helpers shared with the experiment
+│   ├── shared/                      Shared rule-matching and folder-tag inheritance helpers
 │   ├── popup/                       Rule editor and folder picker
 │   ├── tab/                         About, rule list, and import/export pages
 │   ├── options/                     Thunderbird settings page
@@ -123,6 +250,9 @@ src/
 The background script owns rule storage, menu creation, message-move handling, and communication between extension
 pages. `content/shared/rule-matching.js` contains the matching logic used by both the background and custom-column
 contexts. Rule behavior must be changed there rather than duplicated in the experiment.
+`content/shared/folder-actions.js` holds the folder inheritance logic shared by classification and the rule dialog.
+Folder mappings are stored separately from individual rules in `folderActions`. Available Thunderbird tag keys are
+loaded lazily and shared for one classification or archive batch; the next run obtains a fresh list.
 
 #### Custom-column architecture
 
@@ -169,7 +299,7 @@ npm run check
 ```
 
 This validates referenced manifest files, runs ESLint, validates the HTML, runs ShellCheck and Prettier checks, and
-executes the rule-matching unit tests.
+executes tests covering rule matching, tag assignment, folder inheritance, dialog/list behavior, and tag lookup reuse.
 
 ### Build an XPI
 
@@ -215,7 +345,8 @@ npm run review:llm
 
 Never commit the API key. The deterministic review does not require an LLM key.
 
-The unit tests cover the shared rule-matching behavior. Message moves, runtime messaging, menus, and the custom column
+The tests cover rule matching, additive tagging, account and folder boundaries, persistence and backups, dialog/list
+behavior, and tag lookup reuse. Message moves, runtime messaging, menus, and the custom column
 should additionally be tested in the supported Thunderbird release families.
 
 ### Contributing
@@ -239,7 +370,10 @@ The content and formatting constraints are documented in
 
 - Select multiple existing Thunderbird tags per rule and apply them automatically to incoming mail and when displaying a folder
 - Reclassify open folders when rules change; archiving also applies missing tags
+- Reuse the Thunderbird tag list within each classification or archive batch
+- Open Thunderbird tag settings directly and refresh tag choices when returning
 - Preserve existing message tags and ignore deleted tags
+- Manage additive parent folder tags in the rule dialog, with an inheritance preview and backup support
 
 ### 2.7.5
 

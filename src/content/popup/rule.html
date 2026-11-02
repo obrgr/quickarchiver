@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <title data-i18n="popup.rule.title"></title>
+    <script src="../shared/folder-actions.js" defer="true"></script>
     <script type="text/javascript" src="rule.js" defer="true"></script>
     <script type="module" src="../scripts/translation.mjs.js"></script>
     <link rel='stylesheet' type='text/css' href="chrome://global/skin/in-content/common.css">
@@ -65,12 +66,12 @@
 
         <fieldset class="rule-section rule-effects">
             <legend data-i18n="popup.rule.actions"></legend>
-            <p data-i18n="popup.rule.actions.help"></p>
 
             <div class="rule-effect rule-destination">
                 <label for="folder" data-i18n="popup.rule.folder"></label>
+                <p id="folder-help" data-i18n="popup.rule.folder.help"></p>
                 <div class="rule-destination-controls">
-                    <input id="folder" type="text" value="" readonly="readonly">
+                    <input id="folder" type="text" value="" readonly="readonly" aria-describedby="folder-help">
                     <button type="button" id="button-select-folder" data-i18n="popup.rule.folder.button.select"></button>
                 </div>
             </div>
@@ -78,9 +79,19 @@
             <div class="rule-effect" role="group" aria-labelledby="tags-label" aria-describedby="tags-help">
                 <h3 id="tags-label" data-i18n="popup.rule.tags"></h3>
                 <p id="tags-help" data-i18n="popup.rule.tags.help"></p>
-                <div id="tags"></div>
+                <div id="tags" class="tag-choices"></div>
+                <p class="tag-editor-link"><a id="open-tag-editor" href="#" data-i18n="popup.rule.tags.manage">Manage tags in Thunderbird…</a></p>
+            </div>
+            <div class="rule-effect rule-folder-actions" role="group" aria-labelledby="folder-tags-label" aria-describedby="folder-tags-help">
+                <h3 id="folder-tags-label" data-i18n="popup.rule.folder.tags"></h3>
+                <p id="folder-tags-help" data-i18n="popup.rule.folder.actions.help"></p>
+                <div id="inherited-tags" aria-live="polite"></div>
+                <div id="folder-actions"></div>
+                <button type="button" id="button-add-folder-action" data-i18n="popup.rule.folder.actions.add"></button>
             </div>
         </fieldset>
+
+        <p id="save-error" role="alert" hidden="hidden" data-i18n="popup.rule.save.error"></p>
 
         <div class="rule-actions">
             <div class="rule-actions-left">

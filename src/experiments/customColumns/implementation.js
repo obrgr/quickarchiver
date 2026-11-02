@@ -355,6 +355,23 @@ var customColumns = class extends ExtensionCommon.ExtensionAPI {
 
     return {
       customColumns: {
+        async openTagEditor() {
+          const window = Services.wm.getMostRecentWindow("mail:3pane");
+          if (!window) {
+            throw new Error("No Thunderbird mail window is available");
+          }
+          // Open Thunderbird's own tag management in General preferences.
+          // Keep both entry points for supported Thunderbird generations.
+          if (typeof window.openPreferencesTab === "function") {
+            await window.openPreferencesTab("paneGeneral", "tagsCategory");
+          } else if (typeof window.openOptionsDialog === "function") {
+            await window.openOptionsDialog("paneGeneral", "tagsCategory");
+          } else {
+            throw new Error("Thunderbird tag preferences are unavailable");
+          }
+          window.focus();
+        },
+
         async formatFolder(folder, messageId, currentFolderText) {
           const message = context.extension.messageManager.get(messageId);
           if (!message) {

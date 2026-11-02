@@ -67,8 +67,8 @@
   "popup.rule.intro": {
     "message": "Du kannst Platzhalter ('*') verwenden. Der Ausdruck '@*example.com' findet zum Beispiel E-Mails von info@newsletter.example.com und support@example.com."
   },
-  "popup.rule.actions.help": {
-    "message": "Bei passender Regel werden die ausgewählten Tags automatisch ergänzt. Beim Archivieren mit QuickArchiver wird die E-Mail in den Zielordner verschoben."
+  "popup.rule.folder.help": {
+    "message": "Beim Archivieren mit QuickArchiver wird die E-Mail in den Zielordner verschoben."
   },
   "popup.rule.actions": {
     "message": "Aktionen"
@@ -239,6 +239,66 @@
     "message": "Tags"
   },
   "popup.rule.tags.help": {
-    "message": "Ausgewählte Thunderbird-Tags werden bei neuen Mails und beim Anzeigen eines Ordners automatisch ergänzt. Bestehende Tags bleiben erhalten. Neue Tags bitte in Thunderbird anlegen."
+    "message": "Bei passender Regel werden die ausgewählten Tags automatisch ergänzt. Dies gilt bei neuen Mails und beim Anzeigen eines Ordners. Bestehende Tags bleiben erhalten. Neue Tags bitte in Thunderbird anlegen."
+  },
+  "popup.rule.folder.actions": {
+    "message": "Aktionen übergeordneter Ordner"
+  },
+  "popup.rule.folder.actions.help": {
+    "message": "Hier siehst du die Zuordnungen für den aktuellen Zielordner und seine übergeordneten Ordner. Ihre Tags ergänzen die Regel-Tags und gelten auch für andere Regeln im jeweiligen Ordnerbaum. Änderungen werden mit „Speichern“ übernommen; bereits gesetzte Tags bleiben erhalten."
+  },
+  "popup.rule.folder.actions.folder": {
+    "message": "Ordner einschließlich Unterordnern"
+  },
+  "popup.rule.folder.actions.add": {
+    "message": "Ordnerzuordnung hinzufügen"
+  },
+  "popup.rule.folder.actions.remove": {
+    "message": "Entfernen"
+  },
+  "popup.rule.folder.actions.empty": {
+    "message": "Für diesen Zielordner sind noch keine Ordnerzuordnungen vorhanden."
+  },
+  "popup.rule.inherited.tags": {
+    "message": "Vom Zielordner geerbte Tags"
+  },
+  "popup.rule.inherited.empty": {
+    "message": "Für diesen Zielordner werden keine Tags geerbt."
+  },
+  "popup.rule.save.error": {
+    "message": "Die Änderungen konnten nicht gespeichert werden. Bitte erneut versuchen."
+  },
+  "tab.list.table.tags.inherited": {
+    "message": "Geerbte Tags"
+  },
+  "tab.list.folder.actions.help": {
+    "message": "Diese Tags gelten für den jeweiligen Ordner und alle Unterordner und ergänzen die Tags der passenden Regeln. Du kannst die Zuordnungen im Regeldialog eines betroffenen Zielordners bearbeiten."
+  },
+  "tab.list.folder.actions.empty": {
+    "message": "Noch keine Ordnerzuordnungen vorhanden."
+  },
+  "tab.list.folder.actions.delete.confirm": {
+    "message": "Ordnerzuordnung für „$folder$“ wirklich löschen? Bereits gesetzte Tags auf E-Mails bleiben erhalten.",
+    "placeholders": {
+      "folder": {
+        "content": "$1",
+        "example": "Work: /Customers"
+      }
+    }
+  },
+  "tab.list.folder.actions.delete.error": {
+    "message": "Die Ordnerzuordnung konnte nicht gelöscht werden. Bitte erneut versuchen."
+  },
+  "tab.list.empty": {
+    "message": "Noch keine Regeln vorhanden."
+  },
+  "popup.rule.folder.tags": {
+    "message": "Tags übergeordneter Ordner"
+  },
+  "popup.rule.tags.manage": {
+    "message": "Tags in Thunderbird verwalten…"
+  },
+  "popup.rule.tags.manage.error": {
+    "message": "Der Thunderbird-Tag-Editor konnte nicht geöffnet werden."
   }
 }

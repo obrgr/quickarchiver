@@ -94,6 +94,58 @@
                 </div>
             </div>
 
+            <div class="section" id="tagging">
+                <h2>E-Mails automatisch taggen</h2>
+                <p>QuickArchiver kann passende E-Mails bereits im Posteingang mit Thunderbird-Tags versehen. Damit bleiben Kategorien wie Kunden, Rechnungen oder Projekte sichtbar, bevor du die Nachrichten archivierst. Das Taggen ist optional; Regeln ohne eigene oder geerbte Tags funktionieren wie bisher. Wann du eine E-Mail mit QuickArchiver verschiebst, entscheidest du weiterhin selbst.</p>
+                <div class="panel">
+                    <h3>Tags pro Regel festlegen</h3>
+                    <ol>
+                    <li>Öffne die Regel über das QuickArchiver-Menü oder über <q>Alle Regeln anzeigen</q> und <q>Bearbeiten</q>.</li>
+                    <li>Lege unter <q>Bedingungen</q> fest, welche E-Mails passen, und wähle unter <q>Aktionen</q> den Zielordner.</li>
+                    <li>Wähle unter <q>Tags</q> ein oder mehrere vorhandene Thunderbird-Tags. Die Namen erscheinen in ihren Tag-Farben.</li>
+                    <li>Klicke auf <q>Regel speichern</q>.</li>
+                    </ol>
+                    <p>Beispiel: Eine Regel für einen Lieferanten zeigt auf <code>Rechnungen/Lieferant A</code> und ergänzt das Tag <strong>Rechnungen</strong>. Eine neue passende E-Mail erhält dieses Tag bereits im Posteingang. Erst beim Archivieren wird sie in den Zielordner verschoben.</p>
+                    <p>Passen mehrere Regeln, verwendet QuickArchiver die erste passende Regel in der gespeicherten Liste. Ihre eigenen Tags werden mit den zutreffenden Ordner-Tags kombiniert; Tags aller passenden Regeln werden nicht zusammengeführt.</p>
+                </div>
+                <div class="panel">
+                    <h3>Tags übergeordneter Ordner vererben</h3>
+                    <p>Im Regeldialog unter <q>Aktionen → Tags übergeordneter Ordner</q> kannst du mit <q>Ordnerzuordnung hinzufügen</q> dem Zielordner selbst oder einem seiner übergeordneten Ordner Tags zuweisen. Die Zuordnung gilt für diesen Ordner und alle Unterordner im selben Konto und wird mit <q>Regel speichern</q> übernommen. <q>Abbrechen</q> verwirft die noch nicht gespeicherten Änderungen.</p>
+                    <p>Der Dialog zeigt nur Zuordnungen, die zum aktuellen Zielordner gehören. Beim Zielordnerwechsel aktualisiert sich die Ansicht; andere Zuordnungen bleiben gespeichert. Eine Änderung gilt für alle Regeln mit einem Ziel im jeweiligen Ordnerbaum, auch für später angelegte Regeln.</p>
+                    <p>Beispiel für eine Regel mit dem Ziel <code>Kunden/Beispiel GmbH/Projekt A</code>:</p>
+                    <ul>
+                    <li><code>Kunden</code> vererbt das Tag <strong>Kunden</strong>.</li>
+                    <li><code>Kunden/Beispiel GmbH</code> vererbt das Tag <strong>Beispiel GmbH</strong>.</li>
+                    <li>Die Regel selbst ergänzt das Tag <strong>Rechnungen</strong>.</li>
+                    </ul>
+                    <p>Die E-Mail erhält alle drei Tags. Mehrere Ebenen ergänzen sich; doppelte Tags werden nur einmal gesetzt. Die Vorschau nennt die geerbten Tags und ihre Herkunft.</p>
+                    <p>Entscheidend ist der <strong>Zielordner der passenden Regel</strong>, nicht der aktuelle Ordner der E-Mail. Ein gleichnamiger Ordner in einem anderen Konto oder <code>Kunden-alt</code> erbt keine Tags von <code>Kunden</code>. Eine Ordnerzuordnung allein ersetzt keine passende Nachrichtenregel.</p>
+                </div>
+                <div class="panel">
+                    <h3>Wann werden Tags gesetzt?</h3>
+                    <ul>
+                    <li>Beim Eintreffen neuer E-Mails, ohne sie öffnen oder archivieren zu müssen.</li>
+                    <li>Beim Öffnen eines Ordners für die bereits enthaltenen passenden E-Mails.</li>
+                    <li>Beim Initialisieren von QuickArchiver für die geöffneten Ordner.</li>
+                    <li>Nach dem Speichern von Regel- oder Ordner-Tag-Änderungen für passende E-Mails in geöffneten Ordnern.</li>
+                    <li>Beim Anzeigen einzelner E-Mails und beim Archivieren mit QuickArchiver.</li>
+                    </ul>
+                    <p>Andere Ordner werden geprüft, wenn du sie öffnest. Beim Speichern wird nicht das gesamte Postfach durchsucht. In großen Ordnern kann die Verarbeitung nach und nach erfolgen. Die verfügbare Thunderbird-Tagliste wird nur bei Bedarf und einmal pro Prüfdurchlauf geladen.</p>
+                </div>
+                <div class="panel">
+                    <h3>Tags verwalten und Änderungen verstehen</h3>
+                    <p>Über <q>Tags in Thunderbird verwalten…</q> öffnest du die Thunderbird-Tag-Verwaltung. Dort kannst du Tags anlegen, umbenennen, umfärben oder löschen. Beim Zurückkehren aktualisiert QuickArchiver die Auswahl und erhält deine ungespeicherten Einstellungen.</p>
+                    <p>Bestehende Tags auf E-Mails bleiben erhalten. QuickArchiver ergänzt nur fehlende Tags. Das Umbenennen oder Umfärben eines vorhandenen Tags erhält seine Zuordnung. Gelöschte Tag-Verweise können beim Bearbeiten als interner Schlüssel sichtbar bleiben; beim Taggen werden sie übersprungen.</p>
+                    <p><strong>Das Entfernen einer Tag-Auswahl oder einer Ordnerzuordnung entfernt keine bereits gesetzten Mail-Tags.</strong> Es verhindert nur künftige Ergänzungen aus dieser Zuordnung. Ein anderer Eintrag kann dasselbe Tag weiterhin vorgeben. Entfernst du ein solches Tag manuell von einer E-Mail, kann QuickArchiver es bei der nächsten Prüfung wieder ergänzen.</p>
+                </div>
+                <div class="panel">
+                    <h3>Übersicht und Sicherung</h3>
+                    <p>Die <q>Liste aller Regeln</q> zeigt pro Regel oben die Bedingungen und darunter Zielordner, eigene und geerbte Tags. Die Felder passen sich der Fensterbreite an. Wenn du mit der Maus auf ein geerbtes Tag zeigst, siehst du seine Herkunft. Darunter stehen alle Ordnerzuordnungen; du kannst sie dort nach Bestätigung löschen. Zum Bearbeiten ihrer Tags öffnest du eine Regel aus dem jeweiligen Ordnerbaum.</p>
+                    <p>Der JSON-Export enthält Regel-Tags und Ordnerzuordnungen. Ein Import dieser neuen Sicherungen ersetzt Regeln und Ordnerzuordnungen. Alte Sicherungen mit einer reinen Regelliste werden weiterhin unterstützt und lassen vorhandene Ordnerzuordnungen unverändert. Exportiere deine aktuellen Einstellungen vor einem Import, wenn du sie behalten möchtest.</p>
+                    <p>Gesichert werden Tag-Verweise, nicht die Thunderbird-Tag-Definitionen mit Namen und Farben. Fehlende Tags werden beim Import nicht angelegt. Bei einer Übertragung in ein anderes Profil müssen auch die referenzierten Tags, Konten und Zielordner vorhanden sein.</p>
+                </div>
+            </div>
+
             <div class="section">
                 <h2>Einstellungen und Regelverwaltung</h2>
                 <div class="panel">
@@ -137,6 +189,15 @@
 
         <div class="col changelog">
             <h2>Release Notes</h2>
+
+            <h3>Version 2.8.0</h3>
+            <ul>
+                <li>Automatisches Taggen passender E-Mails beim Eintreffen und beim Anzeigen ergänzt</li>
+                <li>Additive Tags aus Zielordnern und übergeordneten Ordnern mit Vorschau und Sicherung unterstützt</li>
+                <li>Regeldialog in Bedingungen und Aktionen gegliedert; Regelliste mit zweizeiligen Einträgen und Tag-Farben überarbeitet</li>
+                <li>Direkten Link zur Thunderbird-Tag-Verwaltung ergänzt</li>
+                <li>Thunderbird-Tagliste innerhalb eines Prüf- oder Archivierungsdurchlaufs wiederverwendet</li>
+            </ul>
 
             <h3>Version 2.7.4</h3>
             <ul>

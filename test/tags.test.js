@@ -14,6 +14,7 @@ function setup(currentTags = []) {
       update: async (id, properties) => updates.push({id, tags: [...properties.tags]}),
     } },
   });
+  vm.runInContext(readFileSync("src/content/shared/folder-actions.js", "utf8"), context);
   vm.runInContext(source, context);
   return {context, updates};
 }
@@ -135,4 +136,104 @@ test("incoming mail and folder listeners register before asynchronous startup", 
   await listeners.incoming.listener(folder, page);
   await listeners.folder.listener({}, folder);
   assert.deepEqual(calls, [page, folder]);
+});
+
+function classificationSetup() {
+  const fixture = setup();
+  vm.runInContext(matchingSource, fixture.context);
+  fixture.context.console = {info() {}, warn() {}, error() {}};
+  vm.runInContext(`
+    quickarchiver.initRules = async () => {};
+    quickarchiver.rules = [{activeFrom: true, from: "customer@example.org", tags: ["customers"]}];
+    messenger.messages.get = async id => ({id, tags: ["personal"]});
+  `, fixture.context);
+  return fixture;
+}
+
+test("classification loads tags once across multiple message list pages", async () => {
+  const {context, updates} = classificationSetup();
+  let listCalls = 0;
+  context.messenger.messages.tags.list = async () => { listCalls++; return [{key: "customers"}]; };
+  context.messenger.messages.continueList = async () => ({messages: [{id: 3, author: "customer@example.org"}]});
+  await vm.runInContext(`quickarchiver.classifyMessages({id: "next", messages: [
+    {id: 1, author: "customer@example.org"}, {id: 2, author: "customer@example.org"}
+  ]})`, context);
+  assert.equal(listCalls, 1);
+  assert.deepEqual(updates, [1, 2, 3].map(id => ({id, tags: ["personal", "customers"]})));
+});
+
+test("classification does not load tag metadata when no message needs rule tags", async () => {
+  const {context, updates} = classificationSetup();
+  let listCalls = 0;
+  context.messenger.messages.tags.list = async () => { listCalls++; return []; };
+  await vm.runInContext('quickarchiver.classifyMessages({messages: [{id: 1, author: "other@example.org"}]})', context);
+  vm.runInContext('quickarchiver.rules[0].tags = []', context);
+  await vm.runInContext('quickarchiver.classifyMessages({messages: [{id: 2, author: "customer@example.org"}]})', context);
+  assert.equal(listCalls, 0);
+  assert.deepEqual(updates, []);
+});
+
+test("a new classification run sees newly created and deleted Thunderbird tags", async () => {
+  const {context, updates} = classificationSetup();
+  let listCalls = 0;
+  let available = [{key: "customers"}];
+  context.messenger.messages.tags.list = async () => { listCalls++; return available; };
+  vm.runInContext('quickarchiver.rules[0].tags = ["customers", "new"]', context);
+  const run = () => vm.runInContext('quickarchiver.classifyMessages({messages: [{id: 1, author: "customer@example.org"}]})', context);
+  await run();
+  available = [{key: "new"}];
+  await run();
+  assert.equal(listCalls, 2);
+  assert.deepEqual(updates, [
+    {id: 1, tags: ["personal", "customers"]},
+    {id: 1, tags: ["personal", "new"]},
+  ]);
+});
+
+test("one refresh of all open folders shares one tag lookup", async () => {
+  const {context, updates} = classificationSetup();
+  let listCalls = 0;
+  context.messenger.messages.tags.list = async () => { listCalls++; return [{key: "customers"}]; };
+  context.messenger.mailTabs = {query: async () => [
+    {displayedFolder: {id: "inbox"}}, {displayedFolder: {id: "other"}},
+  ]};
+  context.messenger.messages.list = async id => ({messages: [{id: id === "inbox" ? 1 : 2, author: "customer@example.org"}]});
+  await vm.runInContext('quickarchiver.classifyOpenFolders()', context);
+  assert.equal(listCalls, 1);
+  assert.equal(updates.length, 2);
+});
+
+test("archiving multiple messages shares one tag lookup", async () => {
+  const {context, updates} = classificationSetup();
+  let listCalls = 0;
+  const moved = [];
+  context.messenger.messages.tags.list = async () => { listCalls++; return [{key: "customers"}]; };
+  context.messenger.messages.move = async ids => moved.push(...ids);
+  vm.runInContext(`
+    quickarchiver.findRule = async () => ({tags: ["customers"], folder: {id: "archive"}});
+    quickarchiver.getFolderId = async () => "archive";
+  `, context);
+  await vm.runInContext('quickarchiver.moveMails([{id: 1}, {id: 2}])', context);
+  assert.equal(listCalls, 1);
+  assert.equal(updates.length, 2);
+  assert.deepEqual(moved, [1, 2]);
+});
+
+test("failed tag metadata loads are shared within the run and retried on the next run", async () => {
+  const {context, updates} = classificationSetup();
+  let listCalls = 0;
+  context.messenger.messages.tags.list = async () => {
+    listCalls++;
+    if (listCalls === 1) throw new Error("Temporarily unavailable");
+    return [{key: "customers"}];
+  };
+  const run = () => vm.runInContext(`quickarchiver.classifyMessages({messages: [
+    {id: 1, author: "customer@example.org"}, {id: 2, author: "customer@example.org"}
+  ]})`, context);
+  await run();
+  assert.equal(listCalls, 1);
+  assert.equal(updates.length, 0);
+  await run();
+  assert.equal(listCalls, 2);
+  assert.equal(updates.length, 2);
 });

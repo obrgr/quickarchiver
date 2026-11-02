@@ -94,6 +94,58 @@
                 </div>
             </div>
 
+            <div class="section" id="tagging">
+                <h2>Étiqueter automatiquement les messages</h2>
+                <p>QuickArchiver peut ajouter des étiquettes Thunderbird aux messages correspondants dès leur arrivée dans la boîte de réception. Les catégories comme Clients, Factures ou les projets restent visibles avant l’archivage. Cette fonction est facultative : les règles sans étiquettes propres ou héritées fonctionnent comme auparavant. Vous décidez toujours quand déplacer les messages avec QuickArchiver.</p>
+                <div class="panel">
+                    <h3>Attribuer des étiquettes à une règle</h3>
+                    <ol>
+                    <li>Ouvrez une règle depuis le menu QuickArchiver ou via <q>Afficher toutes les règles</q> et <q>Modifier</q>.</li>
+                    <li>Choisissez les messages concernés sous <q>Conditions</q>, puis la destination sous <q>Actions</q>.</li>
+                    <li>Sous <q>Étiquettes</q>, sélectionnez une ou plusieurs étiquettes Thunderbird existantes. Leurs noms apparaissent dans leurs couleurs.</li>
+                    <li>Cliquez sur <q>Enregistrer la règle</q>.</li>
+                    </ol>
+                    <p>Par exemple, une règle pour un fournisseur peut viser <code>Factures/Fournisseur A</code> et ajouter l’étiquette <strong>Factures</strong>. Les nouveaux messages correspondants la reçoivent dans la boîte de réception. Ils ne sont déplacés qu’au moment de leur archivage.</p>
+                    <p>Si plusieurs règles correspondent, QuickArchiver utilise la première de la liste enregistrée. Ses étiquettes se cumulent avec celles des dossiers applicables ; les étiquettes de toutes les règles correspondantes ne sont pas réunies.</p>
+                </div>
+                <div class="panel">
+                    <h3>Hériter des étiquettes des dossiers parents</h3>
+                    <p>Sous <q>Actions → Étiquettes des dossiers parents</q> dans le dialogue de règle, choisissez <q>Ajouter une association de dossier</q> et attribuez des étiquettes à la destination ou à l’un de ses parents. L’association s’applique au dossier et à tous ses sous-dossiers du même compte. <q>Enregistrer la règle</q> enregistre la règle et les associations ; <q>Annuler</q> abandonne les modifications non enregistrées.</p>
+                    <p>Le dialogue montre uniquement les associations pertinentes pour la destination actuelle. Changer de destination actualise la vue ; les autres associations restent enregistrées. Une association concerne toutes les règles visant cette arborescence, y compris les règles créées plus tard.</p>
+                    <p>Par exemple, une règle vise <code>Clients/Entreprise Exemple/Projet A</code> :</p>
+                    <ul>
+                    <li><code>Clients</code> transmet l’étiquette <strong>Clients</strong>.</li>
+                    <li><code>Clients/Entreprise Exemple</code> transmet l’étiquette <strong>Entreprise Exemple</strong>.</li>
+                    <li>La règle ajoute elle-même l’étiquette <strong>Factures</strong>.</li>
+                    </ul>
+                    <p>Le message reçoit les trois étiquettes. Plusieurs niveaux se cumulent ; les doublons sont appliqués une seule fois. L’aperçu indique les étiquettes héritées et leurs dossiers sources.</p>
+                    <p>L’héritage suit la <strong>destination de la règle correspondante</strong>, pas le dossier actuel du message. Un dossier homonyme d’un autre compte ou un dossier voisin nommé <code>Clients-anciens</code> n’hérite pas de <code>Clients</code>. Une association de dossier ne remplace pas une règle de message correspondante.</p>
+                </div>
+                <div class="panel">
+                    <h3>Quand les étiquettes sont-elles appliquées ?</h3>
+                    <ul>
+                    <li>À l’arrivée des nouveaux messages, sans les ouvrir ni les archiver.</li>
+                    <li>À l’ouverture d’un dossier, pour les messages correspondants qu’il contient déjà.</li>
+                    <li>À l’initialisation de QuickArchiver, pour les dossiers ouverts.</li>
+                    <li>Après l’enregistrement des règles ou des associations, pour les messages correspondants des dossiers ouverts.</li>
+                    <li>À l’affichage d’un message ou lors de son archivage avec QuickArchiver.</li>
+                    </ul>
+                    <p>Les autres dossiers sont vérifiés à leur ouverture. Enregistrer ne lance pas une analyse de toute la messagerie. Le traitement des grands dossiers peut être progressif. La liste des étiquettes Thunderbird est chargée uniquement si nécessaire, une fois par traitement.</p>
+                </div>
+                <div class="panel">
+                    <h3>Gérer les étiquettes et comprendre les modifications</h3>
+                    <p>Utilisez <q>Gérer les étiquettes dans Thunderbird…</q> pour ouvrir les paramètres d’étiquettes de Thunderbird. Vous pouvez y créer, renommer, recolorer ou supprimer des étiquettes. Au retour, le dialogue actualise ses choix tout en conservant vos réglages non enregistrés.</p>
+                    <p>Les étiquettes déjà présentes sont conservées ; QuickArchiver ajoute seulement celles qui manquent. Renommer ou recolorer une étiquette existante conserve son association. Les références supprimées peuvent rester visibles sous leur clé interne dans l’éditeur ; elles sont ignorées lors de l’étiquetage.</p>
+                    <p><strong>Retirer une sélection ou supprimer une association de dossier ne supprime pas les étiquettes déjà appliquées aux messages.</strong> Cela arrête les ajouts futurs provenant de cette association. Une autre association peut toujours demander la même étiquette. Si vous la retirez manuellement d’un message, QuickArchiver peut l’ajouter à nouveau lors de la prochaine vérification.</p>
+                </div>
+                <div class="panel">
+                    <h3>Vue d’ensemble et sauvegardes</h3>
+                    <p><q>Afficher toutes les règles</q> présente les conditions de chaque règle, puis sa destination et ses étiquettes propres et héritées. Les champs s’adaptent à la largeur de la fenêtre. Survolez une étiquette héritée pour voir ses dossiers sources. Les associations de dossiers figurent en dessous et peuvent y être supprimées après confirmation. Pour modifier leurs étiquettes, ouvrez une règle visant l’arborescence concernée.</p>
+                    <p>Les exports JSON incluent les étiquettes des règles et les associations de dossiers. Importer ces nouvelles sauvegardes remplace les règles et les associations. Les anciennes sauvegardes contenant uniquement une liste de règles restent acceptées et conservent les associations existantes. Exportez vos réglages actuels avant d’importer si vous souhaitez les conserver.</p>
+                    <p>Les sauvegardes contiennent les références des étiquettes, pas leurs définitions Thunderbird avec noms et couleurs. L’importation ne crée pas les étiquettes manquantes. Pour un transfert vers un autre profil, les étiquettes, comptes et dossiers référencés doivent aussi être disponibles.</p>
+                </div>
+            </div>
+
             <div class="section">
                 <h2>Paramètres et gestion des règles</h2>
                 <div class="panel">
@@ -132,6 +184,15 @@
 
         <div class="col changelog">
             <h2>Notes de version</h2>
+
+            <h3>Version 2.8.0</h3>
+            <ul>
+                <li>Étiquetage automatique des messages correspondants à leur arrivée et à leur consultation</li>
+                <li>Cumul des étiquettes des règles, des destinations et des dossiers parents, avec aperçu et sauvegarde</li>
+                <li>Dialogue organisé en Conditions et Actions et règles affichées sur deux lignes avec couleurs des étiquettes</li>
+                <li>Accès direct aux paramètres d’étiquettes de Thunderbird</li>
+                <li>Réutilisation de la liste des étiquettes au cours de chaque traitement ou archivage par lot</li>
+            </ul>
 
             <h3>Version 2.7.4</h3>
             <ul>

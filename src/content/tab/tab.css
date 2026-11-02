@@ -69,9 +69,125 @@ section.section-main {
     margin-top: 14px;
 }
 
-#rule-list-table {
-    margin-bottom: 72px;
+#folder-rule-list-table {
     overflow-x: auto;
+}
+
+.rules-overview {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--border-color, var(--in-content-table-border-color));
+    border-radius: var(--border-radius-medium, 4px);
+}
+
+.rule-entry {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 12px 20px;
+    padding: 14px 16px;
+}
+
+.rule-entry + .rule-entry {
+    border-top: 1px solid var(--border-color, var(--in-content-table-border-color));
+}
+
+.rule-entry:nth-child(even) {
+    background-color: color-mix(in srgb, currentColor 5%, transparent);
+}
+
+.rule-entry-details {
+    min-width: 0;
+}
+
+.rule-summary-line {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px 24px;
+    min-width: 0;
+    line-height: 1.6;
+}
+
+.rule-summary-actions {
+    margin-top: 8px;
+}
+
+.rule-summary-actions > .rule-summary-field:first-child {
+    grid-column: span 2;
+}
+
+.rule-summary-field {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 6px;
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.rule-summary-field > strong {
+    font-weight: 600;
+}
+
+.rule-summary-field > span {
+    min-width: 0;
+}
+
+.rule-summary-field .table-tags {
+    min-width: 0;
+}
+
+.rule-entry-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.rule-entry-buttons button {
+    margin: 0;
+}
+
+@media (max-width: 1100px) {
+    .rule-summary-line {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .rule-entry {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .rule-entry-buttons {
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    .rule-summary-line {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .rule-summary-actions > .rule-summary-field:first-child {
+        grid-column: auto;
+    }
+}
+
+.folder-rules-section {
+    margin: 24px 0;
+}
+
+.table-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    min-width: 100px;
+}
+
+.table-tag-name {
+    overflow-wrap: anywhere;
 }
 
 .rule input[type=text] {

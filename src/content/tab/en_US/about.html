@@ -89,6 +89,58 @@
                 </div>
             </div>
 
+            <div class="section" id="tagging">
+                <h2>Automatically tag messages</h2>
+                <p>QuickArchiver can add Thunderbird tags to matching messages while they are still in your inbox. Keep categories such as Customers, Invoices, or projects visible before archiving. Tagging is optional: rules without direct or inherited tags work as before. You still decide when to move messages with QuickArchiver.</p>
+                <div class="panel">
+                    <h3>Assign tags to a rule</h3>
+                    <ol>
+                    <li>Open a rule from the QuickArchiver menu or through <q>Show all rules</q> and <q>Edit</q>.</li>
+                    <li>Choose which messages match under <q>Conditions</q>, then select a destination under <q>Actions</q>.</li>
+                    <li>Under <q>Tags</q>, select one or more existing Thunderbird tags. Their names appear in their tag colors.</li>
+                    <li>Click <q>Save rule</q>.</li>
+                    </ol>
+                    <p>For example, a supplier rule can point to <code>Invoices/Supplier A</code> and add the tag <strong>Invoices</strong>. New matching mail receives that tag in the inbox. The message moves to the destination only when you archive it.</p>
+                    <p>If several rules match, QuickArchiver uses the first matching rule in the stored list. Its own tags combine with applicable folder tags; tags from every matching rule are not combined.</p>
+                </div>
+                <div class="panel">
+                    <h3>Inherit tags from parent folders</h3>
+                    <p>Under <q>Actions → Parent folder tags</q> in the rule dialog, choose <q>Add folder mapping</q> and assign tags to the destination itself or one of its parents. The mapping applies to that folder and all its subfolders in the same account. <q>Save rule</q> saves both the rule and folder mappings; <q>Cancel</q> discards the draft changes.</p>
+                    <p>The dialog shows only mappings relevant to the current destination. Changing the destination updates the view; other mappings remain saved. Each mapping affects all rules whose destination is in that folder tree, including rules created later.</p>
+                    <p>For example, a rule has the destination <code>Customers/Example Ltd/Project A</code>:</p>
+                    <ul>
+                    <li><code>Customers</code> contributes the tag <strong>Customers</strong>.</li>
+                    <li><code>Customers/Example Ltd</code> contributes the tag <strong>Example Ltd</strong>.</li>
+                    <li>The rule itself contributes the tag <strong>Invoices</strong>.</li>
+                    </ul>
+                    <p>The message receives all three tags. Multiple levels add together; duplicate tags are applied only once. The preview names inherited tags and their source folders.</p>
+                    <p>Inheritance follows the <strong>matching rule’s destination</strong>, not the message’s current folder. An identically named folder in another account or a sibling named <code>Customers-old</code> does not inherit from <code>Customers</code>. A folder mapping alone does not replace a matching message rule.</p>
+                </div>
+                <div class="panel">
+                    <h3>When tags are applied</h3>
+                    <ul>
+                    <li>When new mail arrives, without opening or archiving it.</li>
+                    <li>When you open a folder, for matching messages already in it.</li>
+                    <li>When QuickArchiver initializes, for open folders.</li>
+                    <li>After saving rule or folder-tag changes, for matching messages in open folders.</li>
+                    <li>When displaying an individual message or archiving it with QuickArchiver.</li>
+                    </ul>
+                    <p>Other folders are checked when you open them. Saving does not scan the entire mailbox. Large folders may be processed progressively. Thunderbird’s available tag list is loaded only when needed, once per processing run.</p>
+                </div>
+                <div class="panel">
+                    <h3>Manage tags and understand changes</h3>
+                    <p>Use <q>Manage tags in Thunderbird…</q> to open Thunderbird’s tag settings. Create, rename, recolor, or delete tags there. Returning to the rule dialog refreshes its choices while keeping your unsaved settings.</p>
+                    <p>Existing message tags are preserved; QuickArchiver adds only missing tags. Renaming or recoloring an existing tag keeps its assignment. Deleted references may remain visible by their internal key when editing; they are skipped when tagging messages.</p>
+                    <p><strong>Removing a tag selection or folder mapping does not remove tags already applied to messages.</strong> It stops future additions from that assignment. Another assignment may still require the same tag. Removing such a tag manually from a message allows QuickArchiver to add it again on the next check.</p>
+                </div>
+                <div class="panel">
+                    <h3>Overview and backups</h3>
+                    <p><q>Show all rules</q> displays each rule’s conditions first, then its destination and direct and inherited tags. Fields adapt to the window width. Hover over an inherited tag to see its source folders. All folder mappings are listed below; delete them there after confirmation. To edit their tags, open a rule for a destination in the relevant folder tree.</p>
+                    <p>JSON exports include rule tags and folder mappings. Importing these new backups replaces rules and folder mappings. Legacy backups containing only a rule array remain supported and leave existing folder mappings unchanged. Export your current settings before importing if you want to keep them.</p>
+                    <p>Backups contain tag references, not Thunderbird tag definitions with names and colors. Importing does not create missing tags. When moving settings to another profile, the referenced tags, accounts, and destination folders must also be available.</p>
+                </div>
+            </div>
+
             <div class="section">
                 <h2>Settings and rule management</h2>
                 <div class="panel">
@@ -131,6 +183,15 @@
 
         <div class="col changelog">
             <h2>Release Notes</h2>
+
+            <h3>Version 2.8.0</h3>
+            <ul>
+                <li>Automatically tag matching messages on arrival and when viewing mail</li>
+                <li>Combine direct tags with destination and parent folder tags, including previews and backups</li>
+                <li>Organize the rule dialog into Conditions and Actions and show rules in two lines with tag colors</li>
+                <li>Open Thunderbird tag settings directly from the rule dialog</li>
+                <li>Reuse Thunderbird’s tag list within each classification or archive batch</li>
+            </ul>
 
             <h3>Version 2.7.4</h3>
             <ul>

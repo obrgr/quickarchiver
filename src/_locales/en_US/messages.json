@@ -67,8 +67,8 @@
   "popup.rule.intro": {
     "message": "You can use wildcards ('*'). For example, '@*example.com' matches messages from info@newsletter.example.com and support@example.com."
   },
-  "popup.rule.actions.help": {
-    "message": "When a rule matches, the selected tags are added automatically. Archiving with QuickArchiver moves the message to the destination folder."
+  "popup.rule.folder.help": {
+    "message": "Archiving with QuickArchiver moves the message to the destination folder."
   },
   "popup.rule.actions": {
     "message": "Actions"
@@ -239,6 +239,66 @@
     "message": "Tags"
   },
   "popup.rule.tags.help": {
-    "message": "Selected Thunderbird tags are added automatically to incoming mail and when displaying a folder. Existing tags are kept. Create new tags in Thunderbird."
+    "message": "When a rule matches, the selected tags are added automatically to incoming mail and when displaying a folder. Existing tags are kept. Create new tags in Thunderbird."
+  },
+  "popup.rule.folder.actions": {
+    "message": "Parent folder actions"
+  },
+  "popup.rule.folder.actions.help": {
+    "message": "These mappings apply to the current destination and its parent folders. Their tags add to the rule’s tags and also apply to other rules in the same folder tree. Changes take effect with Save; previously applied tags are kept."
+  },
+  "popup.rule.folder.actions.folder": {
+    "message": "Folder including subfolders"
+  },
+  "popup.rule.folder.actions.add": {
+    "message": "Add folder mapping"
+  },
+  "popup.rule.folder.actions.remove": {
+    "message": "Remove"
+  },
+  "popup.rule.folder.actions.empty": {
+    "message": "No folder mappings for this destination yet."
+  },
+  "popup.rule.inherited.tags": {
+    "message": "Tags inherited from the destination folder"
+  },
+  "popup.rule.inherited.empty": {
+    "message": "No tags are inherited for this destination."
+  },
+  "popup.rule.save.error": {
+    "message": "Could not save the changes. Please try again."
+  },
+  "tab.list.table.tags.inherited": {
+    "message": "Inherited tags"
+  },
+  "tab.list.folder.actions.help": {
+    "message": "These tags apply to each folder and all its subfolders, adding to the tags of matching rules. Edit mappings in the rule dialog for a destination in that folder tree."
+  },
+  "tab.list.folder.actions.empty": {
+    "message": "No folder mappings yet."
+  },
+  "tab.list.folder.actions.delete.confirm": {
+    "message": "Delete the folder mapping for “$folder$”? Tags already applied to messages will be kept.",
+    "placeholders": {
+      "folder": {
+        "content": "$1",
+        "example": "Work: /Customers"
+      }
+    }
+  },
+  "tab.list.folder.actions.delete.error": {
+    "message": "Could not delete the folder mapping. Please try again."
+  },
+  "tab.list.empty": {
+    "message": "No rules yet."
+  },
+  "popup.rule.folder.tags": {
+    "message": "Parent folder tags"
+  },
+  "popup.rule.tags.manage": {
+    "message": "Manage tags in Thunderbird…"
+  },
+  "popup.rule.tags.manage.error": {
+    "message": "Could not open the Thunderbird tag editor."
   }
 }

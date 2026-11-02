@@ -16,6 +16,10 @@ window.addEventListener("load", onLoad);
 
 let rule = {};
 let requestedRuleIndex = null;
+let availableTags = [];
+let selectableFolders = [];
+let folderActions = [];
+let tagEditorOpened = false;
 
 try {
     let ruleIndex = new URL(window.location.href).searchParams.get("ruleIndex");
@@ -27,10 +31,13 @@ try {
 }
 
 async function ruleSave() {
-
+    if (typeof rule.index === "undefined") {
+        return;
+    }
+    const saveButton = document.getElementById("button_save");
+    saveButton.disabled = true;
+    document.getElementById("save-error").hidden = true;
     try {
-        if (typeof (rule.index) !== "undefined") {
-
         rule.from = document.getElementById("from").value;
         rule.to = document.getElementById("to").value;
         rule.subject = document.getElementById("subject").value;
@@ -41,23 +48,26 @@ async function ruleSave() {
         rule.accountId = document.getElementById("account").value;
         rule.tags = Array.from(document.querySelectorAll('#tags input:checked'), input => input.value);
 
-        await messenger.runtime.sendMessage({
+        const response = await messenger.runtime.sendMessage({
             command: "requestRuleUpdate",
-            rule: rule
+            rule,
+            folderActions,
         });
-
-            await messenger.runtime.sendMessage({
-                command: "requestRefreshList"
-            });
-
+        if (!response?.saved) {
+            throw new Error("Could not save rule and folder actions");
         }
     } catch (error) {
-        // Saving has already happened before the optional UI refresh. Do not
-        // keep the rule dialog open just because a refresh failed.
-        console.error("Could not refresh QuickArchiver after saving rule", error);
-    } finally {
-        window.close();
+        console.error("Could not save QuickArchiver rule", error);
+        document.getElementById("save-error").hidden = false;
+        saveButton.disabled = false;
+        return;
     }
+    try {
+        await messenger.runtime.sendMessage({command: "requestRefreshList"});
+    } catch (error) {
+        console.error("Could not refresh QuickArchiver after saving rule", error);
+    }
+    window.close();
 }
 
 async function ruleCancel() {
@@ -84,6 +94,29 @@ async function openFolderPicker() {
     });
 }
 
+async function openTagEditor(event) {
+    event.preventDefault();
+    tagEditorOpened = true;
+    try {
+        const response = await messenger.runtime.sendMessage({command: "requestOpenTagEditor"});
+        if (!response?.opened) {
+            throw new Error("Could not open Thunderbird tag editor");
+        }
+    } catch (error) {
+        console.error("Could not open Thunderbird tag editor", error);
+        alert(browser.i18n.getMessage("popup.rule.tags.manage.error"));
+    }
+}
+
+async function refreshTags() {
+    // Preserve the current draft, including checkbox edits not yet saved.
+    const selected = Array.from(document.querySelectorAll('#tags input:checked'), input => input.value);
+    availableTags = await messenger.messages.tags.list();
+    renderTagChoices(document.getElementById("tags"), selected);
+    renderFolderActions();
+    renderInheritedTags();
+}
+
 async function ruleDelete() {
 
     if (typeof (rule.index) !== "undefined") {
@@ -99,6 +132,178 @@ async function ruleDelete() {
     window.close();
 }
 
+function tagName(tag) {
+    const name = document.createElement("span");
+    name.className = "rule-tag-name";
+    name.textContent = tag.tag;
+    if (typeof tag.color === "string" && /^#[0-9a-f]{6}$/i.test(tag.color)) {
+        name.style.color = tag.color;
+    }
+    return name;
+}
+
+function renderTagChoices(container, selected, onChange = () => {}) {
+    container.replaceChildren();
+    const savedTags = Array.isArray(selected) ? selected : [];
+    // Keep deleted keys visible when editing. Classification ignores them.
+    const options = [...availableTags];
+    for (const key of savedTags) {
+        if (!options.some(tag => tag.key === key)) {
+            options.push({key, tag: key});
+        }
+    }
+    for (const tag of options) {
+        const label = document.createElement("label");
+        label.className = "rule-tag";
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.value = tag.key;
+        checkbox.checked = savedTags.includes(tag.key);
+        checkbox.addEventListener("change", () => {
+            onChange(Array.from(container.querySelectorAll("input:checked"), input => input.value));
+        });
+        label.append(checkbox, tagName(tag));
+        container.appendChild(label);
+    }
+}
+
+function folderLabel(folder) {
+    const account = selectableFolders.find(candidate => candidate.accountId === folder.accountId);
+    return `${account?.accountName ?? folder.accountId}: ${folder.path}`;
+}
+
+function renderInheritedTags() {
+    const container = document.getElementById("inherited-tags");
+    container.replaceChildren();
+    const inherited = QuickArchiverFolderActions.matchingActions(rule.folder, folderActions)
+        .filter(action => action.tags.length > 0);
+    if (inherited.length === 0) {
+        container.textContent = browser.i18n.getMessage("popup.rule.inherited.empty");
+        return;
+    }
+    for (const action of inherited) {
+        const row = document.createElement("p");
+        row.className = "inherited-tag-row";
+        const source = document.createElement("strong");
+        source.textContent = folderLabel(action.folder);
+        row.append(source, document.createTextNode(": "));
+        action.tags.forEach((key, index) => {
+            if (index > 0) {
+                row.appendChild(document.createTextNode(", "));
+            }
+            row.appendChild(tagName(availableTags.find(tag => tag.key === key) ?? {tag: key}));
+        });
+        container.appendChild(row);
+    }
+}
+
+function sameFolder(left, right) {
+    return left.accountId === right.accountId && left.path === right.path;
+}
+
+function relevantFolders() {
+    return selectableFolders.filter(folder =>
+        QuickArchiverFolderActions.includesFolder(folder, rule.folder));
+}
+
+function updateFolderOptions() {
+    for (const select of document.querySelectorAll(".folder-action-select")) {
+        const index = Number(select.dataset.actionIndex);
+        for (const option of select.options) {
+            const candidate = selectableFolders[Number(option.value)];
+            option.disabled = Boolean(candidate && folderActions.some((action, actionIndex) =>
+                actionIndex !== index && sameFolder(action.folder, candidate)));
+        }
+    }
+    document.getElementById("button-add-folder-action").disabled = !relevantFolders().some(folder =>
+        !folderActions.some(action => sameFolder(action.folder, folder)));
+}
+
+function renderFolderActions() {
+    const container = document.getElementById("folder-actions");
+    container.replaceChildren();
+    const visibleActions = QuickArchiverFolderActions.matchingActions(rule.folder, folderActions);
+    if (visibleActions.length === 0) {
+        const empty = document.createElement("p");
+        empty.textContent = browser.i18n.getMessage("popup.rule.folder.actions.empty");
+        container.appendChild(empty);
+    }
+    visibleActions.forEach(action => {
+        // Keep the original index: hidden mappings must survive edits/removal.
+        const index = folderActions.indexOf(action);
+        const card = document.createElement("div");
+        card.className = "folder-action-card";
+        const controls = document.createElement("div");
+        controls.className = "folder-action-controls";
+        const label = document.createElement("label");
+        label.htmlFor = `folder-action-${index}`;
+        label.textContent = browser.i18n.getMessage("popup.rule.folder.actions.folder");
+        const select = document.createElement("select");
+        select.id = label.htmlFor;
+        select.className = "folder-action-select";
+        select.dataset.actionIndex = index;
+        relevantFolders().forEach(folder => {
+            const folderIndex = selectableFolders.indexOf(folder);
+            const option = document.createElement("option");
+            option.value = folderIndex;
+            option.textContent = folderLabel(folder);
+            select.appendChild(option);
+        });
+        const selectedIndex = selectableFolders.findIndex(folder => sameFolder(folder, action.folder));
+        if (selectedIndex < 0) {
+            const missing = document.createElement("option");
+            missing.value = "missing";
+            missing.textContent = folderLabel(action.folder);
+            select.appendChild(missing);
+            select.value = "missing";
+        } else {
+            select.value = selectedIndex;
+        }
+        select.addEventListener("change", () => {
+            const folder = selectableFolders[Number(select.value)];
+            if (folder) {
+                action.folder = {...folder};
+                updateFolderOptions();
+                renderInheritedTags();
+            }
+        });
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.textContent = browser.i18n.getMessage("popup.rule.folder.actions.remove");
+        remove.addEventListener("click", () => {
+            folderActions.splice(index, 1);
+            renderFolderActions();
+            renderInheritedTags();
+            document.getElementById("button-add-folder-action").focus();
+        });
+        controls.append(select, remove);
+        const choices = document.createElement("div");
+        choices.className = "tag-choices";
+        renderTagChoices(choices, action.tags, tags => {
+            action.tags = tags;
+            renderInheritedTags();
+        });
+        card.append(label, controls, choices);
+        container.appendChild(card);
+    });
+    updateFolderOptions();
+}
+
+function addFolderAction() {
+    const candidates = relevantFolders().filter(folder =>
+        !folderActions.some(action => sameFolder(action.folder, folder)));
+    // Prefer the nearest parent of this rule's destination for a new entry.
+    const ancestors = candidates.filter(folder =>
+        !sameFolder(folder, rule.folder ?? {})
+        && QuickArchiverFolderActions.includesFolder(folder, rule.folder));
+    const folder = ancestors.sort((left, right) => right.path.length - left.path.length)[0] ?? candidates[0];
+    if (folder) {
+        folderActions.push({folder: {...folder}, tags: []});
+        renderFolderActions();
+        document.getElementById(`folder-action-${folderActions.length - 1}`).focus();
+    }
+}
+
 messenger.runtime.onMessage.addListener((broadcastMessage) => {
     if (broadcastMessage && broadcastMessage.hasOwnProperty("command")) {
 
@@ -108,35 +313,14 @@ messenger.runtime.onMessage.addListener((broadcastMessage) => {
 
             rule = broadcastMessage.rule;
 
-            const tagsContainer = document.getElementById("tags");
-            tagsContainer.replaceChildren();
-            const availableTags = broadcastMessage.tags ?? [];
-            const savedTags = Array.isArray(rule.tags) ? rule.tags : [];
-            // Keep deleted tag keys visible, so saving unrelated edits does not
-            // silently discard them. Deleted tags are ignored when archiving.
-            const tagOptions = [...availableTags];
-            for (const key of savedTags) {
-                if (!tagOptions.some(tag => tag.key === key)) {
-                    tagOptions.push({key, tag: key});
-                }
-            }
-            for (const tag of tagOptions) {
-                const label = document.createElement("label");
-                label.className = "rule-tag";
-                const checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.value = tag.key;
-                checkbox.checked = savedTags.includes(tag.key);
-                label.appendChild(checkbox);
-                const tagName = document.createElement("span");
-                tagName.className = "rule-tag-name";
-                tagName.textContent = tag.tag;
-                if (typeof tag.color === "string" && /^#[0-9a-f]{6}$/i.test(tag.color)) {
-                    tagName.style.color = tag.color;
-                }
-                label.appendChild(tagName);
-                tagsContainer.appendChild(label);
-            }
+            availableTags = broadcastMessage.tags ?? [];
+            selectableFolders = broadcastMessage.folders ?? [];
+            folderActions = (broadcastMessage.folderActions ?? []).map(action => ({
+                folder: {...action.folder}, tags: [...action.tags],
+            }));
+            renderTagChoices(document.getElementById("tags"), rule.tags ?? []);
+            renderFolderActions();
+            renderInheritedTags();
 
             let accountSelect = document.getElementById("account");
             accountSelect.replaceChildren();
@@ -169,6 +353,8 @@ messenger.runtime.onMessage.addListener((broadcastMessage) => {
         if (broadcastMessage.command === "transmitSelectedFolder" && broadcastMessage.folder) {
             rule.folder = broadcastMessage.folder;
             document.getElementById("folder").value = broadcastMessage.folder.path ?? "";
+            renderFolderActions();
+            renderInheritedTags();
         }
     }
 });
@@ -179,6 +365,13 @@ async function onLoad() {
     document.getElementById("button_cancel").addEventListener("click", ruleCancel);
     document.getElementById("button_delete").addEventListener("click", ruleDelete);
     document.getElementById("button-select-folder").addEventListener("click", openFolderPicker);
+    document.getElementById("open-tag-editor").addEventListener("click", openTagEditor);
+    window.addEventListener("focus", () => {
+        if (tagEditorOpened) {
+            refreshTags().catch(error => console.error("Could not refresh Thunderbird tags", error));
+        }
+    });
+    document.getElementById("button-add-folder-action").addEventListener("click", addFolderAction);
     for (let [checkboxId, inputId] of [
         ["active-from", "from"],
         ["active-to", "to"],

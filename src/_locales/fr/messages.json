@@ -67,8 +67,8 @@
   "popup.rule.intro": {
     "message": "Vous pouvez utiliser des caractères génériques (« * »). Par exemple, « @*example.com » correspond aux messages de info@newsletter.example.com et de support@example.com."
   },
-  "popup.rule.actions.help": {
-    "message": "Lorsqu’une règle correspond, les étiquettes sélectionnées sont ajoutées automatiquement. L’archivage avec QuickArchiver déplace le message vers le dossier de destination."
+  "popup.rule.folder.help": {
+    "message": "L’archivage avec QuickArchiver déplace le message vers le dossier de destination."
   },
   "popup.rule.actions": {
     "message": "Actions"
@@ -239,6 +239,66 @@
     "message": "Étiquettes"
   },
   "popup.rule.tags.help": {
-    "message": "Les étiquettes Thunderbird sélectionnées sont ajoutées automatiquement aux nouveaux messages et à l’affichage d’un dossier. Les étiquettes existantes sont conservées. Créez de nouvelles étiquettes dans Thunderbird."
+    "message": "Lorsqu’une règle correspond, les étiquettes sélectionnées sont ajoutées automatiquement aux nouveaux messages et à l’affichage d’un dossier. Les étiquettes existantes sont conservées. Créez de nouvelles étiquettes dans Thunderbird."
+  },
+  "popup.rule.folder.actions": {
+    "message": "Actions des dossiers parents"
+  },
+  "popup.rule.folder.actions.help": {
+    "message": "Ces associations concernent le dossier de destination actuel et ses dossiers parents. Leurs étiquettes s’ajoutent à celles de la règle et s’appliquent aussi aux autres règles de la même arborescence. Les modifications prennent effet avec Enregistrer ; les étiquettes déjà appliquées sont conservées."
+  },
+  "popup.rule.folder.actions.folder": {
+    "message": "Dossier et sous-dossiers"
+  },
+  "popup.rule.folder.actions.add": {
+    "message": "Ajouter une association de dossier"
+  },
+  "popup.rule.folder.actions.remove": {
+    "message": "Supprimer"
+  },
+  "popup.rule.folder.actions.empty": {
+    "message": "Aucune association de dossier pour cette destination."
+  },
+  "popup.rule.inherited.tags": {
+    "message": "Étiquettes héritées du dossier de destination"
+  },
+  "popup.rule.inherited.empty": {
+    "message": "Aucune étiquette héritée pour cette destination."
+  },
+  "popup.rule.save.error": {
+    "message": "Impossible d’enregistrer les modifications. Veuillez réessayer."
+  },
+  "tab.list.table.tags.inherited": {
+    "message": "Étiquettes héritées"
+  },
+  "tab.list.folder.actions.help": {
+    "message": "Ces étiquettes s’appliquent au dossier et à tous ses sous-dossiers et s’ajoutent à celles des règles correspondantes. Modifiez les associations dans le dialogue d’une règle dont la destination se trouve dans cette arborescence."
+  },
+  "tab.list.folder.actions.empty": {
+    "message": "Aucune association de dossier."
+  },
+  "tab.list.folder.actions.delete.confirm": {
+    "message": "Supprimer l’association du dossier « $folder$ » ? Les étiquettes déjà appliquées aux messages seront conservées.",
+    "placeholders": {
+      "folder": {
+        "content": "$1",
+        "example": "Work: /Customers"
+      }
+    }
+  },
+  "tab.list.folder.actions.delete.error": {
+    "message": "Impossible de supprimer l’association de dossier. Veuillez réessayer."
+  },
+  "tab.list.empty": {
+    "message": "Aucune règle pour le moment."
+  },
+  "popup.rule.folder.tags": {
+    "message": "Étiquettes des dossiers parents"
+  },
+  "popup.rule.tags.manage": {
+    "message": "Gérer les étiquettes dans Thunderbird…"
+  },
+  "popup.rule.tags.manage.error": {
+    "message": "Impossible d’ouvrir l’éditeur d’étiquettes de Thunderbird."
   }
 }

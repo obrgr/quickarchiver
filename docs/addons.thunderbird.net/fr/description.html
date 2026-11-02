@@ -28,6 +28,66 @@ La recherche ne distingue pas les majuscules des minuscules. Le texte recherché
 
 Choisissez le dossier de destination à l’aide du sélecteur avec recherche. Si vous utilisez plusieurs comptes, filtrez la liste des dossiers par compte.
 
+<strong>Étiqueter automatiquement les messages</strong>
+
+QuickArchiver peut ajouter des étiquettes Thunderbird aux messages correspondants dès leur arrivée dans la boîte de réception. Les catégories comme Clients, Factures ou les projets restent visibles avant l’archivage. Cette fonction est facultative : les règles sans étiquettes propres ou héritées fonctionnent comme auparavant. Vous décidez toujours quand déplacer les messages avec QuickArchiver.
+
+<strong>Attribuer des étiquettes à une règle</strong>
+
+<ol>
+<li>Ouvrez une règle depuis le menu QuickArchiver ou via <em>Afficher toutes les règles</em> et <em>Modifier</em>.</li>
+<li>Choisissez les messages concernés sous <em>Conditions</em>, puis la destination sous <em>Actions</em>.</li>
+<li>Sous <em>Étiquettes</em>, sélectionnez une ou plusieurs étiquettes Thunderbird existantes. Leurs noms apparaissent dans leurs couleurs.</li>
+<li>Cliquez sur <em>Enregistrer la règle</em>.</li>
+</ol>
+Par exemple, une règle pour un fournisseur peut viser <code>Factures/Fournisseur A</code> et ajouter l’étiquette <strong>Factures</strong>. Les nouveaux messages correspondants la reçoivent dans la boîte de réception. Ils ne sont déplacés qu’au moment de leur archivage.
+
+Si plusieurs règles correspondent, QuickArchiver utilise la première de la liste enregistrée. Ses étiquettes se cumulent avec celles des dossiers applicables ; les étiquettes de toutes les règles correspondantes ne sont pas réunies.
+
+<strong>Hériter des étiquettes des dossiers parents</strong>
+
+Sous <em>Actions → Étiquettes des dossiers parents</em> dans le dialogue de règle, choisissez <em>Ajouter une association de dossier</em> et attribuez des étiquettes à la destination ou à l’un de ses parents. L’association s’applique au dossier et à tous ses sous-dossiers du même compte. <em>Enregistrer la règle</em> enregistre la règle et les associations ; <em>Annuler</em> abandonne les modifications non enregistrées.
+
+Le dialogue montre uniquement les associations pertinentes pour la destination actuelle. Changer de destination actualise la vue ; les autres associations restent enregistrées. Une association concerne toutes les règles visant cette arborescence, y compris les règles créées plus tard.
+
+Par exemple, une règle vise <code>Clients/Entreprise Exemple/Projet A</code> :
+
+<ul>
+<li><code>Clients</code> transmet l’étiquette <strong>Clients</strong>.</li>
+<li><code>Clients/Entreprise Exemple</code> transmet l’étiquette <strong>Entreprise Exemple</strong>.</li>
+<li>La règle ajoute elle-même l’étiquette <strong>Factures</strong>.</li>
+</ul>
+Le message reçoit les trois étiquettes. Plusieurs niveaux se cumulent ; les doublons sont appliqués une seule fois. L’aperçu indique les étiquettes héritées et leurs dossiers sources.
+
+L’héritage suit la <strong>destination de la règle correspondante</strong>, pas le dossier actuel du message. Un dossier homonyme d’un autre compte ou un dossier voisin nommé <code>Clients-anciens</code> n’hérite pas de <code>Clients</code>. Une association de dossier ne remplace pas une règle de message correspondante.
+
+<strong>Quand les étiquettes sont-elles appliquées ?</strong>
+
+<ul>
+<li>À l’arrivée des nouveaux messages, sans les ouvrir ni les archiver.</li>
+<li>À l’ouverture d’un dossier, pour les messages correspondants qu’il contient déjà.</li>
+<li>À l’initialisation de QuickArchiver, pour les dossiers ouverts.</li>
+<li>Après l’enregistrement des règles ou des associations, pour les messages correspondants des dossiers ouverts.</li>
+<li>À l’affichage d’un message ou lors de son archivage avec QuickArchiver.</li>
+</ul>
+Les autres dossiers sont vérifiés à leur ouverture. Enregistrer ne lance pas une analyse de toute la messagerie. Le traitement des grands dossiers peut être progressif. La liste des étiquettes Thunderbird est chargée uniquement si nécessaire, une fois par traitement.
+
+<strong>Gérer les étiquettes et comprendre les modifications</strong>
+
+Utilisez <em>Gérer les étiquettes dans Thunderbird…</em> pour ouvrir les paramètres d’étiquettes de Thunderbird. Vous pouvez y créer, renommer, recolorer ou supprimer des étiquettes. Au retour, le dialogue actualise ses choix tout en conservant vos réglages non enregistrés.
+
+Les étiquettes déjà présentes sont conservées ; QuickArchiver ajoute seulement celles qui manquent. Renommer ou recolorer une étiquette existante conserve son association. Les références supprimées peuvent rester visibles sous leur clé interne dans l’éditeur ; elles sont ignorées lors de l’étiquetage.
+
+<strong>Retirer une sélection ou supprimer une association de dossier ne supprime pas les étiquettes déjà appliquées aux messages.</strong> Cela arrête les ajouts futurs provenant de cette association. Une autre association peut toujours demander la même étiquette. Si vous la retirez manuellement d’un message, QuickArchiver peut l’ajouter à nouveau lors de la prochaine vérification.
+
+<strong>Vue d’ensemble et sauvegardes</strong>
+
+<em>Afficher toutes les règles</em> présente les conditions de chaque règle, puis sa destination et ses étiquettes propres et héritées. Les champs s’adaptent à la largeur de la fenêtre. Survolez une étiquette héritée pour voir ses dossiers sources. Les associations de dossiers figurent en dessous et peuvent y être supprimées après confirmation. Pour modifier leurs étiquettes, ouvrez une règle visant l’arborescence concernée.
+
+Les exports JSON incluent les étiquettes des règles et les associations de dossiers. Importer ces nouvelles sauvegardes remplace les règles et les associations. Les anciennes sauvegardes contenant uniquement une liste de règles restent acceptées et conservent les associations existantes. Exportez vos réglages actuels avant d’importer si vous souhaitez les conserver.
+
+Les sauvegardes contiennent les références des étiquettes, pas leurs définitions Thunderbird avec noms et couleurs. L’importation ne crée pas les étiquettes manquantes. Pour un transfert vers un autre profil, les étiquettes, comptes et dossiers référencés doivent aussi être disponibles.
+
 <strong>Gardez le contrôle de vos règles</strong>
 
 Faites un clic droit sur le bouton QuickArchiver pour ouvrir son menu. Vous pouvez y modifier la règle actuelle, sélectionner <strong>Afficher toutes les règles</strong> ou consulter l’aide intégrée. La liste des règles permet de vérifier, modifier et supprimer les règles enregistrées.

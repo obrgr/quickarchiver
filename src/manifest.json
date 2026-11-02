@@ -22,6 +22,7 @@
   "background": {
     "scripts": [
       "content/shared/rule-matching.js",
+      "content/shared/folder-actions.js",
       "content/scripts/quickarchiver.js",
       "content/scripts/background.js"
     ],

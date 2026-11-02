@@ -243,7 +243,7 @@ section.section-main {
     background-color: #444;
 }
 
-#tags {
+.tag-choices {
     display: flex;
     flex-wrap: wrap;
     gap: 8px 16px;
@@ -258,4 +258,36 @@ section.section-main {
 .rule .rule-tag-name {
     display: inline;
     opacity: 1;
+}
+
+.folder-action-card {
+    border-top: 1px solid var(--in-content-box-border-color);
+    padding: 12px 0;
+}
+
+.folder-action-card > label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.folder-action-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.folder-action-controls select {
+    min-width: 0;
+}
+
+.inherited-tag-row {
+    margin: 6px 0;
+    overflow-wrap: anywhere;
+}
+
+.rule-effect > .tag-editor-link {
+    margin-top: 10px;
 }

@@ -14,6 +14,7 @@
 let quickarchiver = {
 
     rules: {},
+    folderActions: null,
     defaultRule: {
         from: '',
         to: '',
@@ -222,6 +223,10 @@ let quickarchiver = {
         if (!Array.isArray(this.rules)) {
             await this.loadRules();
         }
+        if (this.folderActions === null) {
+            const stored = await messenger.storage.local.get("folderActions");
+            this.folderActions = QuickArchiverFolderActions.normalize(stored.folderActions ?? []);
+        }
         return true;
     },
     refreshColumnAfterMove: function () {
@@ -271,7 +276,8 @@ let quickarchiver = {
         });
     },
     loadRules: async function () {
-        let rules = await messenger.storage.local.get('rules');
+        let rules = await messenger.storage.local.get(["rules", "folderActions"]);
+        this.folderActions = QuickArchiverFolderActions.normalize(rules.folderActions ?? []);
 
         if (typeof (rules.rules) === "undefined") {
             this.rules = [];
@@ -323,7 +329,8 @@ let quickarchiver = {
         // Also compact newly created and imported rules before persisting them.
         this.rules = this.normalizeRules(this.rules);
         await messenger.storage.local.set({
-            rules: this.rules
+            rules: this.rules,
+            folderActions: this.folderActions ?? [],
         });
 
         // reload rules after changing them
@@ -333,22 +340,43 @@ let quickarchiver = {
 
         return true;
     },
-    importRules: async function (importData) {
-
-        // quick check of importedData
-        for (let rule of importData) {
-
-            if (typeof (rule.from) === "undefined"
-                || typeof (rule.to) === "undefined"
-                || typeof (rule.subject) === "undefined"
-                || typeof (rule.folder) === "undefined") {
-                return false;
-            }
+    deleteFolderAction: async function (folder) {
+        await this.initRules();
+        if (typeof folder?.accountId !== "string" || typeof folder?.path !== "string") {
+            throw new Error("Missing folder identity for deletion");
         }
+        const remaining = this.folderActions.filter(action =>
+            action.folder.accountId !== folder.accountId || action.folder.path !== folder.path);
+        if (remaining.length === this.folderActions.length) {
+            return false;
+        }
+        // Delete by folder identity, independent of the table's sort order.
+        // Existing message tags and regular rules are intentionally preserved.
+        await messenger.storage.local.set({folderActions: remaining});
+        this.folderActions = remaining;
+        return true;
+    },
 
-        this.rules = importData
+    importRules: async function (importData) {
+        const rules = Array.isArray(importData) ? importData : importData?.rules;
+        if (!Array.isArray(rules) || rules.some(rule => !rule || typeof rule !== "object"
+            || typeof rule.from === "undefined" || typeof rule.to === "undefined"
+            || typeof rule.subject === "undefined" || typeof rule.folder === "undefined")) {
+            return false;
+        }
+        let folderActions;
+        try {
+            folderActions = Array.isArray(importData) ? undefined
+                : QuickArchiverFolderActions.normalize(importData.folderActions ?? []);
+        } catch (error) {
+            return false;
+        }
+        await this.initRules();
+        this.rules = rules;
+        if (folderActions !== undefined) {
+            this.folderActions = folderActions;
+        }
         await this.saveRules();
-
         return true;
     },
 
@@ -408,7 +436,7 @@ let quickarchiver = {
     /*
         Updates rule in storage
     */
-    updateRule: async function (index, rule) {
+    updateRule: async function (index, rule, folderActions) {
 
         await this.initRules();
 
@@ -421,9 +449,22 @@ let quickarchiver = {
             }
         }
 
+        const previousRules = this.rules;
+        const previousFolderActions = this.folderActions;
+        const nextFolderActions = folderActions === undefined ? this.folderActions
+            : QuickArchiverFolderActions.normalize(folderActions);
+        this.rules = [...this.rules];
         this.rules[index] = updateRule;
-
-        await this.saveRules();
+        this.folderActions = nextFolderActions;
+        try {
+            await this.saveRules();
+        } catch (error) {
+            // Keep failed edits out of live classification and let the dialog
+            // remain open for retry. Storage writes both settings atomically.
+            this.rules = previousRules;
+            this.folderActions = previousFolderActions;
+            throw error;
+        }
 
         return index;
     },
@@ -637,6 +678,7 @@ let quickarchiver = {
             messageIds: messages?.map(message => message.id) ?? [],
         });
 
+        const getAvailableTags = this.createTagLookup();
         for (let index = 0; index < (messages?.length ?? 0); index++) {
             const message = messages[index];
             console.info("[QuickArchiver move] Processing batch item", {
@@ -644,13 +686,23 @@ let quickarchiver = {
                 messageId: message?.id,
                 subject: message?.subject,
             });
-            await this.moveMail(message);
+            await this.moveMail(message, getAvailableTags);
         }
 
         console.info("[QuickArchiver move] Batch finished");
     },
 
-    classifyMessages: async function (messageList) {
+    // A lazy snapshot scoped to one operation. Avoid repeated API calls even
+    // across list pages/folders, without retaining stale tags between runs.
+    createTagLookup: function () {
+        let pending;
+        return () => {
+            pending ??= messenger.messages.tags.list().then(list => new Set(list.map(tag => tag.key)));
+            return pending;
+        };
+    },
+
+    classifyMessages: async function (messageList, getAvailableTags = this.createTagLookup()) {
         await this.initRules();
         let page = messageList;
         while (page) {
@@ -658,7 +710,7 @@ let quickarchiver = {
                 try {
                     const rule = QuickArchiverRuleMatching.findRule(message, this.rules);
                     if (rule) {
-                        await this.applyRuleTags(message, rule);
+                        await this.applyRuleTags(message, rule, getAvailableTags);
                     }
                 } catch (error) {
                     // One unavailable message must not prevent the rest of a
@@ -670,16 +722,16 @@ let quickarchiver = {
         }
     },
 
-    classifyFolder: async function (folder) {
+    classifyFolder: async function (folder, getAvailableTags = this.createTagLookup()) {
         if (!folder?.id) {
             return;
         }
         await this.initRules();
-        if (!this.rules.some(rule => Array.isArray(rule.tags) && rule.tags.length > 0)) {
+        if (!this.rules.some(rule => QuickArchiverFolderActions.tagsForRule(rule, this.folderActions ?? []).length > 0)) {
             return;
         }
         try {
-            await this.classifyMessages(await messenger.messages.list(folder.id));
+            await this.classifyMessages(await messenger.messages.list(folder.id), getAvailableTags);
         } catch (error) {
             console.error("Could not classify folder", folder.id, error);
         }
@@ -699,18 +751,20 @@ let quickarchiver = {
                 folders.set(tab.displayedFolder.id, tab.displayedFolder);
             }
         }
+        const getAvailableTags = this.createTagLookup();
         for (const folder of folders.values()) {
-            await this.classifyFolder(folder);
+            await this.classifyFolder(folder, getAvailableTags);
         }
     },
 
     // Always merge with a fresh header: messages.update replaces the tag list.
-    applyRuleTags: async function (message, rule) {
-        if (!Array.isArray(rule.tags) || rule.tags.length === 0) {
+    applyRuleTags: async function (message, rule, getAvailableTags = this.createTagLookup()) {
+        const ruleTags = QuickArchiverFolderActions.tagsForRule(rule, this.folderActions ?? []);
+        if (ruleTags.length === 0) {
             return;
         }
-        const available = new Set((await messenger.messages.tags.list()).map(tag => tag.key));
-        const selected = rule.tags.filter(key => typeof key === "string" && available.has(key));
+        const available = await getAvailableTags();
+        const selected = ruleTags.filter(key => typeof key === "string" && available.has(key));
         if (selected.length === 0) {
             return;
         }
@@ -721,7 +775,7 @@ let quickarchiver = {
         }
     },
 
-    moveMail: async function (message) {
+    moveMail: async function (message, getAvailableTags = this.createTagLookup()) {
 
         console.info("[QuickArchiver move] Start message", {
             messageId: message?.id,
@@ -788,7 +842,7 @@ let quickarchiver = {
                     messageId: message.id,
                     destinationFolderId: folderId,
                 });
-                await this.applyRuleTags(message, rule);
+                await this.applyRuleTags(message, rule, getAvailableTags);
                 await messenger.messages.move([message.id], folderId);
                 console.info("[QuickArchiver move] messages.move succeeded", {
                     messageId: message.id,
@@ -894,6 +948,7 @@ let quickarchiver = {
 
                 case "requestRule":
 
+                    await this.initRules();
                     let requestedRule = this.currentRule;
                     if (typeof broadcastMessage.ruleIndex !== "undefined") {
                         requestedRule = await this.getRule(Number(broadcastMessage.ruleIndex));
@@ -904,6 +959,8 @@ let quickarchiver = {
                         rule: requestedRule,
                         accounts: await this.getAccounts(),
                         tags: await messenger.messages.tags.list(),
+                        folderActions: this.folderActions ?? [],
+                        folders: await this.getSelectableFolders(),
                         openRulePopupOnNewRule: this.openRulePopupOnNewRule,
                     });
                     break;
@@ -914,10 +971,16 @@ let quickarchiver = {
                 case "requestRuleUpdate":
 
                     if (broadcastMessage.rule) {
-                        await quickarchiver.updateRule(broadcastMessage.rule.index, broadcastMessage.rule);
+                        await this.initRules();
+                        await quickarchiver.updateRule(
+                            broadcastMessage.rule.index,
+                            broadcastMessage.rule,
+                            broadcastMessage.folderActions
+                        );
                         await quickarchiver.updateToolbarEntry(this.currentMessage);
+                        return {saved: true};
                     }
-                    break;
+                    return {saved: false};
                 case "requestRuleDelete":
 
                     if (broadcastMessage.rule) {
@@ -928,17 +991,26 @@ let quickarchiver = {
                         await messenger.runtime.sendMessage({
                             command: "transmitAllRules",
                             rules: await this.getAllRules(),
+                            folderActions: this.folderActions ?? [],
                             accounts: await this.getAccounts(),
+                            tags: await messenger.messages.tags.list(),
                         });
                     }
                     break;
+                case "requestFolderActionDelete":
+
+                    await this.deleteFolderAction(broadcastMessage.folder);
+                    await this.handleBroadcastMessage({command: "requestAllRules"});
+                    return {deleted: true};
                 case "requestRefreshList":
                 case "requestAllRules":
 
                     await messenger.runtime.sendMessage({
                         command: "transmitAllRules",
                         rules: await this.getAllRules(),
+                        folderActions: this.folderActions ?? [],
                         accounts: await this.getAccounts(),
+                        tags: await messenger.messages.tags.list(),
                     });
                     break;
                 case "requestToolsImportRules":
@@ -956,7 +1028,9 @@ let quickarchiver = {
                             await messenger.runtime.sendMessage({
                                 command: "transmitAllRules",
                                 rules: await this.getAllRules(),
+                                folderActions: this.folderActions ?? [],
                                 accounts: await this.getAccounts(),
+                                tags: await messenger.messages.tags.list(),
                             });
                         } else {
 
@@ -975,6 +1049,10 @@ let quickarchiver = {
                         await this.openRulePopup();
                     }
                     break;
+                case "requestOpenTagEditor":
+
+                    await messenger.customColumns.openTagEditor();
+                    return {opened: true};
                 case "requestOpenFolderPicker":
 
                     await this.openFolderPicker(

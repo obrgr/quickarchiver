@@ -15,6 +15,7 @@
 window.addEventListener("load", onLoad);
 
 let rules = {};
+let folderActions = [];
 
 async function onLoad() {
 
@@ -75,7 +76,7 @@ async function toolsExport() {
     dateStr = dateStr.replaceAll("-", "");
     dateStr = dateStr.substring(0, 15);
 
-    saveAsFile(rules, "QuickArchiver-RulesExport-" + dateStr + ".json");
+    saveAsFile(exportData(), "QuickArchiver-RulesExport-" + dateStr + ".json");
 }
 
 
@@ -111,7 +112,8 @@ messenger.runtime.onMessage.addListener((broadcastMessage) => {
         console.info("Broadcast Message received: " + broadcastMessage.command);
 
         if (broadcastMessage.command === "transmitAllRules" && broadcastMessage.rules) {
-            rules = broadcastMessage.rules
+            rules = broadcastMessage.rules;
+            folderActions = broadcastMessage.folderActions ?? [];
             renderExport();
         }
         if (broadcastMessage.command === "transmitToolsImportResponse" && broadcastMessage.message) {
@@ -121,6 +123,10 @@ messenger.runtime.onMessage.addListener((broadcastMessage) => {
     }
 });
 
+function exportData() {
+    return folderActions.length > 0 ? {rules, folderActions} : rules;
+}
+
 async function renderExport() {
-    document.getElementById("tools-export").textContent = JSON.stringify(rules, null, 4);
+    document.getElementById("tools-export").textContent = JSON.stringify(exportData(), null, 4);
 }

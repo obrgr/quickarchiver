@@ -25,6 +25,7 @@ export default [
         htmlSimpleTable: "readonly",
         messenger: "readonly",
         QuickArchiverRuleMatching: "readonly",
+        QuickArchiverFolderActions: "readonly",
         setTimeout: "readonly",
         URL: "readonly",
         window: "readonly",

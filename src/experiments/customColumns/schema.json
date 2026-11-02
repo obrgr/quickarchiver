@@ -3,6 +3,12 @@
     "namespace": "customColumns",
     "functions": [
       {
+        "name": "openTagEditor",
+        "type": "function",
+        "async": true,
+        "parameters": []
+      },
+      {
         "name": "formatFolder",
         "type": "function",
         "async": true,

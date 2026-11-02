@@ -16,6 +16,8 @@ window.addEventListener("load", onLoad);
 
 let rules = {};
 let accounts = new Map();
+let folderActions = [];
+let tags = new Map();
 
 async function onLoad() {
 
@@ -44,147 +46,213 @@ messenger.runtime.onMessage.addListener((broadcastMessage) => {
         console.info("Broadcast Message received: " + broadcastMessage.command);
 
         if (broadcastMessage.command === "transmitAllRules" && broadcastMessage.rules) {
-            rules = broadcastMessage.rules
+            rules = broadcastMessage.rules;
+            folderActions = broadcastMessage.folderActions ?? [];
+            tags = new Map((broadcastMessage.tags ?? []).map(tag => [tag.key, tag]));
             accounts = new Map((broadcastMessage.accounts ?? []).map(account => [account.id, account]));
             renderTable();
+            renderFolderTable();
         }
     }
 });
 
-async function renderTable() {
+function summaryField(labelKey, value, muted = false) {
+    const field = document.createElement("div");
+    field.className = "rule-summary-field" + (muted ? " text-muted" : "");
+    const label = document.createElement("strong");
+    label.textContent = browser.i18n.getMessage(labelKey) + ": ";
+    field.appendChild(label);
+    if (typeof value === "string") {
+        const text = document.createElement("span");
+        text.textContent = value;
+        field.appendChild(text);
+    } else {
+        field.appendChild(value);
+    }
+    return field;
+}
 
-    let tab = new htmlSimpleTable();
-    tab.setData(rules);
-    tab.setTableConfig({
+function inheritedTagList(rule) {
+    const inherited = QuickArchiverFolderActions.matchingActions(rule.folder, folderActions);
+    const sources = new Map();
+    for (const action of inherited) {
+        for (const key of action.tags) {
+            if (!sources.has(key)) {
+                sources.set(key, []);
+            }
+            sources.get(key).push(folderDisplay(action.folder));
+        }
+    }
+    const list = createTagList([...sources.keys()], sources);
+    list.className += " rule-inherited-tags";
+    return list;
+}
+
+function ruleButtons(rule, key) {
+    const controls = document.createElement("div");
+    controls.className = "rule-entry-buttons";
+    const edit = document.createElement("button");
+    edit.type = "button";
+    edit.textContent = browser.i18n.getMessage("tab.list.table.action.edit");
+    edit.onclick = async () => {
+        await messenger.runtime.sendMessage({command: "requestOpenRulePopup", ruleId: key});
+    };
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.textContent = browser.i18n.getMessage("tab.list.table.action.delete");
+    remove.onclick = async () => {
+        if (!confirm(browser.i18n.getMessage("tab.list.table.action.delete.message.confirm"))) {
+            return;
+        }
+        await messenger.runtime.sendMessage({command: "requestRuleDelete", rule: {...rule, index: key}});
+    };
+    controls.appendChild(edit);
+    controls.appendChild(remove);
+    return controls;
+}
+
+function renderTable() {
+    const container = document.getElementById("rule-list-table");
+    const list = document.createElement("ol");
+    list.className = "rules-overview";
+    for (const [key, rule] of Object.entries(rules)) {
+        if (!rule) {
+            continue;
+        }
+        const entry = document.createElement("li");
+        entry.className = "rule-entry";
+        const details = document.createElement("div");
+        details.className = "rule-entry-details";
+        const conditions = document.createElement("div");
+        conditions.className = "rule-summary-line rule-summary-conditions";
+        for (const [field, active, label] of [
+            ["from", "activeFrom", "popup.rule.from"],
+            ["to", "activeTo", "popup.rule.to"],
+            ["subject", "activeSubject", "popup.rule.subject"],
+        ]) {
+            conditions.appendChild(summaryField(label, rule[field] || "—", !rule[active]));
+        }
+        const account = rule.activeAccount ? accountDisplay(rule.accountId)
+            : browser.i18n.getMessage("tab.list.table.account.unrestricted");
+        conditions.appendChild(summaryField("tab.list.table.account", account, !rule.activeAccount));
+
+        const actions = document.createElement("div");
+        actions.className = "rule-summary-line rule-summary-actions";
+        actions.appendChild(summaryField("popup.rule.folder", rule.folder ? folderDisplay(rule.folder) : "—"));
+        const directTags = createTagList(rule.tags);
+        directTags.className += " rule-direct-tags";
+        actions.appendChild(summaryField("popup.rule.tags", directTags, directTags.children.length === 0));
+        const inheritedTags = inheritedTagList(rule);
+        actions.appendChild(summaryField("tab.list.table.tags.inherited", inheritedTags, inheritedTags.children.length === 0));
+        details.appendChild(conditions);
+        details.appendChild(actions);
+        entry.appendChild(details);
+        entry.appendChild(ruleButtons(rule, key));
+        list.appendChild(entry);
+    }
+    if (list.children.length === 0) {
+        container.textContent = browser.i18n.getMessage("tab.list.empty");
+    } else {
+        container.replaceChildren(list);
+    }
+}
+
+function accountDisplay(accountId) {
+    const account = accounts.get(accountId);
+    return account ? (account.email ? `${account.name} (${account.email})` : account.name) : (accountId ?? "");
+}
+
+function folderDisplay(folder) {
+    return `${accountDisplay(folder.accountId)}: ${folder.path ?? ""}`;
+}
+
+function createTagList(keys = [], sources = new Map()) {
+    const container = document.createElement("div");
+    container.className = "table-tags";
+    const uniqueKeys = [...new Set(Array.isArray(keys) ? keys : [])];
+    if (uniqueKeys.length === 0) {
+        container.textContent = "—";
+    }
+    for (const key of uniqueKeys) {
+        const tag = tags.get(key);
+        const name = document.createElement("span");
+        name.className = "table-tag-name";
+        name.textContent = tag?.tag ?? key;
+        if (typeof tag?.color === "string" && /^#[0-9a-f]{6}$/i.test(tag.color)) {
+            name.style.color = tag.color;
+        }
+        if (sources.has(key)) {
+            name.title = sources.get(key).join("\n");
+        }
+        container.appendChild(name);
+    }
+    return container;
+}
+
+function renderFolderTable() {
+    const container = document.getElementById("folder-rule-list-table");
+    if (folderActions.length === 0) {
+        container.textContent = browser.i18n.getMessage("tab.list.folder.actions.empty");
+        return;
+    }
+    const table = new htmlSimpleTable();
+    table.setData([...folderActions].sort((left, right) =>
+        folderDisplay(left.folder).localeCompare(folderDisplay(right.folder))));
+    table.setTableConfig({
         table: {
             class: "qa-table system-font-size",
-            rowHighlighter: function (key) {
-                return (key % 2) ? "highlight" : "";
-            }
+            rowHighlighter: key => key % 2 ? "highlight" : "",
         },
         fields: [
             {
-                field: "from",
-                title: "From",
-                createChild: function (value, key) {
-
-                    let span = document.createElement("span");
-
-                    if (!value.activeFrom) {
-                        span.className = 'text-muted';
-                    }
-
-                    span.textContent = value.from;
-                    return span;
-                }
-            },
-            {
-                field: "to",
-                title: "To",
-                createChild: function (value, key) {
-
-                    let span = document.createElement("span");
-
-                    if (!value.activeTo) {
-                        span.className = 'text-muted';
-                    }
-
-                    span.textContent = value.to;
-                    return span;
-                }
-            },
-            {
-                field: "subject",
-                title: "Subject",
-                createChild: function (value, key) {
-
-                    let span = document.createElement("span");
-
-                    if (!value.activeSubject) {
-                        span.className = 'text-muted';
-                    }
-
-                    span.textContent = value.subject;
-                    return span;
-                }
-
-            },
-            {
                 field: "accountId",
                 title: browser.i18n.getMessage("tab.list.table.account"),
-                createChild: function (value) {
-                    let span = document.createElement("span");
-
-                    if (!value.activeAccount) {
-                        span.className = "text-muted";
-                        span.textContent = browser.i18n.getMessage("tab.list.table.account.unrestricted");
-                        return span;
-                    }
-
-                    let account = accounts.get(value.accountId);
-                    span.textContent = account
-                        ? (account.email ? `${account.name} (${account.email})` : account.name)
-                        : (value.accountId || "");
-                    return span;
-                }
+                formatterRow: value => accountDisplay(value.folder.accountId),
             },
             {
                 field: "folder",
-                title: "Folder",
-                formatterField: function (value) {
-                    return value.path;
-                }
+                title: browser.i18n.getMessage("popup.rule.folder.actions.folder"),
+                formatterField: value => value.path ?? "",
             },
             {
-                field: "index",
-                title: "",
-                width: "80px",
-                createChild: function (value, key) {
-
-                    let a = document.createElement("a");
-                    a.style = 'cursor:pointer';
-                    a.onclick = async function () {
-
-                        await messenger.runtime.sendMessage({
-                            command: "requestOpenRulePopup",
-                            ruleId: key
-                        });
-                    }
-                    a.textContent = browser.i18n.getMessage("tab.list.table.action.edit");
-
-                    return a;
-                }
+                field: "tags",
+                title: browser.i18n.getMessage("popup.rule.tags"),
+                createChild: value => createTagList(value.tags),
             },
             {
-                field: "index",
+                field: "delete",
                 title: "",
                 width: "80px",
-                createChild: function (value, key) {
-
-                    let a = document.createElement("a");
-                    a.style = 'cursor:pointer';
-                    a.onclick = async function () {
-
-                        if (!confirm(browser.i18n.getMessage("tab.list.table.action.delete.message.confirm"))) {
-                            return false;
+                createChild: value => {
+                    const button = document.createElement("button");
+                    button.type = "button";
+                    button.textContent = browser.i18n.getMessage("tab.list.table.action.delete");
+                    button.onclick = async () => {
+                        if (!confirm(browser.i18n.getMessage(
+                            "tab.list.folder.actions.delete.confirm", folderDisplay(value.folder)
+                        ))) {
+                            return;
                         }
-
-                        value.index = key;
-
-                        await messenger.runtime.sendMessage({
-                            command: "requestRuleDelete",
-                            rule: value
-                        });
-                    }
-                    a.textContent = browser.i18n.getMessage("tab.list.table.action.delete");
-
-                    return a;
-                }
-            }
-        ]
+                        button.disabled = true;
+                        try {
+                            const response = await messenger.runtime.sendMessage({
+                                command: "requestFolderActionDelete",
+                                folder: value.folder,
+                            });
+                            if (!response?.deleted) {
+                                throw new Error("Could not delete folder action");
+                            }
+                        } catch (error) {
+                            console.error("Could not delete folder action", error);
+                            alert(browser.i18n.getMessage("tab.list.folder.actions.delete.error"));
+                        } finally {
+                            button.disabled = false;
+                        }
+                    };
+                    return button;
+                },
+            },
+        ],
     });
-
-    let s = tab.build();
-    document.getElementById("rule-list-table").textContent = null;
-    document.getElementById("rule-list-table").appendChild(s);
+    container.replaceChildren(table.build());
 }
