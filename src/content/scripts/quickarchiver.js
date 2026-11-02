@@ -300,16 +300,24 @@ let quickarchiver = {
             return false;
         }
 
+        const settings = await messenger.storage.local.get(["showFolderPath", "hideFolderPathWhenTagged"]);
+        const displayOptions = {
+            showFolderPath: settings.showFolderPath !== false,
+            hideFolderPathWhenTagged: settings.hideFolderPathWhenTagged === true,
+        };
+        const columnRules = this.rules;
+
         if (!this.columnRegistered) {
             await messenger.customColumns.add(
                 this.columnId,
                 browser.i18n.getMessage("column.quickarchiverFolder"),
-                this.rules,
-                browser.i18n.getMessage("column.currentFolder")
+                columnRules,
+                browser.i18n.getMessage("column.currentFolder"),
+                displayOptions
             );
             this.columnRegistered = true;
         } else {
-            let updated = await messenger.customColumns.setRules(this.columnId, this.rules);
+            let updated = await messenger.customColumns.setRules(this.columnId, columnRules, displayOptions);
             if (updated === false) {
                 // The experiment may have been restarted while the MV3
                 // background context was idle. Re-register the column so it
@@ -317,8 +325,9 @@ let quickarchiver = {
                 await messenger.customColumns.add(
                     this.columnId,
                     browser.i18n.getMessage("column.quickarchiverFolder"),
-                    this.rules,
-                    browser.i18n.getMessage("column.currentFolder")
+                    columnRules,
+                    browser.i18n.getMessage("column.currentFolder"),
+                    displayOptions
                 );
             }
         }
@@ -946,6 +955,10 @@ let quickarchiver = {
 
             switch (broadcastMessage.command) {
 
+                case "refreshColumnDisplay":
+                    await this.initRules();
+                    await this.initColumn();
+                    return {saved: true};
                 case "requestRule":
 
                     await this.initRules();

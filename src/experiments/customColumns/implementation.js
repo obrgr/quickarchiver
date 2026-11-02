@@ -190,7 +190,7 @@ function getColumnAccountKey(message) {
   }
 }
 
-function folderDisplayValue(rule, message, currentFolderText) {
+function folderDisplayValue(rule, message, currentFolderText, displayOptions = {}) {
   const folder = rule?.folder;
   if (!folder) {
     return "";
@@ -290,6 +290,17 @@ function folderDisplayValue(rule, message, currentFolderText) {
   }
 
   const targetName = decodeFolderText(folder.name || targetFolders.at(-1));
+  // Native column callbacks provide nsIMsgDBHdr keywords; WebExtension
+  // message objects expose the same assigned tags as an array.
+  const hasTags = Array.isArray(message?.tags)
+    ? message.tags.some(tag => typeof tag === "string" && tag.trim().length > 0)
+    : typeof message?.getStringProperty === "function"
+      && Boolean(message.getStringProperty("keywords")?.trim());
+  const showPath = displayOptions.showFolderPath !== false
+    && !(displayOptions.hideFolderPathWhenTagged === true && hasTags);
+  if (!showPath) {
+    return `→ ${targetName}`;
+  }
   let parentFolders = targetFolders.slice(0, -1).map(decodeFolderText);
 
   // Do not repeat the folder currently shown in the message list. For example,
@@ -380,7 +391,7 @@ var customColumns = class extends ExtensionCommon.ExtensionAPI {
           return folderDisplayValue({folder}, message, currentFolderText);
         },
 
-        async add(id, name, rules, currentFolderText) {
+        async add(id, name, rules, currentFolderText, displayOptions = {showFolderPath: true}) {
           // MV3 background contexts are event pages and may be unloaded while
           // Thunderbird remains open. Keep the column registration in the
           // experiment process instead of tying it to that short-lived
@@ -388,6 +399,7 @@ var customColumns = class extends ExtensionCommon.ExtensionAPI {
           const existing = registeredColumns.get(id);
           if (existing) {
             existing.rules = rules;
+            existing.displayOptions = displayOptions;
             existing.currentFolderText = currentFolderText;
             ThreadPaneColumns.refreshCustomColumn(id);
             return true;
@@ -399,11 +411,12 @@ var customColumns = class extends ExtensionCommon.ExtensionAPI {
           const pending = pendingColumns.get(id);
           if (pending) {
             pending.state.rules = rules;
+            pending.state.displayOptions = displayOptions;
             pending.state.currentFolderText = currentFolderText;
             return false;
           }
 
-          const state = { rules, currentFolderText };
+          const state = { rules, currentFolderText, displayOptions };
           const column = {
             name,
             hidden: false,
@@ -421,7 +434,8 @@ var customColumns = class extends ExtensionCommon.ExtensionAPI {
                   }
                 ),
                 message,
-                state.currentFolderText
+                state.currentFolderText,
+                state.displayOptions
               );
             },
           };
@@ -431,7 +445,7 @@ var customColumns = class extends ExtensionCommon.ExtensionAPI {
           return false;
         },
 
-        async setRules(id, rules) {
+        async setRules(id, rules, displayOptions = {showFolderPath: true}) {
           const column = registeredColumns.get(id);
           if (!column) {
             return false;
@@ -439,6 +453,7 @@ var customColumns = class extends ExtensionCommon.ExtensionAPI {
           // Replace the rule list so the column never keeps a stale array
           // reference after a rule has been deleted or imported.
           column.rules = Array.isArray(rules) ? [...rules] : [];
+          column.displayOptions = displayOptions;
           ThreadPaneColumns.refreshCustomColumn(id);
           return true;
         },

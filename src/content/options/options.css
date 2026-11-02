@@ -11,3 +11,6 @@ button{
     display: block;
     margin-left:0;
 }
+.subsetting {
+    margin-inline-start: 2em;
+}

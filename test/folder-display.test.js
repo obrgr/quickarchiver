@@ -82,3 +82,52 @@ test("tag editor supports the older preferences entry point and reports unavaila
   assert.deepEqual(calls, [["paneGeneral", "tagsCategory"]]);
   await assert.rejects(setup().api.openTagEditor(), /No Thunderbird mail window/);
 });
+
+test("folder paths default on and can be hidden for tagged messages", () => {
+  const {context, message, folder} = setup();
+  const rule = {folder: folder("/INBOX/Archive/Invoices"), tags: ["rule-tag"]};
+  const format = (settings, mail = message) => context.folderDisplayValue(rule, mail, "current", settings);
+  assert.equal(format({}), "→ Invoices (Archive)");
+  for (const mail of [
+    {...message, tags: []},
+    {...message, tags: ["work"]},
+    {...message, getStringProperty: key => key === "keywords" ? "work personal" : ""},
+    {...message, getStringProperty: () => "  "},
+  ]) {
+    const tagged = mail.tags?.length > 0 || mail.getStringProperty?.("keywords").trim().length > 0;
+    assert.equal(format({showFolderPath: false}, mail), "→ Invoices");
+    assert.equal(format({showFolderPath: false, hideFolderPathWhenTagged: true}, mail), "→ Invoices");
+    assert.equal(format({showFolderPath: true}, mail), "→ Invoices (Archive)");
+    assert.equal(format({showFolderPath: true, hideFolderPathWhenTagged: true}, mail), tagged ? "→ Invoices" : "→ Invoices (Archive)");
+  }
+  assert.equal(format({hideFolderPathWhenTagged: true}), "→ Invoices (Archive)");
+  assert.equal(format({showFolderPath: false}, {folder: rule.folder}), "current");
+});
+
+test("column initialization defaults to full paths and refreshes display settings", async () => {
+  const calls = [];
+  const settings = {};
+  const context = vm.createContext({
+    messenger: {
+      storage: {local: {get: async () => settings}},
+      customColumns: {
+        add: async (...args) => calls.push(args),
+        setRules: async (...args) => { calls.push(args); return true; },
+      },
+    },
+    browser: {i18n: {getMessage: key => key}},
+  });
+  vm.runInContext(readFileSync("src/content/shared/folder-actions.js", "utf8"), context);
+  vm.runInContext(readFileSync("src/content/scripts/quickarchiver.js", "utf8"), context);
+  const qa = vm.runInContext("quickarchiver", context);
+  qa.rules = [{folder: {accountId: "account-1", path: "/Archive/Invoices"}}];
+  qa.folderActions = [{folder: {accountId: "account-1", path: "/Archive"}, tags: ["work"]}];
+  await qa.initColumn();
+  assert.deepEqual(JSON.parse(JSON.stringify(calls[0][4])), {showFolderPath: true, hideFolderPathWhenTagged: false});
+  assert.equal(calls[0][2][0], qa.rules[0]);
+  assert.equal(qa.rules[0].tags, undefined);
+  settings.showFolderPath = false;
+  settings.hideFolderPathWhenTagged = true;
+  await qa.initColumn();
+  assert.deepEqual(JSON.parse(JSON.stringify(calls[1][2])), {showFolderPath: false, hideFolderPathWhenTagged: true});
+});

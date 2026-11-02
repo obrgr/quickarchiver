@@ -15,6 +15,23 @@
 window.addEventListener("load", onLoad);
 
 async function onLoad() {
+    const settings = await messenger.storage.local.get(["showFolderPath", "hideFolderPathWhenTagged"]);
+    const showPath = document.getElementById("show-folder-path");
+    const hideWhenTagged = document.getElementById("hide-folder-path-when-tagged");
+    showPath.checked = settings.showFolderPath !== false;
+    hideWhenTagged.checked = settings.hideFolderPathWhenTagged === true;
+    hideWhenTagged.disabled = !showPath.checked;
+    const saveDisplay = async () => {
+        hideWhenTagged.disabled = !showPath.checked;
+        await messenger.storage.local.set({
+            showFolderPath: showPath.checked,
+            hideFolderPathWhenTagged: hideWhenTagged.checked,
+        });
+        await messenger.runtime.sendMessage({command: "refreshColumnDisplay"});
+    };
+    showPath.addEventListener("change", saveDisplay);
+    hideWhenTagged.addEventListener("change", saveDisplay);
+
 
     document.getElementById("button-tools").addEventListener("click", openTools);
     document.getElementById("button-all-rules").addEventListener("click", openAllRules);

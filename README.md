@@ -64,7 +64,7 @@ the saved destination folder. With multiple messages selected, Alt+A moves each 
 The rule editor supports these conditions:
 
 - **Sender:** matches the sender address
-- **Recipient:** matches the first recipient address exposed by Thunderbird
+- **Recipient:** matches any recipient address exposed by Thunderbird
 - **Subject:** matches the message subject
 - **Source account:** optionally limits the rule to messages from one account
 
@@ -206,10 +206,21 @@ the About page. In the message list, the menu also provides the move action when
 
 To enable the folder column, switch Thunderbird's message list to table view, right-click any column heading, and
 select **QuickArchiver Folder**. The column displays the destination folder for a matching rule. If the message is
-already there, it displays **✓ Current Folder**. The toolbar tooltip uses the same folder display as the column:
+already there, it displays **✓ Current Folder**. By default, the column and toolbar tooltip display destinations as:
 **→ Destination (Parent/Folder)**, with the account name included for destinations in another account. The leading
 IMAP `INBOX` level is hidden from the displayed parent path; saved destination paths remain unchanged.
 Thunderbird's card view does not support the custom column.
+
+In **Add-ons Manager → QuickArchiver → Settings**, configure the column display:
+
+- **Show folder path in the folder column** is enabled by default. Disable it to show only **→ Destination**.
+- **Hide folder path for tagged messages** is disabled by default and is available while folder paths are enabled.
+  Enable it to show only the folder name for messages that already have Thunderbird tags; untagged messages keep
+  the path. This checks the message's actual tags, including manually assigned tags, rather than tags configured
+  on its matching rule.
+
+Changes update the column immediately. The toolbar tooltip always retains the detailed path. If the main setting
+is off, the column shows only the folder name regardless of the tag setting. **✓ Current Folder** is unchanged.
 
 ## Settings and rule management
 

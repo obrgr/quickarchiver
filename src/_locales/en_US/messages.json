@@ -300,5 +300,7 @@
   },
   "popup.rule.tags.manage.error": {
     "message": "Could not open the Thunderbird tag editor."
-  }
+  },
+  "options.showFolderPath": {"message": "Show folder path in the folder column (enabled by default)"},
+  "options.hideFolderPathWhenTagged": {"message": "Hide folder path for tagged messages"}
 }

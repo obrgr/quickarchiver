@@ -300,5 +300,7 @@
   },
   "popup.rule.tags.manage.error": {
     "message": "Impossible d’ouvrir l’éditeur d’étiquettes de Thunderbird."
-  }
+  },
+  "options.showFolderPath": {"message": "Afficher le chemin dans la colonne des dossiers (activé par défaut)"},
+  "options.hideFolderPathWhenTagged": {"message": "Masquer le chemin pour les messages étiquetés"}
 }

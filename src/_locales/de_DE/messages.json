@@ -300,5 +300,7 @@
   },
   "popup.rule.tags.manage.error": {
     "message": "Der Thunderbird-Tag-Editor konnte nicht geöffnet werden."
-  }
+  },
+  "options.showFolderPath": {"message": "Ordnerpfad in der Ordnerspalte anzeigen (standardmäßig aktiviert)"},
+  "options.hideFolderPathWhenTagged": {"message": "Ordnerpfad bei getaggten Mails ausblenden"}
 }

@@ -74,6 +74,7 @@
     // not an actual email-message ;-)
     const handledRuntimeCommands = new Set([
         "requestRule",
+        "refreshColumnDisplay",
         "updateOpenRulePopupOnNewRule",
         "requestRuleUpdate",
         "requestRuleDelete",
