@@ -74,3 +74,32 @@ test("destination fallback respects folder identity", () => {
     null,
   );
 });
+
+
+test("recipient-only rules match every recipient in native and WebExtension headers", () => {
+  const rule = {
+    from: "irunnersmv@gmail.com",
+    to: "app@mikatiming.de",
+    subject: "mika:timing app",
+    activeFrom: false,
+    activeTo: true,
+    activeSubject: false,
+    folder: {id: "account3://Ablage/3_Projects/app", path: "/Ablage/3_Projects/app", accountId: "account3"},
+  };
+  const target = '"mika, timing" <app@mikatiming.de>';
+  const other = "Other <other@example.com>";
+  for (const recipients of [
+    [other, target],
+    [target, other],
+    `${other}, ${target}`,
+    `${target}, ${other}`,
+    [target],
+  ]) {
+    const message = {recipients, author: "other@example.com", subject: "Different subject"};
+    assert.equal(matching.findRule(message, [rule]), rule);
+    assert.equal(matching.findRule(message, [rule], {allowDestinationFolderFallback: true}), rule);
+  }
+  for (const recipients of [[other], other, [], undefined]) {
+    assert.equal(matching.findRule({recipients}, [rule]), null);
+  }
+});

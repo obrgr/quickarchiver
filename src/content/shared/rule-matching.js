@@ -14,15 +14,19 @@
 /* Shared rule matching helpers for the WebExtension and custom-column API. */
 
 var QuickArchiverRuleMatching = (() => {
-  function parseEmail(value) {
+  function parseEmails(value) {
     if (typeof value !== "string") {
-      return "";
+      return [];
     }
 
     const email = value.match(
       /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}(\.[0-9]{1,3}){3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/g
     );
-    return email?.at(-1) ?? "";
+    return email ?? [];
+  }
+
+  function parseEmail(value) {
+    return parseEmails(value).at(-1) ?? "";
   }
 
   function getMessageHeaderValue(message, type) {
@@ -89,7 +93,12 @@ var QuickArchiverRuleMatching = (() => {
       }
       if (match && rule.activeTo) {
         hasActiveCriteria = true;
-        match = findMatch(getMessageHeaderValue(message, "recipients"), rule.to);
+        // Native column headers expose a comma-separated string, whereas
+        // WebExtension messages expose an array. Check every address in both.
+        const recipients = message?.recipients;
+        const addresses = (Array.isArray(recipients) ? recipients : [recipients])
+          .flatMap(parseEmails);
+        match = addresses.some(address => findMatch(address, rule.to));
       }
       if (match && rule.activeSubject) {
         hasActiveCriteria = true;
