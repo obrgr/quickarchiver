@@ -67,8 +67,14 @@
   "popup.rule.intro": {
     "message": "Vous pouvez utiliser des caractères génériques (« * »). Par exemple, « @*example.com » correspond aux messages de info@newsletter.example.com et de support@example.com."
   },
+  "popup.rule.actions.help": {
+    "message": "Lorsqu’une règle correspond, les étiquettes sélectionnées sont ajoutées automatiquement. L’archivage avec QuickArchiver déplace le message vers le dossier de destination."
+  },
+  "popup.rule.actions": {
+    "message": "Actions"
+  },
   "popup.rule.criteria": {
-    "message": "Critères du message"
+    "message": "Conditions"
   },
   "popup.rule.from": {
     "message": "De"
@@ -228,5 +234,11 @@
   },
   "command_quickarchiver_move_description": {
     "message": "Déplacer le message vers le dossier QuickArchiver (si une règle existe)"
+  },
+  "popup.rule.tags": {
+    "message": "Étiquettes"
+  },
+  "popup.rule.tags.help": {
+    "message": "Les étiquettes Thunderbird sélectionnées sont ajoutées automatiquement aux nouveaux messages et à l’affichage d’un dossier. Les étiquettes existantes sont conservées. Créez de nouvelles étiquettes dans Thunderbird."
   }
 }

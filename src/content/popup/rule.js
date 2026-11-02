@@ -39,6 +39,7 @@ async function ruleSave() {
         rule.activeSubject = document.getElementById("active-subject").checked;
         rule.activeAccount = document.getElementById("active-account").checked;
         rule.accountId = document.getElementById("account").value;
+        rule.tags = Array.from(document.querySelectorAll('#tags input:checked'), input => input.value);
 
         await messenger.runtime.sendMessage({
             command: "requestRuleUpdate",
@@ -106,6 +107,36 @@ messenger.runtime.onMessage.addListener((broadcastMessage) => {
         if (broadcastMessage.command === "transmitRule" && broadcastMessage.rule) {
 
             rule = broadcastMessage.rule;
+
+            const tagsContainer = document.getElementById("tags");
+            tagsContainer.replaceChildren();
+            const availableTags = broadcastMessage.tags ?? [];
+            const savedTags = Array.isArray(rule.tags) ? rule.tags : [];
+            // Keep deleted tag keys visible, so saving unrelated edits does not
+            // silently discard them. Deleted tags are ignored when archiving.
+            const tagOptions = [...availableTags];
+            for (const key of savedTags) {
+                if (!tagOptions.some(tag => tag.key === key)) {
+                    tagOptions.push({key, tag: key});
+                }
+            }
+            for (const tag of tagOptions) {
+                const label = document.createElement("label");
+                label.className = "rule-tag";
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.value = tag.key;
+                checkbox.checked = savedTags.includes(tag.key);
+                label.appendChild(checkbox);
+                const tagName = document.createElement("span");
+                tagName.className = "rule-tag-name";
+                tagName.textContent = tag.tag;
+                if (typeof tag.color === "string" && /^#[0-9a-f]{6}$/i.test(tag.color)) {
+                    tagName.style.color = tag.color;
+                }
+                label.appendChild(tagName);
+                tagsContainer.appendChild(label);
+            }
 
             let accountSelect = document.getElementById("account");
             accountSelect.replaceChildren();

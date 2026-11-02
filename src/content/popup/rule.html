@@ -17,10 +17,10 @@
     <main class="rule">
 
         <h2 data-i18n="popup.rule.headline"></h2>
-        <p class="rule-intro" data-i18n="popup.rule.intro"></p>
 
         <fieldset class="rule-section rule-criteria">
             <legend data-i18n="popup.rule.criteria"></legend>
+            <p class="rule-intro" data-i18n="popup.rule.intro"></p>
 
             <div class="rule-condition">
                 <div class="rule-condition-title">
@@ -63,11 +63,22 @@
             </div>
         </fieldset>
 
-        <fieldset class="rule-section rule-destination">
-            <legend data-i18n="popup.rule.folder"></legend>
-            <div class="rule-destination-controls">
-                <input id="folder" type="text" value="" readonly="readonly">
-                <button type="button" id="button-select-folder" data-i18n="popup.rule.folder.button.select"></button>
+        <fieldset class="rule-section rule-effects">
+            <legend data-i18n="popup.rule.actions"></legend>
+            <p data-i18n="popup.rule.actions.help"></p>
+
+            <div class="rule-effect rule-destination">
+                <label for="folder" data-i18n="popup.rule.folder"></label>
+                <div class="rule-destination-controls">
+                    <input id="folder" type="text" value="" readonly="readonly">
+                    <button type="button" id="button-select-folder" data-i18n="popup.rule.folder.button.select"></button>
+                </div>
+            </div>
+
+            <div class="rule-effect" role="group" aria-labelledby="tags-label" aria-describedby="tags-help">
+                <h3 id="tags-label" data-i18n="popup.rule.tags"></h3>
+                <p id="tags-help" data-i18n="popup.rule.tags.help"></p>
+                <div id="tags"></div>
             </div>
         </fieldset>
 

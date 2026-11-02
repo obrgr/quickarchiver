@@ -24,6 +24,7 @@ let quickarchiver = {
         activeAccount: false,
         accountId: '',
         folder: {},
+        tags: [],
     },
     currentRule: null,
     currentMessage: null,
@@ -328,6 +329,7 @@ let quickarchiver = {
         // reload rules after changing them
         await this.loadRules();
         await this.initColumn();
+        await this.classifyOpenFolders();
 
         return true;
     },
@@ -469,7 +471,7 @@ let quickarchiver = {
         await messenger.windows.create({
             url,
             type: "popup",
-            height: 640,
+            height: 760,
             width: 600,
             allowScriptsToClose: true
         });
@@ -561,6 +563,14 @@ let quickarchiver = {
 
             let rule = await quickarchiver.findRule(message);
 
+            if (rule) {
+                try {
+                    await this.applyRuleTags(message, rule);
+                } catch (error) {
+                    console.error("Could not tag displayed message", message.id, error);
+                }
+            }
+
             let color_scheme = await this.getThemeColorScheme();
 
             if (rule && rule.folder) {
@@ -640,6 +650,77 @@ let quickarchiver = {
         console.info("[QuickArchiver move] Batch finished");
     },
 
+    classifyMessages: async function (messageList) {
+        await this.initRules();
+        let page = messageList;
+        while (page) {
+            for (const message of this.getMessages(page)) {
+                try {
+                    const rule = QuickArchiverRuleMatching.findRule(message, this.rules);
+                    if (rule) {
+                        await this.applyRuleTags(message, rule);
+                    }
+                } catch (error) {
+                    // One unavailable message must not prevent the rest of a
+                    // delivery batch or folder from being classified.
+                    console.error("Could not tag classified message", message.id, error);
+                }
+            }
+            page = page.id ? await messenger.messages.continueList(page.id) : null;
+        }
+    },
+
+    classifyFolder: async function (folder) {
+        if (!folder?.id) {
+            return;
+        }
+        await this.initRules();
+        if (!this.rules.some(rule => Array.isArray(rule.tags) && rule.tags.length > 0)) {
+            return;
+        }
+        try {
+            await this.classifyMessages(await messenger.messages.list(folder.id));
+        } catch (error) {
+            console.error("Could not classify folder", folder.id, error);
+        }
+    },
+
+    classifyOpenFolders: async function () {
+        let tabs;
+        try {
+            tabs = await messenger.mailTabs.query({});
+        } catch (error) {
+            console.error("Could not list open folders for classification", error);
+            return;
+        }
+        const folders = new Map();
+        for (const tab of tabs) {
+            if (tab.displayedFolder?.id) {
+                folders.set(tab.displayedFolder.id, tab.displayedFolder);
+            }
+        }
+        for (const folder of folders.values()) {
+            await this.classifyFolder(folder);
+        }
+    },
+
+    // Always merge with a fresh header: messages.update replaces the tag list.
+    applyRuleTags: async function (message, rule) {
+        if (!Array.isArray(rule.tags) || rule.tags.length === 0) {
+            return;
+        }
+        const available = new Set((await messenger.messages.tags.list()).map(tag => tag.key));
+        const selected = rule.tags.filter(key => typeof key === "string" && available.has(key));
+        if (selected.length === 0) {
+            return;
+        }
+        const current = await messenger.messages.get(message.id);
+        const tags = [...new Set([...(current.tags ?? []), ...selected])];
+        if (tags.length !== (current.tags ?? []).length) {
+            await messenger.messages.update(message.id, {tags});
+        }
+    },
+
     moveMail: async function (message) {
 
         console.info("[QuickArchiver move] Start message", {
@@ -707,6 +788,7 @@ let quickarchiver = {
                     messageId: message.id,
                     destinationFolderId: folderId,
                 });
+                await this.applyRuleTags(message, rule);
                 await messenger.messages.move([message.id], folderId);
                 console.info("[QuickArchiver move] messages.move succeeded", {
                     messageId: message.id,
@@ -750,6 +832,7 @@ let quickarchiver = {
                     console.error("Could not resolve destination folder", rule.folder);
                     return false;
                 }
+                await this.applyRuleTags(message, rule);
                 await messenger.messages.move([message.id], folderId);
                 console.info("Moved message with with subject '" + message.subject + "' to folder '" + rule.folder.path + "'");
             } catch (ex) {
@@ -820,6 +903,7 @@ let quickarchiver = {
                         command: "transmitRule",
                         rule: requestedRule,
                         accounts: await this.getAccounts(),
+                        tags: await messenger.messages.tags.list(),
                         openRulePopupOnNewRule: this.openRulePopupOnNewRule,
                     });
                     break;

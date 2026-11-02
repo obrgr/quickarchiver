@@ -12,6 +12,20 @@
  */
 
 (async () => {
+    // Register synchronously so delivery wakes an idle MV3 event page.
+    // Classification applies tags without moving or marking messages as read.
+    messenger.messages.onNewMailReceived.addListener(async (folder, messageList) => {
+        try {
+            await quickarchiver.classifyMessages(messageList);
+        } catch (error) {
+            console.error("QuickArchiver incoming mail classification failed", error);
+        }
+    }, true);
+
+    messenger.mailTabs.onDisplayedFolderChanged.addListener(async (tab, folder) => {
+        await quickarchiver.classifyFolder(folder);
+    });
+
     // onMessagesDisplayed listener. In MV3 this also covers a single message.
     messenger.messageDisplay.onMessagesDisplayed.addListener(async (tab, messageList) => {
         let messages = quickarchiver.getMessages(messageList);
@@ -139,6 +153,7 @@
     await quickarchiver.createMenus();
     await quickarchiver.initRules();
     await quickarchiver.initColumn();
+    await quickarchiver.classifyOpenFolders();
 
     // at the first start after install the display event may not be fired
     // therefore handle all opened messages

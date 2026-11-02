@@ -67,8 +67,14 @@
   "popup.rule.intro": {
     "message": "You can use wildcards ('*'). For example, '@*example.com' matches messages from info@newsletter.example.com and support@example.com."
   },
+  "popup.rule.actions.help": {
+    "message": "When a rule matches, the selected tags are added automatically. Archiving with QuickArchiver moves the message to the destination folder."
+  },
+  "popup.rule.actions": {
+    "message": "Actions"
+  },
   "popup.rule.criteria": {
-    "message": "Message criteria"
+    "message": "Conditions"
   },
   "popup.rule.from": {
     "message": "From"
@@ -228,5 +234,11 @@
   },
   "command_quickarchiver_move_description": {
     "message": "Move mail to QuickArchiver folder (if rule is present)"
+  },
+  "popup.rule.tags": {
+    "message": "Tags"
+  },
+  "popup.rule.tags.help": {
+    "message": "Selected Thunderbird tags are added automatically to incoming mail and when displaying a folder. Existing tags are kept. Create new tags in Thunderbird."
   }
 }

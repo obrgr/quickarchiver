@@ -73,8 +73,25 @@ section.section-main {
     margin-top: 4px;
 }
 
-.rule-destination {
-    padding-bottom: 14px;
+.rule-effect {
+    padding: 10px 0 12px;
+}
+
+.rule-effect + .rule-effect {
+    border-top: 1px solid var(--in-content-box-border-color);
+}
+
+.rule-effect > label,
+.rule-effect > h3 {
+    display: block;
+    font-size: 1em;
+    font-weight: 600;
+    margin: 0 0 6px;
+}
+
+.rule-effect > p {
+    font-size: 0.9em;
+    margin: 0 0 8px;
 }
 
 .rule-destination-controls {
@@ -224,4 +241,21 @@ section.section-main {
 
 .qa-table tr.highlight td {
     background-color: #444;
+}
+
+#tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+}
+
+.rule-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.rule .rule-tag-name {
+    display: inline;
+    opacity: 1;
 }

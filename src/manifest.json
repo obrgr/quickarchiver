@@ -10,7 +10,7 @@
   "name": "QuickArchiver",
   "author": "Otto Berger <otto@bergerdata.de>",
   "description": "__MSG_extension_description__",
-  "version": "2.7.5",
+  "version": "2.8.0",
   "default_locale": "en_US",
   "icons": {
     "16": "content/icons/light/qa_move.svg",
@@ -51,6 +51,8 @@
     "menus",
     "messagesRead",
     "messagesMove",
+    "messagesUpdate",
+    "messagesTagsList",
     "accountsRead"
   ],
   "commands": {

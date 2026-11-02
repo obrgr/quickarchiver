@@ -67,8 +67,14 @@
   "popup.rule.intro": {
     "message": "Du kannst Platzhalter ('*') verwenden. Der Ausdruck '@*example.com' findet zum Beispiel E-Mails von info@newsletter.example.com und support@example.com."
   },
+  "popup.rule.actions.help": {
+    "message": "Bei passender Regel werden die ausgewählten Tags automatisch ergänzt. Beim Archivieren mit QuickArchiver wird die E-Mail in den Zielordner verschoben."
+  },
+  "popup.rule.actions": {
+    "message": "Aktionen"
+  },
   "popup.rule.criteria": {
-    "message": "Nachrichtenkriterien"
+    "message": "Bedingungen"
   },
   "popup.rule.from": {
     "message": "Von"
@@ -228,5 +234,11 @@
   },
   "command_quickarchiver_move_description": {
     "message": "E-Mail in den QuickArchiver-Ordner verschieben (wenn eine Regel vorhanden ist)"
+  },
+  "popup.rule.tags": {
+    "message": "Tags"
+  },
+  "popup.rule.tags.help": {
+    "message": "Ausgewählte Thunderbird-Tags werden bei neuen Mails und beim Anzeigen eines Ordners automatisch ergänzt. Bestehende Tags bleiben erhalten. Neue Tags bitte in Thunderbird anlegen."
   }
 }

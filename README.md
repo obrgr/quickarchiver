@@ -10,7 +10,7 @@ what to do with a message, quick filing helps you keep your inbox clear.
 
 ## Project status
 
-- Current version: **2.7.5**
+- Current version: **2.8.0**
 - Manifest: **V3**
 - Supported Thunderbird versions: **128 through 159**
 - Languages: **English, German, and French**
@@ -234,6 +234,12 @@ The content and formatting constraints are documented in
 [`docs/addons.thunderbird.net/AGENTS.md`](docs/addons.thunderbird.net/AGENTS.md).
 
 ## Release notes
+
+### 2.8.0
+
+- Select multiple existing Thunderbird tags per rule and apply them automatically to incoming mail and when displaying a folder
+- Reclassify open folders when rules change; archiving also applies missing tags
+- Preserve existing message tags and ignore deleted tags
 
 ### 2.7.5
 
