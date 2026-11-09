@@ -7,7 +7,7 @@
     <link rel='stylesheet' type='text/css' href="chrome://global/skin/in-content/common.css">
     <link rel='stylesheet' type='text/css' href="../tab.css">
 </head>
-<body>
+<body class="about-page">
 
 <nav class="nav-main"><img src="../../icons/dark/qa_move.svg" alt=""/>
     <h1 data-i18n="main.title"></h1></nav>
@@ -18,35 +18,37 @@
 
         <div class="col main">
 
-            <div class="section">
-                <h2>QuickArchiver</h2>
-                <p>QuickArchiver hilft dir, deinen Posteingang sauber zu halten. Die Erweiterung merkt sich, wohin
-                    E-Mails gehören, und archiviert passende E-Mails später mit einem Klick oder Tastenkürzel.</p>
-                <p>QuickArchiver unterstützt deinen E-Mail-Workflow nach der Methode Getting Things Done (GTD). Du
-                    kannst deinen Posteingang als Eingang für neue Informationen nutzen und beim
-                    Durchsehen jeder Nachricht entscheiden, was als Nächstes zu tun ist: direkt
-                    beantworten, eine Aufgabe festhalten, auf eine Rückmeldung warten oder die
-                    Nachricht als Referenz ablegen. Sobald du die nötige Aktion erledigt oder an
-                    einem verlässlichen Ort festgehalten hast, hilft dir QuickArchiver bei der
-                    Ablage. Verschiebe zum Beispiel die erste Rechnung eines Absenders in deinen
-                    Rechnungsordner; weitere passende Nachrichten kannst du später mit einem Klick
-                    oder Tastenkürzel dorthin verschieben. So bleibt im Posteingang leichter
-                    erkennbar, was noch deine Aufmerksamkeit braucht. Wann eine Nachricht bereit zum
-                    Ablegen ist, entscheidest du selbst; Aufgaben und Wiedervorlagen verwaltest du
-                    weiterhin in deinem gewohnten System.</p>
+            <div class="section hero">
+                <img width="100%" src="../images/overview@2x.png" alt="QuickArchiver-Übersicht"/>
+                <div class="intro-text">
+                    <p>QuickArchiver hilft dir, deinen Posteingang sauber zu halten. Die Erweiterung merkt sich, wohin
+                        E-Mails gehören, und archiviert passende E-Mails später mit einem Klick oder Tastenkürzel.</p>
+                    <p><strong>NEU:</strong> QuickArchiver versieht passende E-Mails außerdem automatisch anhand deiner Regeln mit Tags. So bleiben Kategorien sichtbar, noch bevor du die Nachrichten aus dem Posteingang verschiebst.</p>
+                    <p>QuickArchiver unterstützt deinen E-Mail-Workflow nach der Methode Getting Things Done (GTD). Du
+                        kannst deinen Posteingang als Eingang für neue Informationen nutzen und beim
+                        Durchsehen jeder Nachricht entscheiden, was als Nächstes zu tun ist: direkt
+                        beantworten, eine Aufgabe festhalten, auf eine Rückmeldung warten oder die
+                        Nachricht als Referenz ablegen. Sobald du die nötige Aktion erledigt oder an
+                        einem verlässlichen Ort festgehalten hast, hilft dir QuickArchiver bei der
+                        Ablage. Verschiebe zum Beispiel die erste Rechnung eines Absenders in deinen
+                        Rechnungsordner; weitere passende Nachrichten kannst du später mit einem Klick
+                        oder Tastenkürzel dorthin verschieben. So bleibt im Posteingang leichter
+                        erkennbar, was noch deine Aufmerksamkeit braucht. Wann eine Nachricht bereit zum
+                        Ablegen ist, entscheidest du selbst; Aufgaben und Wiedervorlagen verwaltest du
+                        weiterhin in deinem gewohnten System.</p>
+                </div>
             </div>
 
             <div class="section">
                 <h2>Schnellstart</h2>
                 <div class="panel">
-                    <img width="300" src="../images/toolbar_editrule@2x.png" alt="Toolbar-Button zum Bearbeiten einer Regel"/>
                     <h3>1. Regel durch Verschieben erstellen</h3>
                     <p>Verschiebe eine E-Mail wie gewohnt in ihren Zielordner. Wenn noch keine passende Regel existiert,
                         erstellt QuickArchiver automatisch eine Regel aus der Absenderadresse und merkt sich den
                         Zielordner.</p>
                 </div>
                 <div class="panel">
-                    <img width="300" src="../images/toolbar_move@2x.png" alt="Toolbar-Button zum Verschieben einer E-Mail"/>
+                    <img width="330" src="../images/move@2x.png" alt="Toolbar-Button zum Verschieben einer E-Mail"/>
                     <h3>2. Passende E-Mails archivieren</h3>
                     <p>Passt eine E-Mail zu einer Regel, klicke auf den QuickArchiver-Button oder drücke
                         <strong>Alt+A</strong>. QuickArchiver verschiebt sie direkt in den gespeicherten Zielordner. Bei
@@ -62,7 +64,7 @@
             <div class="section">
                 <h2>Details</h2>
                 <div class="panel">
-                    <img width="300" src="../images/toolbar_no_rule@2x.png" alt="Toolbar-Button ohne vorhandene Regel"/>
+                    <img width="330" src="../images/rule_conditions@2x.png" alt="QuickArchiver-Regelbedingungen"/>
                     <h3>Regel-Popup und Regeleinstellungen</h3>
                     <p>Im Regel-Popup legst du fest, welche Bedingungen aktiv sind. Eine Regel kann Absender,
                         Empfänger, Betreff und optional das Quellkonto berücksichtigen. Alle aktivierten Bedingungen
@@ -78,7 +80,7 @@
                         andernfalls sind Posteingang und Papierkorb von der automatischen Regelerstellung ausgeschlossen.</p>
                 </div>
                 <div class="panel">
-                    <img width="300" src="../images/toolbar_menu@2x.png" alt="Toolbar-Button mit geöffnetem Kontextmenü"/>
+                    <img width="330" src="../images/move_context@2x.png" alt="Toolbar-Button mit geöffnetem Kontextmenü"/>
                     <h3>Kontextmenü</h3>
                     <p>Ein Rechtsklick auf den QuickArchiver-Button öffnet das Kontextmenü. Dort kannst du die aktuelle
                         Regel bearbeiten, alle Regeln anzeigen, das automatische Öffnen des Regel-Popups einstellen
@@ -87,6 +89,7 @@
                 </div>
                 <div class="panel">
                     <h3>QuickArchiver-Ordnerspalte einblenden</h3>
+                    <img width="100%" src="../images/column@2x.png" alt="QuickArchiver-Ordnerspalte"/>
                     <p>Klicke in Thunderbirds Tabellenansicht mit der rechten Maustaste auf eine Spaltenüberschrift und
                         wähle <q>QuickArchiver-Ordner</q>. Die Spalte zeigt den Zielordner passender Regeln. Befindet sich
                         eine E-Mail bereits dort, erscheint <q>✓ Aktueller Ordner</q>. In der Kartenansicht ist die Spalte
@@ -106,7 +109,8 @@
             </div>
 
             <div class="section" id="tagging">
-                <h2>E-Mails automatisch taggen</h2>
+                <h2>NEU: E-Mails automatisch taggen</h2>
+                <img class="tagging-screenshot" width="330" src="../images/rule_tags@2x.png" alt="QuickArchiver-Regel-Tags"/>
                 <p>QuickArchiver kann passende E-Mails bereits im Posteingang mit Thunderbird-Tags versehen. Damit bleiben Kategorien wie Kunden, Rechnungen oder Projekte sichtbar, bevor du die Nachrichten archivierst. Das Taggen ist optional; Regeln ohne eigene oder geerbte Tags funktionieren wie bisher. Wann du eine E-Mail mit QuickArchiver verschiebst, entscheidest du weiterhin selbst.</p>
                 <div class="panel">
                     <h3>Tags pro Regel festlegen</h3>
@@ -163,7 +167,7 @@
                     <h3>Alle Regeln</h3>
                     <p>Wähle im Kontextmenü oder auf der QuickArchiver-Einstellungsseite <q>Alle Regeln anzeigen</q>, um
                         gespeicherte Regeln zu prüfen, zu bearbeiten oder zu löschen.</p>
-                    <img width="100%" src="../images/screenshot_editor@2x.png" alt="Screenshot des Regeleditors"/>
+                    <img width="100%" src="../images/all_rules@2x.png" alt="QuickArchiver-Regeln"/>
                     <div style="clear: both"></div>
                 </div>
                 <div class="panel">

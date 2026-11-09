@@ -4,6 +4,15 @@ body {
     color: var(--text-color, var(--in-content-page-color, inherit));
 }
 
+/* Match the specificity of Thunderbird's :root:not(.system-font-size). */
+:root:has(.about) {
+    font-size: 16px;
+}
+
+.about {
+    font-size: 1rem;
+}
+
 nav.nav-main {
     background-color: var(--background-color-box, var(--in-content-categories-background));
     display: block;
@@ -259,8 +268,204 @@ section.section-main {
     margin-bottom: 40px;
 }
 
+.col.main #tagging {
+    display: flow-root;
+}
+
+.col.main .tagging-screenshot {
+    max-width: 45%;
+    height: auto;
+}
+
+.col.main #tagging > .panel:first-of-type {
+    clear: none;
+}
+
 h2 {
     clear: both;
+}
+
+.about-page {
+    margin: 0;
+    --help-border: color-mix(in srgb, currentColor 18%, transparent);
+    --help-card: var(--background-color-box, var(--in-content-box-background, Canvas));
+}
+
+.about-page .nav-main {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: fit-content;
+    height: auto;
+    margin: 0 auto;
+    padding: 14px 28px;
+    border: 1px solid var(--help-border);
+    border-top: 0;
+    border-radius: 0 0 28px 28px;
+    background: var(--help-card);
+}
+
+.about-page .nav-main img {
+    float: none;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+}
+
+.about-page .nav-main h1 {
+    margin: 0;
+    font-size: 1.125rem;
+}
+
+.about-page .section-main {
+    display: block;
+    padding: 48px 24px 64px;
+}
+
+.about-page .about {
+    max-width: 1120px;
+    margin: 0 auto;
+    line-height: 1.65;
+}
+
+.about-page .col {
+    float: none;
+    width: auto;
+    margin: 0;
+}
+
+.about-page .col.main {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+}
+
+.about-page .col.main .section,
+.about-page .changelog {
+    display: flow-root;
+    min-width: 0;
+    margin: 0;
+    padding: 32px;
+    border: 1px solid var(--help-border);
+    border-radius: 26px;
+    background: var(--help-card);
+}
+
+.about-page .col.main .section:nth-child(-n+4) {
+    grid-column: 1 / -1;
+}
+
+.about-page h2 {
+    margin: 0 0 20px;
+    font-size: 1.65rem;
+    line-height: 1.25;
+    letter-spacing: -0.025em;
+}
+
+.about-page h3 {
+    font-size: 1.125rem;
+    line-height: 1.4;
+    margin: 24px 0 12px;
+}
+
+.about-page p {
+    margin: 0 0 18px;
+}
+
+.about-page li {
+    margin-block: 6px;
+}
+
+.about-page a {
+    overflow-wrap: anywhere;
+}
+
+.about-page .col.main .hero {
+    padding: 8px 0 24px;
+    border: 0;
+    background: transparent;
+    text-align: center;
+}
+
+.about-page .hero h2 {
+    font-size: clamp(2.25rem, 5vw, 3.25rem);
+    font-weight: 600;
+    margin-bottom: 28px;
+}
+
+.about-page .hero .intro-text {
+    columns: 2;
+    column-gap: 36px;
+    text-align: left;
+}
+
+.about-page .hero p {
+    margin: 0 0 24px;
+}
+
+.about-page .col.main .hero img {
+    float: none;
+    display: block;
+    width: 100%;
+    margin: 0 auto 32px;
+}
+
+.about-page .col.main img {
+    box-sizing: border-box;
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--help-border);
+    border-radius: 12px;
+}
+
+.about-page .col.main .panel {
+    display: flow-root;
+}
+
+.about-page .col.main #tagging > .panel:first-of-type {
+    display: block;
+}
+
+.about-page .col.main .tagging-screenshot {
+    max-width: 45%;
+}
+
+.about-page .changelog {
+    margin-top: 28px;
+    padding: 32px;
+}
+
+@media (max-width: 760px) {
+    .about-page .section-main {
+        padding: 32px 16px;
+    }
+
+    .about-page .col.main {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+    }
+
+    .about-page .col.main .section,
+    .about-page .changelog {
+        padding: 24px;
+    }
+
+    .about-page .col.main img {
+        float: none;
+        display: block;
+        max-width: 100%;
+        margin: 0 auto 20px;
+    }
+
+    .about-page .col.main .tagging-screenshot {
+        max-width: 100%;
+    }
+
+    .about-page .hero .intro-text {
+        columns: 1;
+    }
 }
 
 .action-buttons {

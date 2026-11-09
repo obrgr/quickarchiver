@@ -1,9 +1,11 @@
-# QuickArchiver
+# ![QuickArchiver logo](src/content/icons/dark/qa_move.svg) QuickArchiver
 
-![QuickArchiver logo](https://github.com/obrgr/quickarchiver/raw/master/src/content/icons/dark/qa_move.svg)
+![Toolbar button for editing a rule](src/content/tab/images/overview@2x.png)
 
 QuickArchiver is a Thunderbird MailExtension for keeping your inbox clean. It learns destination folders when you
 move messages and later archives matching messages with one click or a keyboard shortcut.
+**NEW:** It also **automatically tags messages based on your rules**, keeping categories visible
+even before you move messages out of your inbox.
 
 QuickArchiver supports an email workflow based on the **Getting Things Done (GTD)** method: once you have decided
 what to do with a message, quick filing helps you keep your inbox clear.
@@ -24,16 +26,28 @@ Install the published release from [Thunderbird Add-ons](https://addons.thunderb
 
 ## Features
 
+### Move messages to the right folder
+
 - Automatically creates a rule when a message is moved to a folder
 - Moves matching messages through the toolbar button, context menu, or **Alt+A**
-- Matches sender, recipient, and subject conditions
-- Supports case-insensitive text matching and `*` wildcards
-- Optionally restricts a rule to a source account
 - Provides a searchable destination-folder picker with account filtering
 - Shows matching destinations in the optional QuickArchiver folder column
-- Automatically tags matching messages using existing Thunderbird tags
+
+### NEW: Automatically tag messages based on rules
+
+- Automatically applies existing Thunderbird tags to messages matching your rules, including incoming mail
+- Keeps categories such as **Customers**, **Invoices**, or **Project A** visible while messages are still in your inbox
 - Adds tags inherited from destination folders and their parent folders
 - Shows direct and inherited tags in the rule dialog and rules overview
+- Preserves existing message tags; you choose when to move messages to their destination folders
+
+See [Automatic tagging](#automatic-tagging) for setup and examples.
+
+### Shared rules and management
+
+- Matches sender, recipient, and subject conditions for both filing and tagging
+- Supports case-insensitive text matching and `*` wildcards
+- Optionally restricts a rule to a source account
 - Lists, edits, and deletes stored rules
 - Imports and exports all rules as JSON
 - Optionally opens the rule editor whenever a new rule is created
@@ -42,24 +56,31 @@ Install the published release from [Thunderbird Add-ons](https://addons.thunderb
 
 ### 1. Create a rule by moving a message
 
-![Toolbar button for editing a rule](https://github.com/obrgr/quickarchiver/raw/master/src/content/tab/images/toolbar_editrule@2x.png)
-
 Move a message to its destination folder as usual. If no matching rule exists, QuickArchiver automatically creates
 one from the sender address and remembers the destination folder.
 
 ### 2. Archive matching messages
 
-![Toolbar button for moving a message](https://github.com/obrgr/quickarchiver/raw/master/src/content/tab/images/toolbar_move@2x.png)
+![Toolbar button for moving a message](src/content/tab/images/move@2x.png)
 
 When a message matches a rule, click the QuickArchiver button or press **Alt+A**. QuickArchiver moves it directly to
 the saved destination folder. With multiple messages selected, Alt+A moves each message for which a rule exists.
 
-> **Tip:** In Thunderbird's table view, enable the **QuickArchiver Folder** column to see the matching destination
+> **Tip:** In Thunderbird's table view, enable the **[QuickArchiver Folder](#Folder-column)** column to see the matching destination
 > before moving a message.
+
+### 3. NEW: Add automatic tags
+
+Edit the rule and select one or more Thunderbird tags under **Actions â†’ Tags**, then save it. QuickArchiver
+automatically adds those tags to matching incoming messages while they are still in your inbox. You can also
+assign tags to destination folders and their parent folders to share categories across multiple rules.
+
+For example, tag a supplier's messages as **Invoices** on arrival, then move them to the saved supplier folder
+with **Alt+A** when you are ready. See [Automatic tagging](#automatic-tagging) for the full guide.
 
 ## Rule details
 
-![Toolbar button when no rule exists](https://github.com/obrgr/quickarchiver/raw/master/src/content/tab/images/toolbar_no_rule@2x.png)
+![QuickArchiver rule conditions](src/content/tab/images/rule_conditions@2x.png)
 
 The rule editor supports these conditions:
 
@@ -86,7 +107,11 @@ allowed. Otherwise, Inbox and Trash are excluded from automatic rule creation.
 
 ## Automatic tagging
 
-QuickArchiver can tag messages as soon as they match a rule, before you archive them. Use tags to keep categories
+![QuickArchiver rule tags](src/content/tab/images/rule_tags@2x.png)
+
+**NEW:** Automatic rule-based tagging is QuickArchiver's second main feature alongside moving
+messages to destination folders. QuickArchiver can tag messages as soon as they match a rule, before you archive them.
+Use tags to keep categories
 such as **Customers**, **Invoices**, or **Project A** visible while messages are still in your inbox. Tagging uses
 the same conditions as filing: sender, recipient, subject, and an optional source-account restriction.
 
@@ -197,12 +222,16 @@ The backup contains tag references, not Thunderbird's tag definitions. It does n
 or restore their names and colors. When transferring settings to another profile, the referenced tags, accounts,
 and destination folders must also be available there. Unavailable tags are skipped when applying assignments.
 
-## Context menu and folder column
+## Context menu
 
-![QuickArchiver context menu](https://github.com/obrgr/quickarchiver/raw/master/src/content/tab/images/toolbar_menu@2x.png)
+![QuickArchiver context menu](src/content/tab/images/move_context@2x.png)
 
 Right-click the QuickArchiver button to edit the current rule, show all rules, configure the new-rule popup, or open
 the About page. In the message list, the menu also provides the move action when a matching rule exists.
+
+## QuickArchiver Folder column
+
+![QuickArchiver context menu](src/content/tab/images/column@2x.png)
 
 To enable the folder column, switch Thunderbird's message list to table view, right-click any column heading, and
 select **QuickArchiver Folder**. The column displays the destination folder for a matching rule. If the message is
@@ -224,7 +253,7 @@ is off, the column shows only the folder name regardless of the tag setting. **â
 
 ## Settings and rule management
 
-![QuickArchiver rules](https://github.com/obrgr/quickarchiver/raw/master/src/content/tab/images/screenshot_editor@2x.png)
+![QuickArchiver rules](src/content/tab/images/all_rules@2x.png)
 
 Select **Show all rules** from the QuickArchiver context menu or settings page to review, edit, or delete stored rules.
 Each rule uses two lines: conditions first, then its destination and direct and inherited tags with inline labels.

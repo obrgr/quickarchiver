@@ -7,7 +7,7 @@
     <link rel='stylesheet' type='text/css' href="chrome://global/skin/in-content/common.css">
     <link rel='stylesheet' type='text/css' href="../tab.css">
 </head>
-<body>
+<body class="about-page">
 
 <nav class="nav-main"><img src="../../icons/dark/qa_move.svg" alt=""/>
     <h1 data-i18n="main.title"></h1></nav>
@@ -15,36 +15,38 @@
 <section class="section-main">
     <main class="about">
         <div class="col main">
-            <div class="section">
-                <h2>QuickArchiver</h2>
-                <p>QuickArchiver vous aide à garder votre boîte de réception bien rangée. Il apprend où classer vos
-                    messages et vous permet ensuite d’archiver les messages correspondants d’un clic ou à l’aide d’un
-                    raccourci clavier.</p>
-                <p>QuickArchiver accompagne votre gestion des e-mails selon la méthode Getting Things Done (GTD). Vous
-                    pouvez utiliser votre boîte de réception comme point de collecte des nouvelles
-                    informations et décider, en consultant chaque message, de la suite à lui donner
-                    : répondre immédiatement, noter une tâche, attendre une réponse ou conserver le
-                    message comme référence. Une fois l’action nécessaire effectuée ou consignée
-                    dans un endroit fiable, QuickArchiver vous aide à classer le message. Par
-                    exemple, déplacez la première facture d’un expéditeur vers votre dossier de
-                    factures ; les messages correspondants suivants pourront y être rangés d’un clic
-                    ou à l’aide d’un raccourci clavier. Vous repérez ainsi plus facilement les
-                    messages qui demandent encore votre attention. Vous décidez quand un message est
-                    prêt à être classé et continuez à gérer vos tâches et vos rappels dans votre
-                    système habituel.</p>
+            <div class="section hero">
+                <img width="100%" src="../images/overview@2x.png" alt="Vue d’ensemble de QuickArchiver"/>
+                <div class="intro-text">
+                    <p>QuickArchiver vous aide à garder votre boîte de réception bien rangée. Il apprend où classer vos
+                        messages et vous permet ensuite d’archiver les messages correspondants d’un clic ou à l’aide d’un
+                        raccourci clavier.</p>
+                    <p><strong>NOUVEAU:</strong> QuickArchiver attribue aussi automatiquement des étiquettes aux messages selon vos règles. Les catégories restent ainsi visibles avant même de déplacer les messages hors de la boîte de réception.</p>
+                    <p>QuickArchiver accompagne votre gestion des e-mails selon la méthode Getting Things Done (GTD). Vous
+                        pouvez utiliser votre boîte de réception comme point de collecte des nouvelles
+                        informations et décider, en consultant chaque message, de la suite à lui donner
+                        : répondre immédiatement, noter une tâche, attendre une réponse ou conserver le
+                        message comme référence. Une fois l’action nécessaire effectuée ou consignée
+                        dans un endroit fiable, QuickArchiver vous aide à classer le message. Par
+                        exemple, déplacez la première facture d’un expéditeur vers votre dossier de
+                        factures ; les messages correspondants suivants pourront y être rangés d’un clic
+                        ou à l’aide d’un raccourci clavier. Vous repérez ainsi plus facilement les
+                        messages qui demandent encore votre attention. Vous décidez quand un message est
+                        prêt à être classé et continuez à gérer vos tâches et vos rappels dans votre
+                        système habituel.</p>
+                </div>
             </div>
 
             <div class="section">
                 <h2>Premiers pas</h2>
                 <div class="panel">
-                    <img width="300" src="../images/toolbar_editrule@2x.png" alt="Bouton permettant de modifier une règle"/>
                     <h3>1. Créer une règle en déplaçant un message</h3>
                     <p>Déplacez un message vers son dossier de destination comme d’habitude. Si aucune règle ne
                         correspond, QuickArchiver en crée automatiquement une à partir de l’adresse de l’expéditeur
                         et mémorise le dossier de destination.</p>
                 </div>
                 <div class="panel">
-                    <img width="300" src="../images/toolbar_move@2x.png" alt="Bouton permettant de déplacer un message"/>
+                    <img width="330" src="../images/move@2x.png" alt="Bouton permettant de déplacer un message"/>
                     <h3>2. Archiver les messages correspondants</h3>
                     <p>Lorsqu’un message correspond à une règle, cliquez sur le bouton QuickArchiver ou appuyez sur
                         <strong>Alt+A</strong>. QuickArchiver le déplace directement vers le dossier mémorisé. Si vous
@@ -60,7 +62,7 @@
             <div class="section">
                 <h2>En détail</h2>
                 <div class="panel">
-                    <img width="300" src="../images/toolbar_no_rule@2x.png" alt="Bouton lorsqu’aucune règle n’existe"/>
+                    <img width="330" src="../images/rule_conditions@2x.png" alt="Conditions des règles QuickArchiver"/>
                     <h3>Éditeur et paramètres des règles</h3>
                     <p>L’éditeur vous permet de choisir les conditions actives. Une règle peut porter sur l’expéditeur,
                         le destinataire, l’objet et, éventuellement, le compte source. Toutes les conditions activées
@@ -78,7 +80,7 @@
                         de règles.</p>
                 </div>
                 <div class="panel">
-                    <img width="300" src="../images/toolbar_menu@2x.png" alt="Bouton avec son menu contextuel"/>
+                    <img width="330" src="../images/move_context@2x.png" alt="Bouton avec son menu contextuel"/>
                     <h3>Menu contextuel</h3>
                     <p>Faites un clic droit sur le bouton QuickArchiver pour modifier la règle actuelle, afficher toutes
                         les règles, choisir d’ouvrir l’éditeur pour les nouvelles règles ou consulter cette page d’aide.
@@ -87,6 +89,7 @@
                 </div>
                 <div class="panel">
                     <h3>Afficher la colonne Dossier QuickArchiver</h3>
+                    <img width="100%" src="../images/column@2x.png" alt="Colonne Dossier QuickArchiver"/>
                     <p>Dans la vue en tableau de Thunderbird, faites un clic droit sur un en-tête de colonne et
                         sélectionnez <q>Dossier QuickArchiver</q>. La colonne affiche le dossier de destination des
                         règles correspondantes. Si un message s’y trouve déjà, elle affiche <q>✓ Dossier actuel</q>.
@@ -107,7 +110,8 @@
             </div>
 
             <div class="section" id="tagging">
-                <h2>Étiqueter automatiquement les messages</h2>
+                <h2>NOUVEAU: Étiqueter automatiquement les messages</h2>
+                <img class="tagging-screenshot" width="330" src="../images/rule_tags@2x.png" alt="Étiquettes des règles QuickArchiver"/>
                 <p>QuickArchiver peut ajouter des étiquettes Thunderbird aux messages correspondants dès leur arrivée dans la boîte de réception. Les catégories comme Clients, Factures ou les projets restent visibles avant l’archivage. Cette fonction est facultative : les règles sans étiquettes propres ou héritées fonctionnent comme auparavant. Vous décidez toujours quand déplacer les messages avec QuickArchiver.</p>
                 <div class="panel">
                     <h3>Attribuer des étiquettes à une règle</h3>
@@ -164,7 +168,7 @@
                     <h3>Toutes les règles</h3>
                     <p>Sélectionnez <q>Afficher toutes les règles</q> dans le menu contextuel ou dans les paramètres de
                         QuickArchiver pour consulter, modifier ou supprimer les règles enregistrées.</p>
-                    <img width="100%" src="../images/screenshot_editor@2x.png" alt="Capture d’écran de l’éditeur de règles"/>
+                    <img width="100%" src="../images/all_rules@2x.png" alt="Règles QuickArchiver"/>
                     <div style="clear: both"></div>
                 </div>
                 <div class="panel">

@@ -7,7 +7,7 @@
     <link rel='stylesheet' type='text/css' href="chrome://global/skin/in-content/common.css">
     <link rel='stylesheet' type='text/css' href="../tab.css">
 </head>
-<body>
+<body class="about-page">
 
 <nav class="nav-main"><img src="../../icons/dark/qa_move.svg" alt=""/>
     <h1 data-i18n="main.title"></h1></nav>
@@ -18,32 +18,34 @@
 
         <div class="col main">
 
-            <div class="section">
-                <h2>QuickArchiver</h2>
-                <p>QuickArchiver helps you keep your inbox clean. It learns where messages belong and lets you archive
-                    matching messages later with a single click or keyboard shortcut.</p>
-                <p>QuickArchiver supports an email workflow based on the Getting Things Done (GTD) method. You can use
-                    your inbox as a collection point for new information and decide what comes next
-                    as you review each message: reply straight away, capture a task, wait for a
-                    response, or file the message for reference. Once you have completed the
-                    necessary action or recorded it somewhere you trust, QuickArchiver helps with
-                    filing. For example, move the first invoice from a sender into your invoices
-                    folder; later matching messages can go there with one click or a keyboard
-                    shortcut. This makes it easier to see which messages in your inbox still need
-                    your attention. You decide when a message is ready to be filed, while continuing
-                    to manage tasks and follow-ups in your usual system.</p>
+            <div class="section hero">
+                <img width="100%" src="../images/overview@2x.png" alt="QuickArchiver overview"/>
+                <div class="intro-text">
+                    <p>QuickArchiver helps you keep your inbox clean. It learns where messages belong and lets you archive
+                        matching messages later with a single click or keyboard shortcut.</p>
+                    <p><strong>NEW:</strong> QuickArchiver also automatically tags messages based on your rules, keeping categories visible before you move messages out of your inbox.</p>
+                    <p>QuickArchiver supports an email workflow based on the Getting Things Done (GTD) method. You can use
+                        your inbox as a collection point for new information and decide what comes next
+                        as you review each message: reply straight away, capture a task, wait for a
+                        response, or file the message for reference. Once you have completed the
+                        necessary action or recorded it somewhere you trust, QuickArchiver helps with
+                        filing. For example, move the first invoice from a sender into your invoices
+                        folder; later matching messages can go there with one click or a keyboard
+                        shortcut. This makes it easier to see which messages in your inbox still need
+                        your attention. You decide when a message is ready to be filed, while continuing
+                        to manage tasks and follow-ups in your usual system.</p>
+                </div>
             </div>
 
             <div class="section">
                 <h2>Quick Start</h2>
                 <div class="panel">
-                    <img width="300" src="../images/toolbar_editrule@2x.png" alt="Toolbar button for editing a rule"/>
                     <h3>1. Create a rule by moving a message</h3>
                     <p>Move a message to its destination folder as usual. If no matching rule exists, QuickArchiver
                         automatically creates one from the sender address and remembers the destination folder.</p>
                 </div>
                 <div class="panel">
-                    <img width="300" src="../images/toolbar_move@2x.png" alt="Toolbar button for moving a message"/>
+                    <img width="330" src="../images/move@2x.png" alt="Toolbar button for moving a message"/>
                     <h3>2. Archive matching messages</h3>
                     <p>When a message matches a rule, click the QuickArchiver button or press <strong>Alt+A</strong>.
                         QuickArchiver moves it directly to the saved destination folder. With multiple messages selected,
@@ -59,7 +61,7 @@
             <div class="section">
                 <h2>Details</h2>
                 <div class="panel">
-                    <img width="300" src="../images/toolbar_no_rule@2x.png" alt="Toolbar button when no rule exists"/>
+                    <img width="330" src="../images/rule_conditions@2x.png" alt="QuickArchiver rule conditions"/>
                     <h3>Rule popup and rule settings</h3>
                     <p>The rule popup lets you choose which conditions are active. A rule can match the sender,
                         recipients, subject, and optionally the source account. All enabled conditions must match.</p>
@@ -74,7 +76,7 @@
                         and Trash are excluded from automatic rule creation.</p>
                 </div>
                 <div class="panel">
-                    <img width="300" src="../images/toolbar_menu@2x.png" alt="Toolbar button with context menu"/>
+                    <img width="330" src="../images/move_context@2x.png" alt="Toolbar button with context menu"/>
                     <h3>Context menu</h3>
                     <p>Right-click the QuickArchiver button to edit the current rule, show all rules, change whether the
                         rule popup opens for new rules, or open this About page. In the message list, the menu also
@@ -82,6 +84,7 @@
                 </div>
                 <div class="panel">
                     <h3>Show the QuickArchiver folder column</h3>
+                    <img width="100%" src="../images/column@2x.png" alt="QuickArchiver folder column"/>
                     <p>In Thunderbird's table view, right-click any column heading and select
                         <q>QuickArchiver Folder</q>. The column displays the destination folder for matching rules. If a
                         message is already there, it displays <q>✓ Current Folder</q>. The column is not available in
@@ -100,7 +103,8 @@
             </div>
 
             <div class="section" id="tagging">
-                <h2>Automatically tag messages</h2>
+                <h2>NEW: Automatically tag messages</h2>
+                <img class="tagging-screenshot" width="330" src="../images/rule_tags@2x.png" alt="QuickArchiver rule tags"/>
                 <p>QuickArchiver can add Thunderbird tags to matching messages while they are still in your inbox. Keep categories such as Customers, Invoices, or projects visible before archiving. Tagging is optional: rules without direct or inherited tags work as before. You still decide when to move messages with QuickArchiver.</p>
                 <div class="panel">
                     <h3>Assign tags to a rule</h3>
@@ -157,7 +161,7 @@
                     <h3>All rules</h3>
                     <p>Select <q>Show all rules</q> from the context menu or the QuickArchiver settings page to review,
                         edit, or delete stored rules.</p>
-                    <img width="100%" src="../images/screenshot_editor@2x.png" alt="Screenshot of the rule editor"/>
+                    <img width="100%" src="../images/all_rules@2x.png" alt="QuickArchiver rules"/>
                     <div style="clear: both"></div>
                 </div>
                 <div class="panel">
