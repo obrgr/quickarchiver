@@ -12,9 +12,9 @@ what to do with a message, quick filing helps you keep your inbox clear.
 
 ## Project status
 
-- Current version: **2.8.0**
+- Current version: **2.8.1**
 - Manifest: **V3**
-- Supported Thunderbird versions: **128 through 159**
+- Supported Thunderbird versions: **128 through 160**
 - Languages: **English, German, and French**
 - License: **GNU Lesser General Public License, version 3 or later**
 
@@ -405,6 +405,10 @@ The content and formatting constraints are documented in
 [`docs/addons.thunderbird.net/AGENTS.md`](docs/addons.thunderbird.net/AGENTS.md).
 
 ## Release notes
+
+### 2.8.1
+
+- Extended declared Thunderbird compatibility through version 160
 
 ### 2.8.0
 
