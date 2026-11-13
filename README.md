@@ -411,8 +411,9 @@ files and all localized About pages where applicable.
 Localized listing templates for addons.thunderbird.net are maintained in
 [`docs/addons.thunderbird.net/`](docs/addons.thunderbird.net/): [English](docs/addons.thunderbird.net/en/listing.md),
 [German](docs/addons.thunderbird.net/de/listing.md), and [French](docs/addons.thunderbird.net/fr/listing.md).
-Each language folder contains only the short description in `listing.md` and a detailed user-facing description
-in `description.html`, using only the basic HTML tags accepted by addons.thunderbird.net. Keep these templates
+Each language folder contains the short description in `listing.md`, a detailed user-facing description
+in `description.html` using only the basic HTML tags accepted by addons.thunderbird.net, and a separate
+`changelog-<version>.html` for each documented release (currently 2.8.1 and 2.8.0). Keep these templates
 in sync when preparing a release; copy their contents into the corresponding listing fields manually.
 The content and formatting constraints are documented in
 [`docs/addons.thunderbird.net/AGENTS.md`](docs/addons.thunderbird.net/AGENTS.md).
