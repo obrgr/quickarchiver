@@ -17,23 +17,46 @@
         <div class="col main">
             <div class="section hero">
                 <img width="100%" src="../images/overview@2x.png" alt="Vue d’ensemble de QuickArchiver"/>
-                <div class="intro-text">
-                    <p>QuickArchiver vous aide à garder votre boîte de réception bien rangée. Il apprend où classer vos
-                        messages et vous permet ensuite d’archiver les messages correspondants d’un clic ou à l’aide d’un
-                        raccourci clavier.</p>
-                    <p><strong>NOUVEAU:</strong> QuickArchiver attribue aussi automatiquement des étiquettes aux messages selon vos règles. Les catégories restent ainsi visibles avant même de déplacer les messages hors de la boîte de réception.</p>
-                    <p>QuickArchiver accompagne votre gestion des e-mails selon la méthode Getting Things Done (GTD). Vous
-                        pouvez utiliser votre boîte de réception comme point de collecte des nouvelles
-                        informations et décider, en consultant chaque message, de la suite à lui donner
-                        : répondre immédiatement, noter une tâche, attendre une réponse ou conserver le
-                        message comme référence. Une fois l’action nécessaire effectuée ou consignée
-                        dans un endroit fiable, QuickArchiver vous aide à classer le message. Par
-                        exemple, déplacez la première facture d’un expéditeur vers votre dossier de
-                        factures ; les messages correspondants suivants pourront y être rangés d’un clic
-                        ou à l’aide d’un raccourci clavier. Vous repérez ainsi plus facilement les
-                        messages qui demandent encore votre attention. Vous décidez quand un message est
-                        prêt à être classé et continuez à gérer vos tâches et vos rappels dans votre
-                        système habituel.</p>
+                <div class="intro-columns">
+                    <div class="intro-text">
+                        <h2>À propos de QuickArchiver</h2>
+                        <p>QuickArchiver vous aide à garder votre boîte de réception bien rangée. Il apprend où classer vos
+                            messages et vous permet ensuite d’archiver les messages correspondants d’un clic ou à l’aide d’un
+                            raccourci clavier.</p>
+                        <p><strong>NOUVEAU:</strong> QuickArchiver attribue aussi automatiquement des étiquettes aux messages selon vos règles. Les catégories restent ainsi visibles avant même de déplacer les messages hors de la boîte de réception.</p>
+                        <p>QuickArchiver accompagne votre gestion des e-mails selon la méthode Getting Things Done (GTD). Vous
+                            pouvez utiliser votre boîte de réception comme point de collecte des nouvelles
+                            informations et décider, en consultant chaque message, de la suite à lui donner
+                            : répondre immédiatement, noter une tâche, attendre une réponse ou conserver le
+                            message comme référence. Une fois l’action nécessaire effectuée ou consignée
+                            dans un endroit fiable, QuickArchiver vous aide à classer le message. Par
+                            exemple, déplacez la première facture d’un expéditeur vers votre dossier de
+                            factures ; les messages correspondants suivants pourront y être rangés d’un clic
+                            ou à l’aide d’un raccourci clavier. Vous repérez ainsi plus facilement les
+                            messages qui demandent encore votre attention. Vous décidez quand un message est
+                            prêt à être classé et continuez à gérer vos tâches et vos rappels dans votre
+                            système habituel.</p>
+                    </div>
+                    <aside class="release-preview" aria-labelledby="recent-releases">
+                        <h2 id="recent-releases">Notes de version</h2>
+                    <h3>Version 2.8.1</h3>
+                    <ul>
+                        <li>Mise à jour des destinations des règles et des associations d’étiquettes lors du renommage ou du déplacement de dossiers dans Thunderbird, y compris les sous-dossiers et les déplacements vers un autre compte</li>
+                        <li>Conservation des conditions des règles et des étiquettes attribuées lors de la mise à jour des références aux dossiers</li>
+                        <li>Compatibilité déclarée avec Thunderbird étendue jusqu’à la version 160</li>
+                    </ul>
+
+                    <h3>Version 2.8.0</h3>
+                    <ul>
+                        <li>Étiquetage automatique des messages correspondants à leur arrivée et à leur consultation</li>
+                        <li>Cumul des étiquettes des règles, des destinations et des dossiers parents, avec aperçu et sauvegarde</li>
+                        <li>Dialogue organisé en Conditions et Actions et règles affichées sur deux lignes avec couleurs des étiquettes</li>
+                        <li>Accès direct aux paramètres d’étiquettes de Thunderbird</li>
+                        <li>Réutilisation de la liste des étiquettes au cours de chaque traitement ou archivage par lot</li>
+                    </ul>
+
+                        <p><a href="#release-notes">Toutes les notes de version</a></p>
+                    </aside>
                 </div>
             </div>
 
@@ -168,6 +191,12 @@
                     <h3>Toutes les règles</h3>
                     <p>Sélectionnez <q>Afficher toutes les règles</q> dans le menu contextuel ou dans les paramètres de
                         QuickArchiver pour consulter, modifier ou supprimer les règles enregistrées.</p>
+                    <p>Lorsque vous renommez ou déplacez un dossier dans Thunderbird, QuickArchiver met à jour les
+                        destinations des règles et les associations d’étiquettes pour ce dossier et ses sous-dossiers,
+                        y compris lors d’un déplacement vers un autre compte. Les conditions et les étiquettes directes
+                        restent inchangées ; les étiquettes héritées suivent la nouvelle arborescence de destination.
+                        Les copies de dossiers et les modifications effectuées dans un autre logiciel de messagerie
+                        ne sont pas suivies.</p>
                     <img width="100%" src="../images/all_rules@2x.png" alt="Règles QuickArchiver"/>
                     <div style="clear: both"></div>
                 </div>
@@ -184,8 +213,15 @@
 
         </div>
 
-        <div class="col changelog">
+        <div class="col changelog" id="release-notes">
             <h2>Notes de version</h2>
+
+            <h3>Version 2.8.1</h3>
+            <ul>
+                <li>Mise à jour des destinations des règles et des associations d’étiquettes lors du renommage ou du déplacement de dossiers dans Thunderbird, y compris les sous-dossiers et les déplacements vers un autre compte</li>
+                <li>Conservation des conditions des règles et des étiquettes attribuées lors de la mise à jour des références aux dossiers</li>
+                <li>Compatibilité déclarée avec Thunderbird étendue jusqu’à la version 160</li>
+            </ul>
 
             <h3>Version 2.8.0</h3>
             <ul>
@@ -194,6 +230,11 @@
                 <li>Dialogue organisé en Conditions et Actions et règles affichées sur deux lignes avec couleurs des étiquettes</li>
                 <li>Accès direct aux paramètres d’étiquettes de Thunderbird</li>
                 <li>Réutilisation de la liste des étiquettes au cours de chaque traitement ou archivage par lot</li>
+            </ul>
+
+            <h3>Version 2.7.5</h3>
+            <ul>
+                <li>Compatibilité déclarée avec Thunderbird étendue jusqu’à la version 159</li>
             </ul>
 
             <h3>Version 2.7.4</h3>

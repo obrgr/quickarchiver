@@ -20,20 +20,43 @@
 
             <div class="section hero">
                 <img width="100%" src="../images/overview@2x.png" alt="QuickArchiver overview"/>
-                <div class="intro-text">
-                    <p>QuickArchiver helps you keep your inbox clean. It learns where messages belong and lets you archive
-                        matching messages later with a single click or keyboard shortcut.</p>
-                    <p><strong>NEW:</strong> QuickArchiver also automatically tags messages based on your rules, keeping categories visible before you move messages out of your inbox.</p>
-                    <p>QuickArchiver supports an email workflow based on the Getting Things Done (GTD) method. You can use
-                        your inbox as a collection point for new information and decide what comes next
-                        as you review each message: reply straight away, capture a task, wait for a
-                        response, or file the message for reference. Once you have completed the
-                        necessary action or recorded it somewhere you trust, QuickArchiver helps with
-                        filing. For example, move the first invoice from a sender into your invoices
-                        folder; later matching messages can go there with one click or a keyboard
-                        shortcut. This makes it easier to see which messages in your inbox still need
-                        your attention. You decide when a message is ready to be filed, while continuing
-                        to manage tasks and follow-ups in your usual system.</p>
+                <div class="intro-columns">
+                    <div class="intro-text">
+                        <h2>About QuickArchiver</h2>
+                        <p>QuickArchiver helps you keep your inbox clean. It learns where messages belong and lets you archive
+                            matching messages later with a single click or keyboard shortcut.</p>
+                        <p><strong>NEW:</strong> QuickArchiver also automatically tags messages based on your rules, keeping categories visible before you move messages out of your inbox.</p>
+                        <p>QuickArchiver supports an email workflow based on the Getting Things Done (GTD) method. You can use
+                            your inbox as a collection point for new information and decide what comes next
+                            as you review each message: reply straight away, capture a task, wait for a
+                            response, or file the message for reference. Once you have completed the
+                            necessary action or recorded it somewhere you trust, QuickArchiver helps with
+                            filing. For example, move the first invoice from a sender into your invoices
+                            folder; later matching messages can go there with one click or a keyboard
+                            shortcut. This makes it easier to see which messages in your inbox still need
+                            your attention. You decide when a message is ready to be filed, while continuing
+                            to manage tasks and follow-ups in your usual system.</p>
+                    </div>
+                    <aside class="release-preview" aria-labelledby="recent-releases">
+                        <h2 id="recent-releases">Release Notes</h2>
+                    <h3>Version 2.8.1</h3>
+                    <ul>
+                        <li>Update rule destinations and folder-tag assignments when folders are renamed or moved in Thunderbird, including subfolders and moves to another account</li>
+                        <li>Preserve rule conditions and assigned tags when updating folder references</li>
+                        <li>Extended declared Thunderbird compatibility through version 160</li>
+                    </ul>
+
+                    <h3>Version 2.8.0</h3>
+                    <ul>
+                        <li>Automatically tag matching messages on arrival and when viewing mail</li>
+                        <li>Combine direct tags with destination and parent folder tags, including previews and backups</li>
+                        <li>Organize the rule dialog into Conditions and Actions and show rules in two lines with tag colors</li>
+                        <li>Open Thunderbird tag settings directly from the rule dialog</li>
+                        <li>Reuse Thunderbird’s tag list within each classification or archive batch</li>
+                    </ul>
+
+                        <p><a href="#release-notes">All release notes</a></p>
+                    </aside>
                 </div>
             </div>
 
@@ -161,6 +184,10 @@
                     <h3>All rules</h3>
                     <p>Select <q>Show all rules</q> from the context menu or the QuickArchiver settings page to review,
                         edit, or delete stored rules.</p>
+                    <p>When you rename or move a folder in Thunderbird, QuickArchiver updates rule destinations and
+                        folder-tag assignments for that folder and its subfolders, including moves to another account.
+                        Rule conditions and direct tags remain unchanged; inherited tags follow the new destination
+                        hierarchy. Folder copies and changes made through another mail client are not tracked.</p>
                     <img width="100%" src="../images/all_rules@2x.png" alt="QuickArchiver rules"/>
                     <div style="clear: both"></div>
                 </div>
@@ -176,8 +203,15 @@
 
         </div>
 
-        <div class="col changelog">
+        <div class="col changelog" id="release-notes">
             <h2>Release Notes</h2>
+
+            <h3>Version 2.8.1</h3>
+            <ul>
+                <li>Update rule destinations and folder-tag assignments when folders are renamed or moved in Thunderbird, including subfolders and moves to another account</li>
+                <li>Preserve rule conditions and assigned tags when updating folder references</li>
+                <li>Extended declared Thunderbird compatibility through version 160</li>
+            </ul>
 
             <h3>Version 2.8.0</h3>
             <ul>
@@ -186,6 +220,11 @@
                 <li>Organize the rule dialog into Conditions and Actions and show rules in two lines with tag colors</li>
                 <li>Open Thunderbird tag settings directly from the rule dialog</li>
                 <li>Reuse Thunderbird’s tag list within each classification or archive batch</li>
+            </ul>
+
+            <h3>Version 2.7.5</h3>
+            <ul>
+                <li>Extended declared Thunderbird compatibility through version 159</li>
             </ul>
 
             <h3>Version 2.7.4</h3>

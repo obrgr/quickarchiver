@@ -20,22 +20,45 @@
 
             <div class="section hero">
                 <img width="100%" src="../images/overview@2x.png" alt="QuickArchiver-Übersicht"/>
-                <div class="intro-text">
-                    <p>QuickArchiver hilft dir, deinen Posteingang sauber zu halten. Die Erweiterung merkt sich, wohin
-                        E-Mails gehören, und archiviert passende E-Mails später mit einem Klick oder Tastenkürzel.</p>
-                    <p><strong>NEU:</strong> QuickArchiver versieht passende E-Mails außerdem automatisch anhand deiner Regeln mit Tags. So bleiben Kategorien sichtbar, noch bevor du die Nachrichten aus dem Posteingang verschiebst.</p>
-                    <p>QuickArchiver unterstützt deinen E-Mail-Workflow nach der Methode Getting Things Done (GTD). Du
-                        kannst deinen Posteingang als Eingang für neue Informationen nutzen und beim
-                        Durchsehen jeder Nachricht entscheiden, was als Nächstes zu tun ist: direkt
-                        beantworten, eine Aufgabe festhalten, auf eine Rückmeldung warten oder die
-                        Nachricht als Referenz ablegen. Sobald du die nötige Aktion erledigt oder an
-                        einem verlässlichen Ort festgehalten hast, hilft dir QuickArchiver bei der
-                        Ablage. Verschiebe zum Beispiel die erste Rechnung eines Absenders in deinen
-                        Rechnungsordner; weitere passende Nachrichten kannst du später mit einem Klick
-                        oder Tastenkürzel dorthin verschieben. So bleibt im Posteingang leichter
-                        erkennbar, was noch deine Aufmerksamkeit braucht. Wann eine Nachricht bereit zum
-                        Ablegen ist, entscheidest du selbst; Aufgaben und Wiedervorlagen verwaltest du
-                        weiterhin in deinem gewohnten System.</p>
+                <div class="intro-columns">
+                    <div class="intro-text">
+                        <h2>Über QuickArchiver</h2>
+                        <p>QuickArchiver hilft dir, deinen Posteingang sauber zu halten. Die Erweiterung merkt sich, wohin
+                            E-Mails gehören, und archiviert passende E-Mails später mit einem Klick oder Tastenkürzel.</p>
+                        <p><strong>NEU:</strong> QuickArchiver versieht passende E-Mails außerdem automatisch anhand deiner Regeln mit Tags. So bleiben Kategorien sichtbar, noch bevor du die Nachrichten aus dem Posteingang verschiebst.</p>
+                        <p>QuickArchiver unterstützt deinen E-Mail-Workflow nach der Methode Getting Things Done (GTD). Du
+                            kannst deinen Posteingang als Eingang für neue Informationen nutzen und beim
+                            Durchsehen jeder Nachricht entscheiden, was als Nächstes zu tun ist: direkt
+                            beantworten, eine Aufgabe festhalten, auf eine Rückmeldung warten oder die
+                            Nachricht als Referenz ablegen. Sobald du die nötige Aktion erledigt oder an
+                            einem verlässlichen Ort festgehalten hast, hilft dir QuickArchiver bei der
+                            Ablage. Verschiebe zum Beispiel die erste Rechnung eines Absenders in deinen
+                            Rechnungsordner; weitere passende Nachrichten kannst du später mit einem Klick
+                            oder Tastenkürzel dorthin verschieben. So bleibt im Posteingang leichter
+                            erkennbar, was noch deine Aufmerksamkeit braucht. Wann eine Nachricht bereit zum
+                            Ablegen ist, entscheidest du selbst; Aufgaben und Wiedervorlagen verwaltest du
+                            weiterhin in deinem gewohnten System.</p>
+                    </div>
+                    <aside class="release-preview" aria-labelledby="recent-releases">
+                        <h2 id="recent-releases">Release Notes</h2>
+                    <h3>Version 2.8.1</h3>
+                    <ul>
+                        <li>Regelziele und Ordner-Tag-Zuordnungen beim Umbenennen oder Verschieben von Ordnern in Thunderbird aktualisiert, einschließlich Unterordnern und Verschieben in ein anderes Konto</li>
+                        <li>Regelbedingungen und zugewiesene Tags beim Aktualisieren der Ordnerverweise beibehalten</li>
+                        <li>Deklarierte Thunderbird-Kompatibilität bis Version 160 erweitert</li>
+                    </ul>
+
+                    <h3>Version 2.8.0</h3>
+                    <ul>
+                        <li>Automatisches Taggen passender E-Mails beim Eintreffen und beim Anzeigen ergänzt</li>
+                        <li>Additive Tags aus Zielordnern und übergeordneten Ordnern mit Vorschau und Sicherung unterstützt</li>
+                        <li>Regeldialog in Bedingungen und Aktionen gegliedert; Regelliste mit zweizeiligen Einträgen und Tag-Farben überarbeitet</li>
+                        <li>Direkten Link zur Thunderbird-Tag-Verwaltung ergänzt</li>
+                        <li>Thunderbird-Tagliste innerhalb eines Prüf- oder Archivierungsdurchlaufs wiederverwendet</li>
+                    </ul>
+
+                        <p><a href="#release-notes">Alle Release Notes</a></p>
+                    </aside>
                 </div>
             </div>
 
@@ -167,6 +190,11 @@
                     <h3>Alle Regeln</h3>
                     <p>Wähle im Kontextmenü oder auf der QuickArchiver-Einstellungsseite <q>Alle Regeln anzeigen</q>, um
                         gespeicherte Regeln zu prüfen, zu bearbeiten oder zu löschen.</p>
+                    <p>Wenn du einen Ordner in Thunderbird umbenennst oder verschiebst, aktualisiert QuickArchiver
+                        die Regelziele und Ordner-Tag-Zuordnungen für diesen Ordner und seine Unterordner, auch beim
+                        Verschieben in ein anderes Konto. Regelbedingungen und direkte Tags bleiben erhalten; geerbte
+                        Tags folgen der neuen Zielordnerstruktur. Ordnerkopien und Änderungen über andere
+                        E-Mail-Programme werden nicht nachverfolgt.</p>
                     <img width="100%" src="../images/all_rules@2x.png" alt="QuickArchiver-Regeln"/>
                     <div style="clear: both"></div>
                 </div>
@@ -183,8 +211,15 @@
 
         </div>
 
-        <div class="col changelog">
+        <div class="col changelog" id="release-notes">
             <h2>Release Notes</h2>
+
+            <h3>Version 2.8.1</h3>
+            <ul>
+                <li>Regelziele und Ordner-Tag-Zuordnungen beim Umbenennen oder Verschieben von Ordnern in Thunderbird aktualisiert, einschließlich Unterordnern und Verschieben in ein anderes Konto</li>
+                <li>Regelbedingungen und zugewiesene Tags beim Aktualisieren der Ordnerverweise beibehalten</li>
+                <li>Deklarierte Thunderbird-Kompatibilität bis Version 160 erweitert</li>
+            </ul>
 
             <h3>Version 2.8.0</h3>
             <ul>
@@ -193,6 +228,11 @@
                 <li>Regeldialog in Bedingungen und Aktionen gegliedert; Regelliste mit zweizeiligen Einträgen und Tag-Farben überarbeitet</li>
                 <li>Direkten Link zur Thunderbird-Tag-Verwaltung ergänzt</li>
                 <li>Thunderbird-Tagliste innerhalb eines Prüf- oder Archivierungsdurchlaufs wiederverwendet</li>
+            </ul>
+
+            <h3>Version 2.7.5</h3>
+            <ul>
+                <li>Deklarierte Thunderbird-Kompatibilität bis Version 159 erweitert</li>
             </ul>
 
             <h3>Version 2.7.4</h3>

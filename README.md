@@ -105,6 +105,19 @@ To review every automatically created rule immediately, right-click the QuickArc
 **Options → Open rule popup for new rules**. With this option enabled, special destinations such as Trash are also
 allowed. Otherwise, Inbox and Trash are excluded from automatic rule creation.
 
+### Rename or move destination folders
+
+When you rename or move a folder in Thunderbird, QuickArchiver updates saved rule destinations and folder-tag
+assignments for that folder and its subfolders. For example, renaming `Customers` to `Clients` updates a rule
+pointing to `Customers/Example Ltd` to use `Clients/Example Ltd`.
+
+Tag assignments attached to the renamed or moved folders are retained. After a move, inherited tags follow the
+new destination hierarchy. Sender, recipient, subject, source-account conditions, and tags assigned directly to a
+rule remain unchanged, including when the destination moves to another account.
+
+This requires Thunderbird to report the rename or move. Folder copies and changes made through another mail
+client are not tracked; review the affected rules and folder-tag assignments manually in those cases.
+
 ## Automatic tagging
 
 ![QuickArchiver rule tags](src/content/tab/images/rule_tags@2x.png)
@@ -408,6 +421,9 @@ The content and formatting constraints are documented in
 
 ### 2.8.1
 
+- Keep rule destinations and folder-tag assignments up to date when folders are renamed or moved in Thunderbird,
+  including affected subfolders and moves to another account
+- Preserve rule conditions and assigned tags when updating folder references
 - Extended declared Thunderbird compatibility through version 160
 
 ### 2.8.0
