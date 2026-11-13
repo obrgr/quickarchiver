@@ -242,8 +242,66 @@ let quickarchiver = {
             }
         }, 250);
     },
+    folderChangeQueue: Promise.resolve(),
+    handleFolderChange: function (originalFolder, destinationFolder) {
+        // Serialize events, including chained renames, without poisoning the
+        // queue if a lookup or storage write fails.
+        const pending = this.folderChangeQueue.then(() =>
+            this.updateFolderReferences(originalFolder, destinationFolder));
+        this.folderChangeQueue = pending.catch(() => {});
+        return pending;
+    },
+    updateFolderReferences: async function (originalFolder, destinationFolder) {
+        if (!originalFolder?.accountId || !originalFolder.path?.startsWith("/")
+            || !destinationFolder?.accountId || !destinationFolder.path?.startsWith("/")) {
+            return false;
+        }
+        await this.initRules();
+        const oldPath = originalFolder.path.replace(/\/+$/, "");
+        const affected = folder => (originalFolder.id &&
+            (typeof folder === "string" ? folder : folder?.id) === originalFolder.id)
+            || (folder?.accountId === originalFolder.accountId
+                && typeof folder.path === "string"
+                && (folder.path === oldPath || folder.path.startsWith(oldPath + "/")));
+        if (![...this.rules, ...this.folderActions].some(entry => affected(entry.folder))) {
+            return false;
+        }
+
+        // Resolve real destination IDs: IDs change with paths and must not be
+        // constructed by replacing substrings in Thunderbird's opaque IDs.
+        const folders = await messenger.folders.query({accountId: destinationFolder.accountId});
+        const newPath = destinationFolder.path.replace(/\/+$/, "");
+        const replaceFolder = folder => {
+            if (!affected(folder)) {
+                return folder;
+            }
+            const isRoot = (originalFolder.id &&
+                (typeof folder === "string" ? folder : folder?.id) === originalFolder.id)
+                || folder.path === oldPath;
+            const path = isRoot ? destinationFolder.path : newPath + folder.path.slice(oldPath.length);
+            const resolved = folders.find(candidate => candidate.accountId === destinationFolder.accountId
+                && candidate.path === path);
+            if (!resolved?.id) {
+                throw new Error(`Could not resolve changed folder: ${path}`);
+            }
+            return this.normalizeFolder(resolved);
+        };
+        // Build everything before mutating or persisting, so missing subfolders
+        // leave the existing rules intact rather than applying a partial update.
+        const rules = this.rules.map(rule => ({...rule, folder: replaceFolder(rule.folder)}));
+        const folderActions = QuickArchiverFolderActions.normalize(this.folderActions.map(action =>
+            ({...action, folder: replaceFolder(action.folder)})));
+        await messenger.storage.local.set({rules, folderActions});
+        this.rules = rules;
+        this.folderActions = folderActions;
+        await this.initColumn();
+        if (this.currentMessage) {
+            await this.updateToolbarEntry(this.currentMessage);
+        }
+        return true;
+    },
     normalizeFolder: function (folder) {
-        // A stored folder only needs the stable identity and display path.
+        // A stored folder only needs its current identity and display path.
         // The other properties are metadata from the current Thunderbird
         // folder tree and can make the rules database unnecessarily large.
         if (!folder || typeof folder !== "object" || Array.isArray(folder)) {

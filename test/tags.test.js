@@ -115,11 +115,13 @@ test("incoming mail and folder listeners register before asynchronous startup", 
   const event = name => ({addListener: (listener, ...options) => { listeners[name] = {listener, options}; }});
   const context = vm.createContext({
     quickarchiver: {
+      handleFolderChange: async (original, destination) => calls.push([original, destination]),
       createMenus: () => new Promise(() => {}),
       classifyMessages: async list => calls.push(list),
       classifyFolder: async folder => calls.push(folder),
     },
     messenger: {
+      folders: {onRenamed: event("folderRenamed"), onMoved: event("folderMoved")},
       messages: {onNewMailReceived: event("incoming"), onMoved: event("moved")},
       mailTabs: {onDisplayedFolderChanged: event("folder")},
       messageDisplay: {onMessagesDisplayed: event("display")},
@@ -136,6 +138,9 @@ test("incoming mail and folder listeners register before asynchronous startup", 
   await listeners.incoming.listener(folder, page);
   await listeners.folder.listener({}, folder);
   assert.deepEqual(calls, [page, folder]);
+  await listeners.folderRenamed.listener(folder, {id: "renamed"});
+  await listeners.folderMoved.listener(folder, {id: "relocated"});
+  assert.deepEqual(calls.slice(2), [[folder, {id: "renamed"}], [folder, {id: "relocated"}]]);
 });
 
 function classificationSetup() {

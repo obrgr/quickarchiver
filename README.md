@@ -32,6 +32,8 @@ Install the published release from [Thunderbird Add-ons](https://addons.thunderb
 - Moves matching messages through the toolbar button, context menu, or **Alt+A**
 - Provides a searchable destination-folder picker with account filtering
 - Shows matching destinations in the optional QuickArchiver folder column
+- Updates saved destinations and parent-folder tag assignments when Thunderbird reports a folder rename or move,
+  including affected subfolders. Folder copies and changes made through another mail client are not tracked.
 
 ### NEW: Automatically tag messages based on rules
 

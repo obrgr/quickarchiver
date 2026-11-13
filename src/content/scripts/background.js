@@ -12,6 +12,14 @@
  */
 
 (async () => {
+    // Register before awaiting startup work so MV3 can wake for folder changes.
+    const updateFolderReferences = (originalFolder, destinationFolder) =>
+        quickarchiver.handleFolderChange(originalFolder, destinationFolder).catch(error => {
+            console.error("QuickArchiver folder reference update failed", error);
+        });
+    messenger.folders.onRenamed.addListener(updateFolderReferences);
+    messenger.folders.onMoved.addListener(updateFolderReferences);
+
     // Register synchronously so delivery wakes an idle MV3 event page.
     // Classification applies tags without moving or marking messages as read.
     messenger.messages.onNewMailReceived.addListener(async (folder, messageList) => {
