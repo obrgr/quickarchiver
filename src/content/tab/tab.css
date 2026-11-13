@@ -338,11 +338,12 @@ h2 {
 
 .about-page .col.main {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: 28px;
 }
 
 .about-page .col.main .section,
+.about-page .about-footer,
 .about-page .changelog {
     display: flow-root;
     min-width: 0;
@@ -351,10 +352,6 @@ h2 {
     border: 1px solid var(--help-border);
     border-radius: 26px;
     background: var(--help-card);
-}
-
-.about-page .col.main .section:nth-child(-n+4) {
-    grid-column: 1 / -1;
 }
 
 .about-page h2 {
@@ -432,6 +429,7 @@ h2 {
     max-width: 45%;
 }
 
+.about-page .about-footer,
 .about-page .changelog {
     margin-top: 28px;
     padding: 32px;
@@ -448,6 +446,7 @@ h2 {
     }
 
     .about-page .col.main .section,
+    .about-page .about-footer,
     .about-page .changelog {
         padding: 24px;
     }

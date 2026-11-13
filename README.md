@@ -12,9 +12,9 @@ what to do with a message, quick filing helps you keep your inbox clear.
 
 ## Project status
 
-- Current version: **2.8.0**
+- Current version: **2.8.1**
 - Manifest: **V3**
-- Supported Thunderbird versions: **128 through 159**
+- Supported Thunderbird versions: **128 through 160**
 - Languages: **English, German, and French**
 - License: **GNU Lesser General Public License, version 3 or later**
 
@@ -32,8 +32,6 @@ Install the published release from [Thunderbird Add-ons](https://addons.thunderb
 - Moves matching messages through the toolbar button, context menu, or **Alt+A**
 - Provides a searchable destination-folder picker with account filtering
 - Shows matching destinations in the optional QuickArchiver folder column
-- Updates saved destinations and parent-folder tag assignments when Thunderbird reports a folder rename or move,
-  including affected subfolders. Folder copies and changes made through another mail client are not tracked.
 
 ### NEW: Automatically tag messages based on rules
 
@@ -407,6 +405,10 @@ The content and formatting constraints are documented in
 [`docs/addons.thunderbird.net/AGENTS.md`](docs/addons.thunderbird.net/AGENTS.md).
 
 ## Release notes
+
+### 2.8.1
+
+- Extended declared Thunderbird compatibility through version 160
 
 ### 2.8.0
 
