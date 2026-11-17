@@ -295,11 +295,8 @@
   "popup.rule.folder.tags": {
     "message": "Parent folder tags"
   },
-  "popup.rule.tags.manage": {
-    "message": "Manage tags in Thunderbird…"
-  },
-  "popup.rule.tags.manage.error": {
-    "message": "Could not open the Thunderbird tag editor."
+  "popup.rule.tags.settings": {
+    "message": "Manage tags in Thunderbird’s Settings → General → Tags. Reopen this dialog after making changes."
   },
   "options.showFolderPath": {"message": "Show folder path in the folder column (enabled by default)"},
   "options.hideFolderPathWhenTagged": {"message": "Hide folder path for tagged messages"}

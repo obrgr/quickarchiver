@@ -1120,10 +1120,6 @@ let quickarchiver = {
                         await this.openRulePopup();
                     }
                     break;
-                case "requestOpenTagEditor":
-
-                    await messenger.customColumns.openTagEditor();
-                    return {opened: true};
                 case "requestOpenFolderPicker":
 
                     await this.openFolderPicker(

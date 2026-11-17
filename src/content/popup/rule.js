@@ -19,7 +19,6 @@ let requestedRuleIndex = null;
 let availableTags = [];
 let selectableFolders = [];
 let folderActions = [];
-let tagEditorOpened = false;
 
 try {
     let ruleIndex = new URL(window.location.href).searchParams.get("ruleIndex");
@@ -92,29 +91,6 @@ async function openFolderPicker() {
         folderId: rule.folder?.id ?? "",
         folderPath: rule.folder?.path ?? "",
     });
-}
-
-async function openTagEditor(event) {
-    event.preventDefault();
-    tagEditorOpened = true;
-    try {
-        const response = await messenger.runtime.sendMessage({command: "requestOpenTagEditor"});
-        if (!response?.opened) {
-            throw new Error("Could not open Thunderbird tag editor");
-        }
-    } catch (error) {
-        console.error("Could not open Thunderbird tag editor", error);
-        alert(browser.i18n.getMessage("popup.rule.tags.manage.error"));
-    }
-}
-
-async function refreshTags() {
-    // Preserve the current draft, including checkbox edits not yet saved.
-    const selected = Array.from(document.querySelectorAll('#tags input:checked'), input => input.value);
-    availableTags = await messenger.messages.tags.list();
-    renderTagChoices(document.getElementById("tags"), selected);
-    renderFolderActions();
-    renderInheritedTags();
 }
 
 async function ruleDelete() {
@@ -365,12 +341,6 @@ async function onLoad() {
     document.getElementById("button_cancel").addEventListener("click", ruleCancel);
     document.getElementById("button_delete").addEventListener("click", ruleDelete);
     document.getElementById("button-select-folder").addEventListener("click", openFolderPicker);
-    document.getElementById("open-tag-editor").addEventListener("click", openTagEditor);
-    window.addEventListener("focus", () => {
-        if (tagEditorOpened) {
-            refreshTags().catch(error => console.error("Could not refresh Thunderbird tags", error));
-        }
-    });
     document.getElementById("button-add-folder-action").addEventListener("click", addFolderAction);
     for (let [checkboxId, inputId] of [
         ["active-from", "from"],

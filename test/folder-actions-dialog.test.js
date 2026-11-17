@@ -90,24 +90,3 @@ test("switching destination updates the editor without discarding other mappings
   assert.equal(dialog.selects().length, 0);
   assert.equal(dialog.run('folderActions.length'), 3);
 });
-
-test("refreshing tags after editor changes preserves unsaved rule and folder selections", async () => {
-  const dialog = setup();
-  const query = dialog.context.document.querySelectorAll;
-  dialog.context.document.querySelectorAll = selector => selector === '#tags input:checked'
-    ? [{value: "draft"}, {value: "deleted"}] : query(selector);
-  dialog.context.messenger.messages = {tags: {list: async () => [
-    {key: "draft", tag: "Renamed draft", color: "#123456"},
-    {key: "new", tag: "New tag", color: "#abcdef"},
-  ]}};
-  dialog.run('folderActions[1].tags = ["unsaved-folder-tag"]');
-  await dialog.run('refreshTags()');
-  const choices = dialog.nodes.tags.children;
-  assert.equal(choices[0].children[0].checked, true);
-  assert.equal(choices[0].children[1].textContent, "Renamed draft");
-  assert.equal(choices[0].children[1].style.color, "#123456");
-  assert.equal(choices[1].children[0].checked, false);
-  assert.equal(choices[2].children[0].value, "deleted");
-  assert.equal(choices[2].children[0].checked, true);
-  assert.equal(dialog.run('folderActions[1].tags[0]'), "unsaved-folder-tag");
-});

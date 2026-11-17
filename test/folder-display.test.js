@@ -5,13 +5,13 @@ import vm from "node:vm";
 
 const source = readFileSync("src/experiments/customColumns/implementation.js", "utf8");
 
-function setup(type = "imap", mailWindow = null) {
+function setup(type = "imap") {
   const account = { key: "account-1", incomingServer: { type, prettyName: "Work" } };
   const other = { key: "account-2", incomingServer: { type: "imap", prettyName: "Private" } };
   const message = { folder: { name: "Other", URI: "imap://user@host/Other", server: account.incomingServer } };
   const context = vm.createContext({
     URL,
-    Services: { wm: { getEnumerator: () => ({ hasMoreElements: () => false }), getMostRecentWindow: () => mailWindow }, obs: { addObserver() {} }, scriptloader: { loadSubScriptWithOptions() {} } },
+    Services: { wm: { getEnumerator: () => ({ hasMoreElements: () => false }) }, obs: { addObserver() {} }, scriptloader: { loadSubScriptWithOptions() {} } },
     ChromeUtils: { importESModule: () => ({
       ExtensionCommon: { ExtensionAPI: class {} },
       MailServices: { accounts: {
@@ -29,6 +29,12 @@ function setup(type = "imap", mailWindow = null) {
   const folder = path => ({ path, accountId: account.key });
   return { context, api, message, folder };
 }
+
+test("column Experiment exposes no tag-settings entry point", () => {
+  const schema = JSON.parse(readFileSync("src/experiments/customColumns/schema.json", "utf8"));
+  assert.deepEqual(schema[0].functions.map(fn => fn.name), ["formatFolder", "add", "setRules", "remove"]);
+  assert.equal(setup().api.openTagEditor, undefined);
+});
 
 test("tooltip API and column formatter produce identical IMAP destination text", async () => {
   const { context, api, message, folder } = setup();
@@ -60,27 +66,6 @@ test("account context and non-IMAP INBOX ancestry remain visible", async () => {
 test("tooltip reports an unavailable message", async () => {
   const { api, folder } = setup();
   await assert.rejects(api.formatFolder(folder("/Archive"), 2, "current"), /unavailable/);
-});
-
-test("tag editor opens General preferences at the tags section and focuses the mail window", async () => {
-  const calls = [];
-  const {api} = setup("imap", {
-    openPreferencesTab: async (...args) => calls.push(args),
-    focus: () => calls.push("focus"),
-  });
-  await api.openTagEditor();
-  assert.deepEqual(calls, [["paneGeneral", "tagsCategory"], "focus"]);
-});
-
-test("tag editor supports the older preferences entry point and reports unavailable windows", async () => {
-  const calls = [];
-  const {api} = setup("imap", {
-    openOptionsDialog: (...args) => calls.push(args),
-    focus: () => {},
-  });
-  await api.openTagEditor();
-  assert.deepEqual(calls, [["paneGeneral", "tagsCategory"]]);
-  await assert.rejects(setup().api.openTagEditor(), /No Thunderbird mail window/);
 });
 
 test("folder paths default on and can be hidden for tagged messages", () => {

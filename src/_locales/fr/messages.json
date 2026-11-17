@@ -295,11 +295,8 @@
   "popup.rule.folder.tags": {
     "message": "Étiquettes des dossiers parents"
   },
-  "popup.rule.tags.manage": {
-    "message": "Gérer les étiquettes dans Thunderbird…"
-  },
-  "popup.rule.tags.manage.error": {
-    "message": "Impossible d’ouvrir l’éditeur d’étiquettes de Thunderbird."
+  "popup.rule.tags.settings": {
+    "message": "Gérez les étiquettes dans les paramètres de Thunderbird, sous Général → Étiquettes. Rouvrez ce dialogue après toute modification."
   },
   "options.showFolderPath": {"message": "Afficher le chemin dans la colonne des dossiers (activé par défaut)"},
   "options.hideFolderPathWhenTagged": {"message": "Masquer le chemin pour les messages étiquetés"}

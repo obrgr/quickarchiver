@@ -295,11 +295,8 @@
   "popup.rule.folder.tags": {
     "message": "Tags übergeordneter Ordner"
   },
-  "popup.rule.tags.manage": {
-    "message": "Tags in Thunderbird verwalten…"
-  },
-  "popup.rule.tags.manage.error": {
-    "message": "Der Thunderbird-Tag-Editor konnte nicht geöffnet werden."
+  "popup.rule.tags.settings": {
+    "message": "Tags werden in Thunderbird unter Einstellungen → Allgemein → Schlagwörter verwaltet. Öffne diesen Dialog nach Änderungen erneut."
   },
   "options.showFolderPath": {"message": "Ordnerpfad in der Ordnerspalte anzeigen (standardmäßig aktiviert)"},
   "options.hideFolderPathWhenTagged": {"message": "Ordnerpfad bei getaggten Mails ausblenden"}

@@ -288,6 +288,6 @@ section.section-main {
     overflow-wrap: anywhere;
 }
 
-.rule-effect > .tag-editor-link {
+.rule-effect > .tag-settings-hint {
     margin-top: 10px;
 }

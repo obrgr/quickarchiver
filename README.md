@@ -12,14 +12,14 @@ what to do with a message, quick filing helps you keep your inbox clear.
 
 ## Project status
 
-- Current version: **2.8.1**
+- Current version: **2.8.2**
 - Manifest: **V3**
 - Supported Thunderbird versions: **128 through 160**
 - Languages: **English, German, and French**
 - License: **GNU Lesser General Public License, version 3 or later**
 
 The current release uses Thunderbird's supported MailExtension APIs and a small custom column experiment for the
-QuickArchiver folder column and opening Thunderbird's tag settings. Rules are stored locally in WebExtension storage
+QuickArchiver folder column. Rules are stored locally in WebExtension storage
 and can be backed up as JSON.
 
 Install the published release from [Thunderbird Add-ons](https://addons.thunderbird.net/thunderbird/addon/quickarchiver/).
@@ -202,9 +202,8 @@ including runs spanning multiple result pages or open folders.
 
 ### Create, rename, and recolor Thunderbird tags
 
-Click **Manage tags in Thunderbird…** beneath the rule's tag selection to open Thunderbird's tag settings. Create,
-rename, recolor, or delete tags there. When you return to the rule dialog, its available tags, names, and colors are
-refreshed while your unsaved rule and folder-tag selections are retained.
+Create, rename, recolor, or delete tags in Thunderbird’s **Settings → General → Tags**.
+Reopen the rule dialog after making changes to load the current tags, names, and colors.
 
 QuickArchiver stores references to Thunderbird tags, not independent copies of their names and colors. Renaming
 or recoloring an existing tag therefore keeps the assignment. Deleted tag references may remain visible by their
@@ -413,12 +412,17 @@ Localized listing templates for addons.thunderbird.net are maintained in
 [German](docs/addons.thunderbird.net/de/listing.md), and [French](docs/addons.thunderbird.net/fr/listing.md).
 Each language folder contains the short description in `listing.md`, a detailed user-facing description
 in `description.html` using only the basic HTML tags accepted by addons.thunderbird.net, and a separate
-`changelog-<version>.html` for each documented release (currently 2.8.1 and 2.8.0). Keep these templates
+`changelog-<version>.html` for each documented release (currently 2.8.2, 2.8.1, and 2.8.0). Keep these templates
 in sync when preparing a release; copy their contents into the corresponding listing fields manually.
 The content and formatting constraints are documented in
 [`docs/addons.thunderbird.net/AGENTS.md`](docs/addons.thunderbird.net/AGENTS.md).
 
 ## Release notes
+
+### 2.8.2
+
+- Remove the direct link to Thunderbird’s tag settings; manage tag definitions in Thunderbird’s settings
+- Load the current tag list when opening the rule dialog
 
 ### 2.8.1
 

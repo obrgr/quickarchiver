@@ -92,7 +92,6 @@
         "requestToolsImportRules",
         "requestOpenRulePopup",
         "requestOpenFolderPicker",
-        "requestOpenTagEditor",
         "requestFolderList",
         "selectFolderForRule",
         "requestOpenToolsTab",
