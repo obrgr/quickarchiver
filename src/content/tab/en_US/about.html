@@ -39,31 +39,32 @@
                     </div>
                     <aside class="release-preview" aria-labelledby="recent-releases">
                         <h2 id="recent-releases">Release Notes</h2>
-                    <h3>Version 2.8.3</h3>
-                    <ul>
-                        <li>Extended declared Thunderbird compatibility through version 161</li>
-                    </ul>
 
-                    <h3>Version 2.8.2</h3>
-                    <ul>
-                        <li>Removed the direct link to Thunderbird’s tag settings. Manage tags in Thunderbird’s settings; the rule dialog loads the current tag list when opened.</li>
-                    </ul>
+                        <h3>Version 2.8.4</h3>
+                        <ul>
+                            <li>Open the last created rule from the QuickArchiver button’s context menu.</li>
+                            <li>Open the destination folder from the QuickArchiver button or the message list without moving the message.</li>
+                        </ul>
 
-                    <h3>Version 2.8.1</h3>
-                    <ul>
-                        <li>Update rule destinations and folder-tag assignments when folders are renamed or moved in Thunderbird, including subfolders and moves to another account</li>
-                        <li>Preserve rule conditions and assigned tags when updating folder references</li>
-                        <li>Extended declared Thunderbird compatibility through version 160</li>
-                    </ul>
+                        <h3>Version 2.8.3</h3>
+                        <ul>
+                            <li>Extended declared Thunderbird compatibility through version 161</li>
+                        </ul>
 
-                    <h3>Version 2.8.0</h3>
-                    <ul>
-                        <li>Automatically tag matching messages on arrival and when viewing mail</li>
-                        <li>Combine direct tags with destination and parent folder tags, including previews and backups</li>
-                        <li>Organize the rule dialog into Conditions and Actions and show rules in two lines with tag colors</li>
-                        <li>Open Thunderbird tag settings directly from the rule dialog</li>
-                        <li>Reuse Thunderbird’s tag list within each classification or archive batch</li>
-                    </ul>
+                        <h3>Version 2.8.2</h3>
+
+                        <ul>
+
+                            <li>Removed the direct link to Thunderbird’s tag settings. Manage tags in Thunderbird’s settings; the rule dialog loads the current tag list when opened.</li>
+
+                        </ul>
+
+                        <h3>Version 2.8.1</h3>
+                        <ul>
+                            <li>Update rule destinations and folder-tag assignments when folders are renamed or moved in Thunderbird, including subfolders and moves to another account</li>
+                            <li>Preserve rule conditions and assigned tags when updating folder references</li>
+                            <li>Extended declared Thunderbird compatibility through version 160</li>
+                        </ul>
 
                         <p><a href="#release-notes">All release notes</a></p>
                     </aside>
@@ -114,6 +115,8 @@
                     <p>Right-click the QuickArchiver button to edit the current rule, show all rules, change whether the
                         rule popup opens for new rules, or open this About page. In the message list, the menu also
                         provides the move action when a matching rule exists.</p>
+                    <p>Choose <q>Edit last created rule</q> to open the rule editor after a move even when the automatic popup is off. This entry appears when a saved rule exists and <q>Edit rule</q> would open a different rule or is unavailable.</p>
+                    <p>Choose <q>Open destination folder</q> from the QuickArchiver button or by right-clicking a single message in the message list. This entry appears when the rule has an available destination and it is not already open in the current view. The message stays where it is.</p>
                 </div>
                 <div class="panel">
                     <h3>Show the QuickArchiver folder column</h3>
@@ -215,6 +218,12 @@
 
         <div class="col changelog" id="release-notes">
             <h2>Release Notes</h2>
+
+            <h3>Version 2.8.4</h3>
+            <ul>
+                <li>Open the last created rule from the QuickArchiver button’s context menu.</li>
+                <li>Open the destination folder from the QuickArchiver button or the message list without moving the message.</li>
+            </ul>
 
             <h3>Version 2.8.3</h3>
             <ul>

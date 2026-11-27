@@ -28,6 +28,12 @@ The constraints below were specified by the repository owner for addons.thunderb
 - Include links to the GitHub repository and README. Indicate that the README is in English in the German and French versions.
 - Keep the long description in this separate file; do not add it to `listing.md`.
 
+## Release notes
+
+- Name each template `changelog-<version>.html` in all three language directories.
+- Put the version number in the filename and start the HTML fragment with the release notes list. Omit the version heading.
+- Use the same HTML tag and attribute allowlist as for the long description.
+
 ## Verification after edits
 
 - Count the short description characters in every modified language and verify the 250-character limit.

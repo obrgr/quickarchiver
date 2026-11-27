@@ -12,7 +12,7 @@ what to do with a message, quick filing helps you keep your inbox clear.
 
 ## Project status
 
-- Current version: **2.8.3**
+- Current version: **2.8.4**
 - Manifest: **V3**
 - Supported Thunderbird versions: **128 through 161**
 - Languages: **English, German, and French**
@@ -241,6 +241,12 @@ and destination folders must also be available there. Unavailable tags are skipp
 Right-click the QuickArchiver button to edit the current rule, show all rules, configure the new-rule popup, or open
 the About page. In the message list, the menu also provides the move action when a matching rule exists.
 
+- **Edit last created rule** opens the rule editor directly after a move, even if the automatic popup is off.
+  This entry appears when there is a saved rule and **Edit rule** would open a different rule or is unavailable.
+- **Open destination folder** jumps to the matching rule’s destination without moving the message. Use it from
+  the QuickArchiver button or right-click one message in the message list. The entry appears when a destination
+  is available and that folder is not already open in the current view.
+
 ## QuickArchiver Folder column
 
 ![QuickArchiver context menu](src/content/tab/images/column@2x.png)
@@ -368,7 +374,11 @@ macOS metadata such as `.DS_Store` is excluded from the archive.
 
 Increase `version` in `src/manifest.json` (for example, `2.7.0` → `2.7.1`) and push or merge the change into the
 repository's default branch. The release workflow runs `npm run check`, builds the XPI, and publishes a GitHub
-release with a `v<version>` tag, generated release notes, and `quickarchiver-<version>.xpi` attached.
+prerelease titled `QuickArchiver <version> - RC (ATN Review)` with a `v<version>` tag, generated release notes,
+and `quickarchiver-<version>.xpi` attached.
+
+Submit the attached XPI to Thunderbird Add-ons (ATN). After ATN approves that version, edit the same GitHub release
+to remove the RC title suffix, clear its prerelease status, and mark it as the latest stable release.
 
 The workflow compares versions before and after the push. Unchanged or decreased versions and pushes to other
 branches do not publish releases. Existing releases are skipped on reruns; an existing tag pointing to a different
@@ -407,17 +417,25 @@ Issues and pull requests are welcome in the
 [GitHub repository](https://github.com/obrgr/quickarchiver/). When changing user-facing text, update all locale
 files and all localized About pages where applicable.
 
+When updating the localized About pages, follow the [release documentation rules](AGENTS.md) for the four-version preview.
+
 Localized listing templates for addons.thunderbird.net are maintained in
 [`docs/addons.thunderbird.net/`](docs/addons.thunderbird.net/): [English](docs/addons.thunderbird.net/en/listing.md),
 [German](docs/addons.thunderbird.net/de/listing.md), and [French](docs/addons.thunderbird.net/fr/listing.md).
 Each language folder contains the short description in `listing.md`, a detailed user-facing description
 in `description.html` using only the basic HTML tags accepted by addons.thunderbird.net, and a separate
-`changelog-<version>.html` for each documented release (currently 2.8.3, 2.8.2, 2.8.1, and 2.8.0). Keep these templates
-in sync when preparing a release; copy their contents into the corresponding listing fields manually.
+`changelog-<version>.html` for each documented release (currently 2.8.4, 2.8.3, 2.8.2, 2.8.1, and 2.8.0).
+Keep these templates in sync when preparing a release; copy their contents into the corresponding listing fields manually.
 The content and formatting constraints are documented in
 [`docs/addons.thunderbird.net/AGENTS.md`](docs/addons.thunderbird.net/AGENTS.md).
 
 ## Release notes
+
+### 2.8.4
+
+- Open the last created rule directly from the QuickArchiver button’s context menu.
+- Open a message’s destination folder from the QuickArchiver button or the message list without moving the message.
+- Show the new actions only when they offer a different rule or folder.
 
 ### 2.8.3
 

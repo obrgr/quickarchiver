@@ -68,7 +68,7 @@ jobs:
           npm run check
           npm run build
 
-      - name: Publish GitHub release
+      - name: Publish GitHub prerelease
         if: steps.version.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
@@ -90,5 +90,6 @@ jobs:
           fi
           gh release create "$tag" "builds/quickarchiver-$VERSION.xpi" \
             --target "$GITHUB_SHA" \
-            --title "QuickArchiver $VERSION" \
+            --title "QuickArchiver $VERSION - RC (ATN Review)" \
+            --prerelease \
             --generate-notes
