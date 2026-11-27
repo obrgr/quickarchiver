@@ -128,7 +128,7 @@ test("incoming mail and folder listeners register before asynchronous startup", 
       messageDisplayAction: {onClicked: event("click")},
       commands: {onChanged: event("commandChanged"), onCommand: event("command")},
       runtime: {onMessage: event("runtime"), onInstalled: event("installed"), onStartup: event("startup")},
-      menus: {onClicked: event("menu")},
+      menus: {onClicked: event("menu"), onShown: event("menuShown")},
     },
   });
   vm.runInContext(readFileSync("src/content/scripts/background.js", "utf8"), context);

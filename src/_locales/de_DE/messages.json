@@ -52,6 +52,9 @@
   "toolbar.menu.title.edit_last_rule": {
     "message": "Zuletzt erstellte Regel bearbeiten"
   },
+  "toolbar.menu.title.open_destination": {
+    "message": "Zielordner öffnen"
+  },
   "toolbar.menu.title.about": {
     "message": "Über QuickArchiver"
   },

@@ -52,6 +52,9 @@
   "toolbar.menu.title.edit_last_rule": {
     "message": "Edit last created rule"
   },
+  "toolbar.menu.title.open_destination": {
+    "message": "Open destination folder"
+  },
   "toolbar.menu.title.about": {
     "message": "About QuickArchiver"
   },

@@ -113,8 +113,16 @@
         });
     });
 
+    messenger.menus.onShown.addListener((info, tab) => {
+        if (tab && (info.contexts.includes("message_display_action") || info.contexts.includes("message_list"))) {
+            return quickarchiver.updateToolbarMenuVisibility(info, tab).catch(error => {
+                console.error("Could not update QuickArchiver context menu visibility", error);
+            });
+        }
+    });
+
     // MV3 event pages require menu items with fixed IDs and a central click handler.
-    messenger.menus.onClicked.addListener(async (info) => {
+    messenger.menus.onClicked.addListener(async (info, tab) => {
         switch (info.menuItemId) {
             case quickarchiver.toolbarMenuEditRuleId:
                 await quickarchiver.openRulePopup();
@@ -128,6 +136,13 @@
             }
             case quickarchiver.toolbarMenuListRulesId:
                 await quickarchiver.openAllRulesTab();
+                break;
+            case quickarchiver.toolbarMenuOpenDestinationId:
+                if (tab) {
+                    await quickarchiver.openDestinationFolder(tab, info.selectedMessages).catch(error => {
+                        console.error("Could not open the QuickArchiver destination folder", error);
+                    });
+                }
                 break;
             case quickarchiver.toolbarMenuAboutId:
                 await quickarchiver.openAboutTab();

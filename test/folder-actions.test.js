@@ -24,7 +24,6 @@ function app(stored = {}) {
         set: async values => { data = {...data, ...plain(values)}; },
       }},
       mailTabs: {query: async () => []},
-      menus: {update: async () => {}},
       messages: {
         tags: {list: async () => [{key: "customers"}, {key: "project"}, {key: "direct"}]},
         get: async id => ({id, tags: ["personal"]}),
@@ -41,9 +40,7 @@ function app(stored = {}) {
 test("a rule learned from a move can be opened independently of the displayed message", async () => {
   const instance = app();
   const windows = [];
-  const menuUpdates = [];
   instance.context.messenger.windows = {create: async options => windows.push(options)};
-  instance.context.messenger.menus.update = async (id, options) => menuUpdates.push([id, options.enabled]);
   instance.run("quickarchiver.refreshColumnAfterMove = () => {}");
 
   assert.equal(await instance.run("quickarchiver.getLastCreatedRule()"), false);
@@ -55,7 +52,6 @@ test("a rule learned from a move can be opened independently of the displayed me
     ]);
   `);
   assert.equal(windows.length, 0);
-  assert.deepEqual(menuUpdates.at(-1), ["qa_edit_last_rule", true]);
 
   await instance.run("quickarchiver.getLastCreatedRule().then(rule => quickarchiver.openRulePopup(rule))");
   assert.equal(windows[0].url, "content/popup/rule.html?ruleIndex=1");
@@ -64,7 +60,80 @@ test("a rule learned from a move can be opened independently of the displayed me
   await instance.run("quickarchiver.deleteRule(1)");
   assert.equal((await instance.run("quickarchiver.getLastCreatedRule()")).from, "first@example.org");
   await instance.run("quickarchiver.deleteRule(0)");
-  assert.deepEqual(menuUpdates.at(-1), ["qa_edit_last_rule", false]);
+  assert.equal(await instance.run("quickarchiver.getLastCreatedRule()"), false);
+});
+
+test("toolbar context menu only shows actions that add a distinct option", async () => {
+  const instance = app({
+    rules: [
+      {activeFrom: true, from: "first@example.org", folder: folder("/Archive")},
+      {activeFrom: true, from: "last@example.org", folder: folder("/Archive")},
+    ],
+  });
+  const visible = new Set();
+  let refreshes = 0;
+  let author = "last@example.org";
+  let displayedFolder = folder("/Inbox");
+  instance.context.messenger.messageDisplay = {
+    getDisplayedMessages: async () => ({messages: [{author, folder: folder("/Archive")}]}),
+  };
+  instance.context.messenger.mailTabs.get = async () => ({displayedFolder});
+  instance.context.messenger.menus = {
+    update: async (id, options) => options.visible ? visible.add(id) : visible.delete(id),
+    refresh: async () => { refreshes++; },
+  };
+  const show = async (context = "message_display_action", selectedMessages) => {
+    const menuIds = () => [...visible].filter(id => context !== "message_list" || id === "qa_open_destination").sort();
+    instance.context.menuInfo = {menuIds: menuIds(), contexts: [context], selectedMessages};
+    await instance.run('quickarchiver.updateToolbarMenuVisibility(menuInfo, {id: 5, type: "mail"})');
+    return menuIds();
+  };
+
+  assert.deepEqual(await show(), ["qa_open_destination"]);
+  assert.deepEqual(await show(), ["qa_open_destination"]);
+  assert.equal(refreshes, 1);
+
+  displayedFolder = folder("/Archive");
+  assert.deepEqual(await show(), []);
+
+  author = "first@example.org";
+  assert.deepEqual(await show(), ["qa_edit_last_rule"]);
+  displayedFolder = folder("/Inbox");
+  assert.deepEqual(await show(), ["qa_edit_last_rule", "qa_open_destination"]);
+
+  author = "unknown@example.org";
+  assert.deepEqual(await show(), ["qa_edit_last_rule"]);
+  const selected = {author: "first@example.org", folder: folder("/Inbox")};
+  assert.deepEqual(await show("message_list", {messages: [selected]}), ["qa_open_destination"]);
+  assert.deepEqual(await show("message_list", {messages: [selected, selected]}), []);
+});
+
+test("opening the destination uses the clicked tab's message and resolves legacy folders", async () => {
+  const instance = app({
+    rules: [{activeFrom: true, from: "actual@example.org", folder: {accountId: "work", path: "/Archive"}}],
+  });
+  const messenger = instance.context.messenger;
+  const message = {author: "actual@example.org", folder: folder("/Inbox")};
+  const opened = [];
+  messenger.messageDisplay = {
+    getDisplayedMessages: async tabId => ({messages: tabId === 9 ? [] : [message]}),
+  };
+  messenger.folders = {query: async () => [folder("/Archive")]};
+  messenger.mailTabs.update = async (id, options) => opened.push([id, options.displayedFolderId]);
+  messenger.mailTabs.create = async options => opened.push([options.displayedFolderId]);
+
+  await instance.run(`
+    (async () => {
+      quickarchiver.currentRule = {folder: {id: "wrong-folder"}};
+      await quickarchiver.openDestinationFolder({id: 5, type: "mail"});
+      await quickarchiver.openDestinationFolder({id: 6, type: "messageDisplay"});
+      await quickarchiver.openDestinationFolder({id: 9, type: "mail"});
+      await quickarchiver.openDestinationFolder({id: 9, type: "mail"}, {
+        messages: [{author: "actual@example.org", folder: {id: "work:/Inbox"}}],
+      });
+    })();
+  `);
+  assert.deepEqual(opened, [[5, "work:/Archive"], ["work:/Archive"], [9, "work:/Archive"]]);
 });
 
 test("folder inheritance matches self and descendants, with segment and account boundaries", () => {

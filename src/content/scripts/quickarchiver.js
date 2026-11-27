@@ -31,6 +31,7 @@ let quickarchiver = {
     currentMessage: null,
     toolbarMenuEditRuleId: 'qa_edit',
     toolbarMenuEditLastRuleId: 'qa_edit_last_rule',
+    toolbarMenuOpenDestinationId: 'qa_open_destination',
     toolbarMenuListRulesId: 'qa_list',
     toolbarMenuAboutId: 'qa_about',
     toolbarMenuMoveId: 'qa_move',
@@ -109,7 +110,13 @@ let quickarchiver = {
             id: this.toolbarMenuEditLastRuleId,
             contexts: ["message_display_action"],
             title: browser.i18n.getMessage("toolbar.menu.title.edit_last_rule"),
-            enabled: Boolean(await this.getLastCreatedRule()),
+            visible: false,
+        });
+        await messenger.menus.create({
+            id: this.toolbarMenuOpenDestinationId,
+            contexts: ["message_display_action", "message_list"],
+            title: browser.i18n.getMessage("toolbar.menu.title.open_destination"),
+            visible: false,
         });
         await messenger.menus.create({
             id: this.toolbarMenuListRulesId,
@@ -409,13 +416,6 @@ let quickarchiver = {
 
         // reload rules after changing them
         await this.loadRules();
-        try {
-            await messenger.menus.update(this.toolbarMenuEditLastRuleId, {
-                enabled: Boolean(await this.getLastCreatedRule()),
-            });
-        } catch (error) {
-            console.warn("Could not update the QuickArchiver menu for the last rule", error);
-        }
         await this.initColumn();
         await this.classifyOpenFolders();
 
@@ -680,15 +680,11 @@ let quickarchiver = {
     updateToolbarEntry: async function (message) {
 
         if (message == null) {
-            return new Promise((resolve) => {
-                resolve(false);
-            });
+            return false;
         }
 
         this.currentMessage = message;
-
         try {
-
             let rule = await quickarchiver.findRule(message);
 
             if (rule) {
@@ -756,6 +752,50 @@ let quickarchiver = {
 
     messageIsInFolder: function (message, folder) {
         return folder.path === message.folder.path && folder.accountId === message.folder.accountId;
+    },
+
+    getSingleMenuMessage: async function (tab, selectedMessages) {
+        const messageList = selectedMessages ?? await messenger.messageDisplay.getDisplayedMessages(tab.id);
+        const messages = this.getMessages(messageList);
+        return messages.length === 1 && !messageList?.id ? messages[0] : null;
+    },
+
+    updateToolbarMenuVisibility: async function (info, tab) {
+        const inMessageList = info.contexts.includes("message_list");
+        const message = await this.getSingleMenuMessage(tab, inMessageList ? info.selectedMessages ?? [] : undefined);
+        const rule = message ? await this.findRule(message) : false;
+        const destinationId = rule?.folder ? await this.getFolderId(rule.folder) : null;
+        const currentFolder = destinationId && tab.type === "mail"
+            ? (await messenger.mailTabs.get(tab.id)).displayedFolder
+            : message?.folder;
+
+        const visibility = [[this.toolbarMenuOpenDestinationId, Boolean(destinationId && destinationId !== currentFolder?.id)]];
+        if (!inMessageList) {
+            const lastRule = await this.getLastCreatedRule();
+            visibility.push([this.toolbarMenuEditLastRuleId, Boolean(lastRule && (!rule?.folder || rule.index !== lastRule.index))]);
+        }
+        const changes = visibility.filter(([id, visible]) => visible !== info.menuIds.includes(id));
+        if (changes.length) {
+            await Promise.all(changes.map(([id, visible]) => messenger.menus.update(id, {visible})));
+            await messenger.menus.refresh();
+        }
+    },
+
+    openDestinationFolder: async function (tab, selectedMessages) {
+        const message = await this.getSingleMenuMessage(tab, selectedMessages);
+        if (!message) {
+            return;
+        }
+        const rule = await this.findRule(message);
+        const displayedFolderId = rule?.folder ? await this.getFolderId(rule.folder) : null;
+        if (!displayedFolderId) {
+            return;
+        }
+        if (tab.type === "mail") {
+            await messenger.mailTabs.update(tab.id, {displayedFolderId});
+        } else {
+            await messenger.mailTabs.create({displayedFolderId});
+        }
     },
 
     moveMails: async function (messages) {
