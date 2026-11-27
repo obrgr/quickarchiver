@@ -18,7 +18,7 @@
     "review:llm": "npm run build && ./scripts/review-xpi.sh --llm-review"
   },
   "devDependencies": {
-    "eslint": "10.8.1",
+    "eslint": "10.15.0",
     "html-validate": "11.9.0",
     "prettier": "3.9.6",
     "webext-linter": "https://github.com/thunderbird/webext-linter/archive/fb6bc3f387d99d693a9c15dd618b29de3dd2289d.tar.gz"
