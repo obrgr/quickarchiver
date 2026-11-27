@@ -24,6 +24,7 @@ function app(stored = {}) {
         set: async values => { data = {...data, ...plain(values)}; },
       }},
       mailTabs: {query: async () => []},
+      menus: {update: async () => {}},
       messages: {
         tags: {list: async () => [{key: "customers"}, {key: "project"}, {key: "direct"}]},
         get: async id => ({id, tags: ["personal"]}),
@@ -36,6 +37,35 @@ function app(stored = {}) {
   }
   return {context, updates, data: () => data, run: source => vm.runInContext(source, context)};
 }
+
+test("a rule learned from a move can be opened independently of the displayed message", async () => {
+  const instance = app();
+  const windows = [];
+  const menuUpdates = [];
+  instance.context.messenger.windows = {create: async options => windows.push(options)};
+  instance.context.messenger.menus.update = async (id, options) => menuUpdates.push([id, options.enabled]);
+  instance.run("quickarchiver.refreshColumnAfterMove = () => {}");
+
+  assert.equal(await instance.run("quickarchiver.getLastCreatedRule()"), false);
+  await instance.run(`
+    quickarchiver.currentRule = {index: 0};
+    quickarchiver.handleMovedMessages([
+      {author: "first@example.org", folder: {path: "/First", accountId: "work"}},
+      {author: "last@example.org", folder: {path: "/Last", accountId: "work"}}
+    ]);
+  `);
+  assert.equal(windows.length, 0);
+  assert.deepEqual(menuUpdates.at(-1), ["qa_edit_last_rule", true]);
+
+  await instance.run("quickarchiver.getLastCreatedRule().then(rule => quickarchiver.openRulePopup(rule))");
+  assert.equal(windows[0].url, "content/popup/rule.html?ruleIndex=1");
+  assert.equal((await app(instance.data()).run("quickarchiver.getLastCreatedRule()")).from, "last@example.org");
+
+  await instance.run("quickarchiver.deleteRule(1)");
+  assert.equal((await instance.run("quickarchiver.getLastCreatedRule()")).from, "first@example.org");
+  await instance.run("quickarchiver.deleteRule(0)");
+  assert.deepEqual(menuUpdates.at(-1), ["qa_edit_last_rule", false]);
+});
 
 test("folder inheritance matches self and descendants, with segment and account boundaries", () => {
   const parent = folder("/Customers");

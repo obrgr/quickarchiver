@@ -49,6 +49,9 @@
   "toolbar.menu.title.list_rules": {
     "message": "Afficher toutes les règles"
   },
+  "toolbar.menu.title.edit_last_rule": {
+    "message": "Modifier la dernière règle créée"
+  },
   "toolbar.menu.title.about": {
     "message": "À propos de QuickArchiver"
   },

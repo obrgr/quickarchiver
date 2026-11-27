@@ -30,6 +30,7 @@ let quickarchiver = {
     currentRule: null,
     currentMessage: null,
     toolbarMenuEditRuleId: 'qa_edit',
+    toolbarMenuEditLastRuleId: 'qa_edit_last_rule',
     toolbarMenuListRulesId: 'qa_list',
     toolbarMenuAboutId: 'qa_about',
     toolbarMenuMoveId: 'qa_move',
@@ -103,6 +104,12 @@ let quickarchiver = {
             contexts: ["message_display_action", "message_list"],
             title: browser.i18n.getMessage("toolbar.menu.title.edit_rule"),
             enabled: false,
+        });
+        await messenger.menus.create({
+            id: this.toolbarMenuEditLastRuleId,
+            contexts: ["message_display_action"],
+            title: browser.i18n.getMessage("toolbar.menu.title.edit_last_rule"),
+            enabled: Boolean(await this.getLastCreatedRule()),
         });
         await messenger.menus.create({
             id: this.toolbarMenuListRulesId,
@@ -402,6 +409,13 @@ let quickarchiver = {
 
         // reload rules after changing them
         await this.loadRules();
+        try {
+            await messenger.menus.update(this.toolbarMenuEditLastRuleId, {
+                enabled: Boolean(await this.getLastCreatedRule()),
+            });
+        } catch (error) {
+            console.warn("Could not update the QuickArchiver menu for the last rule", error);
+        }
         await this.initColumn();
         await this.classifyOpenFolders();
 
@@ -548,6 +562,12 @@ let quickarchiver = {
             return false;
         }
         return {...rule, index};
+    },
+
+    getLastCreatedRule: async function () {
+        await this.initRules();
+        // New rules are appended. Edits preserve their position in storage.
+        return this.getRule(this.rules.findLastIndex(Boolean));
     },
 
     /*

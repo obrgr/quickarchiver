@@ -119,6 +119,13 @@
             case quickarchiver.toolbarMenuEditRuleId:
                 await quickarchiver.openRulePopup();
                 break;
+            case quickarchiver.toolbarMenuEditLastRuleId: {
+                const rule = await quickarchiver.getLastCreatedRule();
+                if (rule) {
+                    await quickarchiver.openRulePopup(rule);
+                }
+                break;
+            }
             case quickarchiver.toolbarMenuListRulesId:
                 await quickarchiver.openAllRulesTab();
                 break;
