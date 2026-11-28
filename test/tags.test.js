@@ -5,10 +5,10 @@ import vm from "node:vm";
 
 const source = readFileSync("src/content/scripts/quickarchiver.js", "utf8");
 
-function setup(currentTags = []) {
+function setup(currentTags = [], version = "140.0esr") {
   const updates = [];
   const context = vm.createContext({
-    messenger: { messages: {
+    messenger: { runtime: {getBrowserInfo: async () => ({version})}, messages: {
       tags: { list: async () => [{key: "customers"}, {key: "work"}] },
       get: async () => ({id: 7, tags: currentTags}),
       update: async (id, properties) => updates.push({id, tags: [...properties.tags]}),
@@ -34,21 +34,27 @@ test("old rules, empty selections and already applied tags require no update", a
   assert.deepEqual(updates, []);
 });
 
-test("both archive entry points apply tags before moving", async () => {
+test("both archive entry points apply tags before moving and enable native undo on supported versions", async () => {
   for (const method of ["moveMail", "moveMailOrOpenRulePopupIfSameFolder"]) {
-    const calls = [];
-    const {context} = setup();
-    context.calls = calls;
-    context.console = {info() {}, warn() {}, error() {}};
-    vm.runInContext(`
-      quickarchiver.findRule = async () => ({folder: {id: "destination"}, tags: ["work"]});
-      quickarchiver.getFolderId = async () => "destination";
-      quickarchiver.messageIsInFolder = () => false;
-      quickarchiver.applyRuleTags = async () => calls.push("tags");
-      messenger.messages.move = async () => calls.push("move");
-    `, context);
-    await vm.runInContext(`quickarchiver.${method}({id: 7})`, context);
-    assert.deepEqual(calls, ["tags", "move"]);
+    for (const [version, expectedMoveArgs] of [
+      ["128.14.0esr", [[7], "destination"]],
+      ["137.0", [[7], "destination", {isUserAction: true}]],
+      ["140.0esr", [[7], "destination", {isUserAction: true}]],
+    ]) {
+      const calls = [];
+      const {context} = setup([], version);
+      context.calls = calls;
+      context.console = {info() {}, warn() {}, error() {}};
+      context.messenger.messages.move = async (...args) => calls.push(JSON.parse(JSON.stringify(args)));
+      vm.runInContext(`
+        quickarchiver.findRule = async () => ({folder: {id: "destination"}, tags: ["work"]});
+        quickarchiver.getFolderId = async () => "destination";
+        quickarchiver.messageIsInFolder = () => false;
+        quickarchiver.applyRuleTags = async () => calls.push("tags");
+      `, context);
+      await vm.runInContext(`quickarchiver.${method}({id: 7})`, context);
+      assert.deepEqual(calls, ["tags", expectedMoveArgs], `${method} on Thunderbird ${version}`);
+    }
   }
 });
 

@@ -40,6 +40,7 @@ let quickarchiver = {
     columnId: 'quickarchiverFolder',
     columnRegistered: false,
     openRulePopupOnNewRule: false,
+    browserMajorVersion: null,
 
     getMessages: function (messageList) {
         // MV3 returns a MessageList. Keep accepting arrays for compatibility
@@ -927,6 +928,18 @@ let quickarchiver = {
         }
     },
 
+    moveMessage: async function (messageId, folderId) {
+        this.browserMajorVersion ??= messenger.runtime.getBrowserInfo()
+            .then(({version}) => Number.parseInt(version, 10));
+
+        // Thunderbird 128 ESR does not accept the options argument.
+        if (await this.browserMajorVersion >= 137) {
+            await messenger.messages.move([messageId], folderId, {isUserAction: true});
+        } else {
+            await messenger.messages.move([messageId], folderId);
+        }
+    },
+
     moveMail: async function (message, getAvailableTags = this.createTagLookup()) {
 
         console.info("[QuickArchiver move] Start message", {
@@ -995,7 +1008,7 @@ let quickarchiver = {
                     destinationFolderId: folderId,
                 });
                 await this.applyRuleTags(message, rule, getAvailableTags);
-                await messenger.messages.move([message.id], folderId);
+                await this.moveMessage(message.id, folderId);
                 console.info("[QuickArchiver move] messages.move succeeded", {
                     messageId: message.id,
                     destinationFolderId: folderId,
@@ -1039,7 +1052,7 @@ let quickarchiver = {
                     return false;
                 }
                 await this.applyRuleTags(message, rule);
-                await messenger.messages.move([message.id], folderId);
+                await this.moveMessage(message.id, folderId);
                 console.info("Moved message with with subject '" + message.subject + "' to folder '" + rule.folder.path + "'");
             } catch (ex) {
                 console.error(ex);
