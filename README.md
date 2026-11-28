@@ -12,7 +12,7 @@ what to do with a message, quick filing helps you keep your inbox clear.
 
 ## Project status
 
-- Current version: **2.8.4**
+- Current version: **2.8.5**
 - Manifest: **V3**
 - Supported Thunderbird versions: **128 through 161**
 - Languages: **English, German, and French**
@@ -424,12 +424,17 @@ Localized listing templates for addons.thunderbird.net are maintained in
 [German](docs/addons.thunderbird.net/de/listing.md), and [French](docs/addons.thunderbird.net/fr/listing.md).
 Each language folder contains the short description in `listing.md`, a detailed user-facing description
 in `description.html` using only the basic HTML tags accepted by addons.thunderbird.net, and a separate
-`changelog-<version>.html` for each documented release (currently 2.8.4, 2.8.3, 2.8.2, 2.8.1, and 2.8.0).
+`changelog-<version>.html` for each documented release (currently 2.8.5, 2.8.4, 2.8.3, 2.8.2, 2.8.1, and 2.8.0).
 Keep these templates in sync when preparing a release; copy their contents into the corresponding listing fields manually.
 The content and formatting constraints are documented in
 [`docs/addons.thunderbird.net/AGENTS.md`](docs/addons.thunderbird.net/AGENTS.md).
 
 ## Release notes
+
+### 2.8.5
+
+- See the destination folder name in the QuickArchiver button’s context menu.
+- Undo a QuickArchiver move with Ctrl+Z or Cmd+Z in Thunderbird 137 and later (140 ESR and later).
 
 ### 2.8.4
 
