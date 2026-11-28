@@ -17,6 +17,22 @@
   "toolbar.label.rule_present": {
     "message": "QuickArchiver: Verschieben"
   },
+  "toolbar.label.move_to_folder": {
+    "message": "Verschieben → $folder$",
+    "placeholders": {
+      "folder": {
+        "content": "$1"
+      }
+    }
+  },
+  "toolbar.label.edit_rule_for_folder": {
+    "message": "Regel bearbeiten ($folder$)",
+    "placeholders": {
+      "folder": {
+        "content": "$1"
+      }
+    }
+  },
   "toolbar.title.rule_present": {
     "message": "Verschiebe \"$message$\"\n$folder$$shortcut$",
     "placeholders": {

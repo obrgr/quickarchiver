@@ -17,6 +17,22 @@
   "toolbar.label.rule_present": {
     "message": "QuickArchiver: Déplacer"
   },
+  "toolbar.label.move_to_folder": {
+    "message": "Déplacer → $folder$",
+    "placeholders": {
+      "folder": {
+        "content": "$1"
+      }
+    }
+  },
+  "toolbar.label.edit_rule_for_folder": {
+    "message": "Modifier la règle ($folder$)",
+    "placeholders": {
+      "folder": {
+        "content": "$1"
+      }
+    }
+  },
   "toolbar.title.rule_present": {
     "message": "Déplacer « $message$ »\n$folder$$shortcut$",
     "placeholders": {

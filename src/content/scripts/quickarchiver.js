@@ -674,6 +674,22 @@ let quickarchiver = {
         }
     },
 
+    getDestinationFolderName: async function (folder) {
+        try {
+            const folderId = folder.id ?? await this.getFolderId(folder);
+            if (folderId) {
+                const destination = await messenger.folders.get(folderId);
+                if (destination.name) {
+                    return destination.name;
+                }
+            }
+        } catch (error) {
+            console.warn("Could not read QuickArchiver destination folder name", error);
+        }
+        // Older rules can still provide a usable display name or path.
+        return folder.name || folder.path?.split("/").filter(Boolean).at(-1);
+    },
+
     /*
         Creates and update the toolbar button
      */
@@ -705,6 +721,7 @@ let quickarchiver = {
                     message.id,
                     browser.i18n.getMessage("column.currentFolder")
                 );
+                const folderName = await this.getDestinationFolderName(rule.folder);
 
                 messenger.messageDisplayAction.enable();
 
@@ -714,7 +731,11 @@ let quickarchiver = {
                     messenger.messageDisplayAction.setTitle({
                         title: folderDisplay + "\n" + browser.i18n.getMessage("toolbar.title.rule_edit")
                     });
-                    messenger.messageDisplayAction.setLabel({label: browser.i18n.getMessage("toolbar.label.rule_edit")});
+                    messenger.messageDisplayAction.setLabel({
+                        label: folderName
+                            ? browser.i18n.getMessage("toolbar.label.edit_rule_for_folder", [folderName])
+                            : browser.i18n.getMessage("toolbar.label.rule_edit")
+                    });
                 } else {
                     messenger.messageDisplayAction.setIcon({path: "content/icons/" + color_scheme + "/qa_move.svg"});
                     messenger.messageDisplayAction.setTitle({
@@ -724,7 +745,11 @@ let quickarchiver = {
                             await this.getMoveShortcutHint()
                         ])
                     });
-                    messenger.messageDisplayAction.setLabel({label: browser.i18n.getMessage("toolbar.label.rule_present")});
+                    messenger.messageDisplayAction.setLabel({
+                        label: folderName
+                            ? browser.i18n.getMessage("toolbar.label.move_to_folder", [folderName])
+                            : browser.i18n.getMessage("toolbar.label.rule_present")
+                    });
                 }
 
                 await messenger.menus.update(this.toolbarMenuEditRuleId, {enabled: true});
